@@ -33,8 +33,27 @@ import {
   ChartTooltipContent,
 } from "../components/ui/chart"
 import { Separator } from "../components/ui/separator"
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
+
+
 
 export function Dashboard() {
+  const authState = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    if (!authState.isAuthenticated){
+     navigate('/login') 
+    }
+  },[])
+
+
+
+
+
+
   return (
     <div className="chart-wrapper mx-auto flex max-w-6xl flex-col flex-wrap items-start justify-center gap-6 p-6 sm:flex-row sm:p-8">
       <div className="grid w-full gap-6 sm:grid-cols-2 lg:max-w-[22rem] lg:grid-cols-1 xl:max-w-[25rem]">

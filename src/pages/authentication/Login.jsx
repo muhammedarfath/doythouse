@@ -1,16 +1,49 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import logo from "../../assets/logo.jpg";
+import { useDispatch, useSelector } from 'react-redux';
+import { startLoading, loginSuccess, loginFailure } from '../../Redux/features/auth/authSlice';
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const dispatch = useDispatch();
+  const authState = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
+  const onSubmit = async (data) => {
+    dispatch(startLoading());
+    try {
+      // Simulate API call
+      const user = await fakeApiLogin(data.username, data.password);
+
+      // If login is successful, dispatch loginSuccess with user data
+      dispatch(loginSuccess(user));
+      console.log("Login Successful:", user);
+      navigate('/')
+
+    } catch (error) {
+      // If login fails, dispatch loginFailure
+      dispatch(loginFailure());
+      console.error("Login Failed:", error.message);
+    }
+  };
+
+  // Simulated API call function
+  const fakeApiLogin = (username, password) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (username === "testuser" && password === "password") {
+          resolve({ username, name: "Test User" });
+        } else {
+          reject(new Error("Invalid username or password"));
+        }
+      }, 1000);
+    });
   };
 
   return (
@@ -63,7 +96,7 @@ function Login() {
           type="submit"
           className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
         >
-          Login
+          {authState.loading ? "Loading..." : "Login"}
         </button>
 
         <div className="text-center mt-4">
