@@ -3,7 +3,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { Button } from "../../components/ui/button";
 import { FiPlus } from "react-icons/fi";
 
-function ProductCategory() {
+function ProductPrices() {
   return (
     <div className="lg:col-span-2">
       <div className="grid gap-4 gap-y-2 lg:w-[45rem] text-sm grid-cols-1 md:grid-cols-5">
@@ -59,4 +59,4 @@ function ProductCategory() {
   );
 }
 
-export default ProductCategory;
+export default ProductPrices;
