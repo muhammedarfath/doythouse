@@ -3,7 +3,7 @@ import Sidebar from "./components/Layout/Sidebar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {Dashboard} from './pages/Dashboard';
 import Login from './pages/authentication/Login';
-import AddProduct from './pages/AddProduct';
+import AddProduct from './pages/Product/AddProduct';
 function App() {
 
   return (

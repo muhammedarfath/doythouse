@@ -13,7 +13,7 @@ function MenuItem({ icon: Icon, label, open, subItems }) {
   return (
     <>
       <li
-        className="text-black text-sm flex items-center justify-between cursor-pointer py-4 px-9 border-b-2 hover:bg-[#D8E9E7] rounded-lg mt-1"
+        className="text-black text-sm flex items-center justify-between cursor-pointer py-4 px-4 rounded-md border-b-2 hover:bg-[#D8E9E7] mt-1"
         onClick={toggleExpand}
       >
         <div className="flex items-center gap-x-4">
