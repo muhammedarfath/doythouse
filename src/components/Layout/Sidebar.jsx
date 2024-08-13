@@ -38,8 +38,10 @@ function Sidebar() {
             Arfath
           </h1>
         </div>
-        <div className="flex flex-col items-center">
-          <span className="mt-3 text-sm text-gray-400">GENERAL</span>
+        <div className="flex justify-center">
+          <span className="mt-3 text-sm text-gray-400 ">GENERAL</span>
+        </div>
+        <div className="flex flex-col items-start">
           <Items open={open} />
         </div>
       </div>
