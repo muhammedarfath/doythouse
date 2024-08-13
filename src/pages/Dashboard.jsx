@@ -43,11 +43,11 @@ export function Dashboard() {
   const authState = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    if (!authState.isAuthenticated){
-     navigate('/login') 
-    }
-  },[])
+  // useEffect(()=>{
+  //   if (!authState.isAuthenticated){
+  //    navigate('/login') 
+  //   }
+  // },[])
 
 
 
