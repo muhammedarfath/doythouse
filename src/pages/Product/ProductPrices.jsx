@@ -70,7 +70,7 @@ function ProductCategory() {
 
         <div className="md:col-span-5 text-right flex justify-between mt-5 ">
           <div className="">
-            <Button>
+            <Button className="bg-[#308E87] hover:bg-[#308E87]">
               <FiPlus />
               Add Product
             </Button>

@@ -10,11 +10,10 @@ function Sidebar() {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <div
         className={`${
           open ? "w-60" : "w-20"
-        } duration-500 bg-white relative shadow`}
+        } duration-500 bg-white relative shadow z-50`} 
       >
         <div
           className={`absolute cursor-pointer border-2 rounded-full p-1 right-5 bg-white ${
@@ -40,16 +39,18 @@ function Sidebar() {
           </h1>
         </div>
         <div className="flex justify-center">
-          <span className="mt-3 text-sm text-gray-400 ">GENERAL</span>
+          <span className="mt-3 text-sm text-gray-400">GENERAL</span>
         </div>
         <div className="flex flex-col items-start">
           <Items open={open} />
         </div>
       </div>
 
-      <div className="flex-1 w-full">
+      <div className="flex-1 flex flex-col">
         <Header open={open} />
-        <Outlet />
+        <main className="flex-1 overflow-y-auto mt-16">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

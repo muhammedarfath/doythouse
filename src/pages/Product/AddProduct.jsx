@@ -30,7 +30,7 @@ function AddProduct() {
     <div className="flex items-center justify-center">
       <div className="max-w-screen-xl mx-auto">
         <div className="flex flex-col gap-11 mt-8">
-          <h2 className="font-semibold text-xl text-black">Add New Product</h2>
+          <h2 className="font-bold text-xl text-black ">Add New Product</h2>
 
           <div className="bg-white flex rounded-2xl shadow-sm p-4 px-4 md:p-8 mb-6">
             <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
