@@ -64,8 +64,16 @@ function Category() {
       <div className="w-full max-w-screen-xl mx-auto">
         <div className="flex flex-col gap-6 mt-8">
           <h2 className="font-semibold text-xl text-black">Category List</h2>
-          <div className="bg-white flex flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
-            <div className="flex justify-end items-center mb-4">
+          <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex gap-2">
+                <span className="">Serach</span>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="h-10 border rounded px-4 w-64 bg-gray-50"
+                />
+              </div>
               <CategoryModal />
             </div>
 

@@ -17,15 +17,15 @@ function SubModal() {
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button>
-            <FiPlus />
-            Create New SubCategory{" "}
+        <Button className="bg-[#308E87] hover:bg-[#308E87]">
+            <FiPlus className="text-white text-xl" />
+            Create New Sub Category{" "}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[900px] ">
           <DialogHeader>
-            <DialogTitle>Add SubCategory</DialogTitle>
-            <DialogDescription>Add your SubCategory</DialogDescription>
+            <DialogTitle>Add Sub Category</DialogTitle>
+            <DialogDescription>Add your Sub Category</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
