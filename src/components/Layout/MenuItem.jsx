@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaAngleDown } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 function MenuItem({ icon: Icon, label, open, subItems }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -32,12 +33,14 @@ function MenuItem({ icon: Icon, label, open, subItems }) {
       {isExpanded && subItems && (
         <ul className="pl-8">
           {subItems.map((subItem, index) => (
-            <li
-              key={index}
-              className="text-black text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-[#F4F6F8] rounded-sm mt-2"
-            >
-              <subItem.icon className="text-2xl ml-2" />
-              <span className="origin-left duration-200">{subItem.label}</span>
+            <li key={index}>
+              <Link
+                to={subItem.path}
+                className="text-black text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-[#F4F6F8] rounded-sm mt-2"
+              >
+                <subItem.icon className="text-2xl ml-2" />
+                <span className="origin-left duration-200">{subItem.label}</span>
+              </Link>
             </li>
           ))}
         </ul>

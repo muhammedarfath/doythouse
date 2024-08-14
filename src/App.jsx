@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {Dashboard} from './pages/Dashboard';
 import Login from './pages/authentication/Login';
 import AddProduct from './pages/Product/AddProduct';
+import Category from './pages/Category/Category';
+import SubCategory from './pages/Category/SubCategory';
 function App() {
 
   return (
@@ -13,6 +15,8 @@ function App() {
           <Route element={<Sidebar />}>
             <Route path='/' element={<Dashboard />} />
             <Route path="/addproduct" element={<AddProduct/>} />
+            <Route path="/category" element={<Category/>} />
+            <Route path="/subcategory" element={<SubCategory/>} />
           </Route>
           <Route path="/login" element={<Login />} />
         </Routes>

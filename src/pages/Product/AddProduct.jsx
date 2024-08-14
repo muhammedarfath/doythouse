@@ -42,10 +42,10 @@ function AddProduct() {
                   <div className="flex items-center gap-2">
                     <div
                       className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                        activeSection == "details" ? "bg-[#D8E9E7]" : " "
+                        activeSection == "details" ? "bg-[#308E87]" : " "
                       } animate-bounce`}
                     >
-                      <RiShoppingBag3Line className="text-2xl " />
+                      <RiShoppingBag3Line className={`text-2xl ${activeSection == "details" ? "text-white" : "text-black"}`}  />
                     </div>
                     <p
                       className={`font-medium text-lg ${
@@ -67,10 +67,10 @@ function AddProduct() {
                   <div className="flex gap-2 items-center">
                     <div
                       className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                        activeSection == "gallery" ? "bg-[#D8E9E7]" : " "
+                        activeSection == "gallery" ? "bg-[#308E87]" : " "
                       } animate-bounce`}
                     >
-                      <LuImagePlus className="text-2xl  " />
+                      <LuImagePlus className={`text-2xl ${activeSection == "gallery" ? "text-white" : "text-black"}`} />
                     </div>
                     <p
                       className={`font-medium text-lg ${
@@ -94,10 +94,10 @@ function AddProduct() {
                   <div className="flex gap-2 items-center">
                     <div
                       className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                        activeSection == "category" ? "bg-[#D8E9E7]" : " "
+                        activeSection == "category" ? "bg-[#308E87]" : " "
                       } animate-bounce`}
                     >
-                      <RiStackLine className="text-2xl  " />
+                      <RiStackLine className={`text-2xl ${activeSection == "category" ? "text-white" : "text-black"}`} />
                     </div>
                     <p
                       className={`font-medium text-lg ${
@@ -119,10 +119,10 @@ function AddProduct() {
                   <div className="flex gap-2 items-center">
                     <div
                       className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                        activeSection == "price" ? "bg-[#D8E9E7]" : " "
+                        activeSection == "price" ? "bg-[#308E87]" : " "
                       } animate-bounce`}
                     >
-                      <IoPricetagsOutline className="text-2xl  " />
+                      <IoPricetagsOutline className={`text-2xl ${activeSection == "price" ? "text-white" : "text-black"}`} />
                     </div>
                     <p
                       className={`font-medium text-lg ${
@@ -133,7 +133,7 @@ function AddProduct() {
                     </p>
                   </div>
                   <small className="ml-12">
-                     Add product basic price & discount
+                    Add product basic price & discount
                   </small>
                 </div>
               </div>

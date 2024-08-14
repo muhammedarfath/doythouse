@@ -3,7 +3,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 
 function AddProductDetails() {
   return (
-    <div className="lg:col-span-2">
+    <div className="lg:col-span-2 border-l-2 border-l-[#ECF3F3] pl-5">
       <div className="grid gap-4 gap-y-2 lg:w-[45rem] text-sm grid-cols-1 md:grid-cols-5">
         <div className="md:col-span-5">
           <label for="product_name">Product Name</label>
@@ -24,28 +24,6 @@ function AddProductDetails() {
             id="Discription"
             className="border rounded p-4 w-full bg-gray-50"
             placeholder="Discription"
-          />
-        </div>
-
-        <div className="md:col-span-3">
-          <label for="Category">Category</label>
-          <input
-            type="text"
-            name="Category"
-            id="Category"
-            className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-            placeholder="Choose Category"
-          />
-        </div>
-
-        <div className="md:col-span-2">
-          <label for="SubCategory">SubCategory</label>
-          <input
-            type="text"
-            name="SubCategory"
-            id="SubCategory"
-            className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-            placeholder="Choose SubCategory"
           />
         </div>
 

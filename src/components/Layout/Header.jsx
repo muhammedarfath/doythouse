@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../../assets/logo.jpg";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { 
   CreditCard,LogOut,  
@@ -14,8 +13,7 @@ function Header({open}) {
   return (
     <div className={`flex-1 text-black shadow-sm bg-white ${open ? "p-5" : "p-2"} flex justify-between items-center`}>
       <div className="flex gap-2 mx-5 items-center">
-        <img src={logo} alt="DOYT House Logo" className="h-10 w-10 rounded-full" />
-        <h1 className="text-xl font-semibold text-[#308E87]">DOYT HOUSE</h1>
+        
       </div>
       <div className="flex gap-5 items-center mr-9">
         <IoMdNotificationsOutline className="text-3xl cursor-pointer" />

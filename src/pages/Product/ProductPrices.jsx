@@ -5,7 +5,7 @@ import { FiPlus } from "react-icons/fi";
 
 function ProductCategory() {
   return (
-    <div className="lg:col-span-2">
+    <div className="lg:col-span-2 border-l-2 border-l-[#ECF3F3] pl-5">
       <div className="grid gap-4 gap-y-2 lg:w-[45rem] text-sm grid-cols-1 md:grid-cols-5">
         <div className="md:col-span-3 flex flex-col gap-4">
           <label for="Category">MRP</label>
