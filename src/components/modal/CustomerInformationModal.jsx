@@ -298,257 +298,299 @@ function CustomerInformationModal() {
               <div></div>
             </div>
 
-            {/* SKIRT & PANT Section */}
-            <div className="border-t border-gray-300 my-6 pt-4">
-              <div className="text-lg font-semibold mb-4">SKIRT & PANT:</div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="grid grid-cols-4 gap-4">
-                  <Label htmlFor="full-length-skirt" className="text-right">
-                    Full Length
-                  </Label>
-                  <Input id="full-length-skirt" className="col-span-3" />
+            <div className="border-t border-gray-300 my-6 pt-4 flex justify-evenly">
+              <div>
+                <div className="text-lg font-semibold mb-4">SKIRT & PANT:</div>
+                <div className="grid gap-4">
+                  <div className="grid grid-cols-4 gap-4">
+                    <Label htmlFor="full-length-skirt" className="text-right">
+                      Full Length
+                    </Label>
+                    <Input id="full-length-skirt" className="col-span-3" />
 
-                  <Label htmlFor="waist-skirt" className="text-right">
-                    Waist
-                  </Label>
-                  <Input id="waist-skirt" className="col-span-3" />
+                    <Label htmlFor="waist-skirt" className="text-right">
+                      Waist
+                    </Label>
+                    <Input id="waist-skirt" className="col-span-3" />
 
-                  <Label htmlFor="hip-skirt" className="text-right">
-                    Hip
-                  </Label>
-                  <Input id="hip-skirt" className="col-span-3" />
+                    <Label htmlFor="hip-skirt" className="text-right">
+                      Hip
+                    </Label>
+                    <Input id="hip-skirt" className="col-span-3" />
 
-                  <Label htmlFor="thigh-skirt" className="text-right">
-                    Thigh
-                  </Label>
-                  <Input id="thigh-skirt" className="col-span-3" />
+                    <Label htmlFor="thigh-skirt" className="text-right">
+                      Thigh
+                    </Label>
+                    <Input id="thigh-skirt" className="col-span-3" />
 
-                  <Label htmlFor="knee-round-skirt" className="text-right">
-                    Knee Round
-                  </Label>
-                  <Input id="knee-round-skirt" className="col-span-3" />
+                    <Label htmlFor="knee-round-skirt" className="text-right">
+                      Knee Round
+                    </Label>
+                    <Input id="knee-round-skirt" className="col-span-3" />
 
-                  <Label htmlFor="bottom-round-skirt" className="text-right">
-                    Bottom Round
-                  </Label>
-                  <Input id="bottom-round-skirt" className="col-span-3" />
-                </div>
-              </div>
-            </div>
-
-            {/* Options Section */}
-            <div className="border-t border-gray-300 my-6 pt-4">
-              <div className="text-lg font-semibold mb-4">Options:</div>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="flex items-center">
-                  <Label htmlFor="pad" className="mr-6 text-base font-medium">
-                    PAD:
-                  </Label>
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center">
-                      <input
-                        type="radio"
-                        id="pad-yes"
-                        name="pad"
-                        value="yes"
-                        className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                      />
-                      <Label
-                        htmlFor="pad-yes"
-                        className="ml-2 text-sm font-medium"
-                      >
-                        Yes
-                      </Label>
-                    </div>
-                    <div className="flex items-center">
-                      <input
-                        type="radio"
-                        id="pad-no"
-                        name="pad"
-                        value="no"
-                        className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                      />
-                      <Label
-                        htmlFor="pad-no"
-                        className="ml-2 text-sm font-medium"
-                      >
-                        No
-                      </Label>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center">
-                  <Label htmlFor="zip" className="mr-6 text-base font-medium">
-                    Zip:
-                  </Label>
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center">
-                      <input
-                        type="radio"
-                        id="zip-yes"
-                        name="zip"
-                        value="yes"
-                        className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                      />
-                      <Label
-                        htmlFor="zip-yes"
-                        className="ml-2 text-sm font-medium"
-                      >
-                        Yes
-                      </Label>
-                    </div>
-                    <div className="flex items-center">
-                      <input
-                        type="radio"
-                        id="zip-no"
-                        name="zip"
-                        value="no"
-                        className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                      />
-                      <Label
-                        htmlFor="zip-no"
-                        className="ml-2 text-sm font-medium"
-                      >
-                        No
-                      </Label>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center">
-                  <Label
-                    htmlFor="back-open"
-                    className="mr-6 text-base font-medium"
-                  >
-                    Back Open:
-                  </Label>
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center">
-                      <input
-                        type="radio"
-                        id="back-open-yes"
-                        name="back-open"
-                        value="yes"
-                        className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                      />
-                      <Label
-                        htmlFor="back-open-yes"
-                        className="ml-2 text-sm font-medium"
-                      >
-                        Yes
-                      </Label>
-                    </div>
-                    <div className="flex items-center">
-                      <input
-                        type="radio"
-                        id="back-open-no"
-                        name="back-open"
-                        value="no"
-                        className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                      />
-                      <Label
-                        htmlFor="back-open-no"
-                        className="ml-2 text-sm font-medium"
-                      >
-                        No
-                      </Label>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center">
-                  <Label
-                    htmlFor="front-open"
-                    className="mr-6 text-base font-medium"
-                  >
-                    Front Open:
-                  </Label>
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center">
-                      <input
-                        type="radio"
-                        id="front-open-yes"
-                        name="front-open"
-                        value="yes"
-                        className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                      />
-                      <Label
-                        htmlFor="front-open-yes"
-                        className="ml-2 text-sm font-medium"
-                      >
-                        Yes
-                      </Label>
-                    </div>
-                    <div className="flex items-center">
-                      <input
-                        type="radio"
-                        id="front-open-no"
-                        name="front-open"
-                        value="no"
-                        className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                      />
-                      <Label
-                        htmlFor="front-open-no"
-                        className="ml-2 text-sm font-medium"
-                      >
-                        No
-                      </Label>
-                    </div>
+                    <Label htmlFor="bottom-round-skirt" className="text-right">
+                      Bottom Round
+                    </Label>
+                    <Input id="bottom-round-skirt" className="col-span-3" />
                   </div>
                 </div>
               </div>
+
+              <div>
+                <div className="text-lg font-semibold mb-4">Options:</div>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b border-gray-300">
+                      <td className="py-4 px-6 text-base font-medium">PAD:</td>
+                      <td className="py-4 px-6">
+                        <div className="flex items-center space-x-4">
+                          <div className="flex items-center">
+                            <input
+                              type="radio"
+                              id="pad-yes"
+                              name="pad"
+                              value="yes"
+                              className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            />
+                            <Label
+                              htmlFor="pad-yes"
+                              className="ml-2 text-sm font-medium"
+                            >
+                              Yes
+                            </Label>
+                          </div>
+                          <div className="flex items-center">
+                            <input
+                              type="radio"
+                              id="pad-no"
+                              name="pad"
+                              value="no"
+                              className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            />
+                            <Label
+                              htmlFor="pad-no"
+                              className="ml-2 text-sm font-medium"
+                            >
+                              No
+                            </Label>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr className="border-b border-gray-300">
+                      <td className="py-4 px-6 text-base font-medium">Zip:</td>
+                      <td className="py-4 px-6">
+                        <div className="flex items-center space-x-4">
+                          <div className="flex items-center">
+                            <input
+                              type="radio"
+                              id="zip-yes"
+                              name="zip"
+                              value="yes"
+                              className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            />
+                            <Label
+                              htmlFor="zip-yes"
+                              className="ml-2 text-sm font-medium"
+                            >
+                              Yes
+                            </Label>
+                          </div>
+                          <div className="flex items-center">
+                            <input
+                              type="radio"
+                              id="zip-no"
+                              name="zip"
+                              value="no"
+                              className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            />
+                            <Label
+                              htmlFor="zip-no"
+                              className="ml-2 text-sm font-medium"
+                            >
+                              No
+                            </Label>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr className="border-b border-gray-300">
+                      <td className="py-4 px-6 text-base font-medium">
+                        Back Open:
+                      </td>
+                      <td className="py-4 px-6">
+                        <div className="flex items-center space-x-4">
+                          <div className="flex items-center">
+                            <input
+                              type="radio"
+                              id="back-open-yes"
+                              name="back-open"
+                              value="yes"
+                              className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            />
+                            <Label
+                              htmlFor="back-open-yes"
+                              className="ml-2 text-sm font-medium"
+                            >
+                              Yes
+                            </Label>
+                          </div>
+                          <div className="flex items-center">
+                            <input
+                              type="radio"
+                              id="back-open-no"
+                              name="back-open"
+                              value="no"
+                              className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            />
+                            <Label
+                              htmlFor="back-open-no"
+                              className="ml-2 text-sm font-medium"
+                            >
+                              No
+                            </Label>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td className="py-4 px-6 text-base font-medium">
+                        Front Open:
+                      </td>
+                      <td className="py-4 px-6">
+                        <div className="flex items-center space-x-4">
+                          <div className="flex items-center">
+                            <input
+                              type="radio"
+                              id="front-open-yes"
+                              name="front-open"
+                              value="yes"
+                              className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            />
+                            <Label
+                              htmlFor="front-open-yes"
+                              className="ml-2 text-sm font-medium"
+                            >
+                              Yes
+                            </Label>
+                          </div>
+                          <div className="flex items-center">
+                            <input
+                              type="radio"
+                              id="front-open-no"
+                              name="front-open"
+                              value="no"
+                              className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            />
+                            <Label
+                              htmlFor="front-open-no"
+                              className="ml-2 text-sm font-medium"
+                            >
+                              No
+                            </Label>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
-            {/* Additional Information Section */}
             <div className="border-t border-gray-300 my-6 pt-4">
               <div className="text-lg font-semibold mb-4">
                 Additional Information:
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <Label htmlFor="cutting" className="text-right">
-                  Cutting
-                </Label>
-                <Input id="cutting" className="col-span-1" />
+              <div className="grid gap-1 mt-16">
+                <div className="grid grid-cols-4 gap-8">
+                  <Label htmlFor="cutting" className="text-left">
+                    Cutting
+                  </Label>
+                  <Input id="cutting" className="col-span-1" />
 
-                <Label htmlFor="stitching" className="text-right">
-                  Stitching
-                </Label>
-                <Input id="stitching" className="col-span-1" />
+                  <Label htmlFor="stitching" className="text-left">
+                    Stitching
+                  </Label>
+                  <Input id="stitching" className="col-span-1" />
 
-                <Label htmlFor="hand-work" className="text-right">
-                  Hand Work
-                </Label>
-                <Input id="hand-work" className="col-span-1" />
+                  <Label htmlFor="hand-work" className="text-left">
+                    Hand Work
+                  </Label>
+                  <Input id="hand-work" className="col-span-1" />
 
-                <Label htmlFor="measurer" className="text-right">
-                  Measurer
-                </Label>
-                <Input id="measurer" className="col-span-1" />
+                  <Label htmlFor="measurer" className="text-left">
+                    Measurer
+                  </Label>
+                  <Input id="measurer" className="col-span-1" />
 
-                <Label htmlFor="checker" className="text-right">
-                  Checker
-                </Label>
-                <Input id="checker" className="col-span-1" />
+                  <Label htmlFor="checker" className="text-left">
+                    Checker
+                  </Label>
+                  <Input id="checker" className="col-span-1" />
 
-                <Label htmlFor="tailor" className="text-right">
-                  Tailor
-                </Label>
-                <Input id="tailor" className="col-span-1" />
+                  <Label htmlFor="tailor" className="text-left">
+                    Tailor
+                  </Label>
+                  <Input id="tailor" className="col-span-1" />
 
-                <Label htmlFor="date-in" className="text-right">
-                  Date In
-                </Label>
-                <Input id="date-in" type="date" className="col-span-1" />
+                  <Label htmlFor="date-in" className="text-left">
+                    Date In
+                  </Label>
+                  <Input id="date-in" type="date" className="col-span-1" />
 
-                <Label htmlFor="completed-date" className="text-right">
-                  Completed Date
-                </Label>
-                <Input id="completed-date" type="date" className="col-span-1" />
+                  <Label htmlFor="completed-date" className="text-left">
+                    Completed Date
+                  </Label>
+                  <Input
+                    id="completed-date"
+                    type="date"
+                    className="col-span-1"
+                  />
+                </div>
+              </div>
+
+              {/* Payment Information Section */}
+              <div className="border-t border-gray-300 my-6 pt-4">
+                <div className="text-lg font-semibold mb-4">
+                  Payment Information:
+                </div>
+                <div className="grid grid-cols-4 gap-8">
+                  <Label htmlFor="total-price" className="text-left">
+                    Total Price
+                  </Label>
+                  <Input
+                    id="total-price"
+                    type="text"
+                    className="col-span-1"
+                    placeholder="Enter total price"
+                  />
+
+                  <Label htmlFor="advanced-price" className="text-left">
+                    Advanced Price
+                  </Label>
+                  <Input
+                    id="advanced-price"
+                    type="text"
+                    className="col-span-1"
+                    placeholder="Enter advanced price"
+                  />
+
+                  <Label htmlFor="balance-price" className="text-left">
+                    Balance Price
+                  </Label>
+                  <Input
+                    id="balance-price"
+                    type="text"
+                    className="col-span-1"
+                    placeholder="Enter balance price"
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Note Section */}
             <div className="border-t border-gray-300 my-6 pt-4">
               <Label htmlFor="note" className="text-lg font-semibold mb-4">
                 Note
