@@ -18,8 +18,8 @@ function CategoryModal() {
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button>
-            <FiPlus />
+          <Button className="bg-[#308E87] hover:bg-[#308E87]">
+            <FiPlus className="text-white text-xl"/>
             Create New Category{" "}
           </Button>
         </DialogTrigger>

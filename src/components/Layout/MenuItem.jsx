@@ -29,7 +29,7 @@ function MenuItem({ icon: Icon, label, open, subItems }) {
           />
         )}
       </li>
-      <hr className={open ? "w-56" : "w-20"} />
+      <hr className={open ? "w-56 duration-500" : "w-20 "} />
       {isExpanded && subItems && (
         <ul className="pl-8">
           {subItems.map((subItem, index) => (
