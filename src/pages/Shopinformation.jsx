@@ -1,6 +1,7 @@
 import React from "react";
 import logo from "../assets/logo.jpg";
 import ShopInformationModal from "@/components/modal/ShopInformationModal";
+import ZoomParallax from "@/components/ui/ZoomParallax";
 
 function Shopinformation() {
   return (
@@ -120,6 +121,7 @@ function Shopinformation() {
                     </div>
                   </div>
                 </div>
+                <ZoomParallax/>
                 <footer className="relative bg-blueGray-200 pt-8 pb-6 mt-8">
                   <div className="container mx-auto px-4">
                     <div className="flex flex-wrap items-center md:justify-between justify-center">

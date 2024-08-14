@@ -7,11 +7,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../components/ui/table";
+} from "../components/ui/table";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-
-import CategoryModal from "@/components/modal/CategoryModal";
-
+import CustomerInformationModal from "@/components/modal/CustomerInformationModal";
 const invoices = [
   {
     invoice: "INV001",
@@ -56,13 +54,12 @@ const invoices = [
     paymentMethod: "Credit Card",
   },
 ];
-
-function Category() {
+function CustomerList() {
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-screen-xl mx-auto">
         <div className="flex flex-col gap-6 mt-8">
-          <h2 className="font-semibold text-xl text-black">Category List</h2>
+          <h2 className="font-semibold text-xl text-black">Customer List</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
             <div className="flex items-center justify-between mb-4">
               <div className="flex gap-2">
@@ -73,7 +70,7 @@ function Category() {
                   className="h-10 border rounded px-4 w-64 bg-gray-50"
                 />
               </div>
-              <CategoryModal />
+              <CustomerInformationModal/>
             </div>
 
             <Table className="w-full">
@@ -125,4 +122,4 @@ function Category() {
   );
 }
 
-export default Category;
+export default CustomerList;

@@ -10,7 +10,21 @@ import { BiCategory } from "react-icons/bi";
 import { TbCategory2 } from "react-icons/tb";
 
 function Items({ open }) {
-  const masterSubItems = [{ icon: AiOutlineSetting, label: "Shop Information",path:"/shopinformation" }];
+  const masterSubItems = [
+    {
+      icon: AiOutlineSetting,
+      label: "Shop Information",
+      path: "/shopinformation",
+    },
+  ];
+
+  const CustomerSubItems = [
+    {
+      icon: AiOutlineSetting,
+      label: "Customer List",
+      path: "/customerlist",
+    },
+  ];
 
   const productSubItems = [
     { icon: AiOutlineAppstore, label: "Add Product", path: "/addproduct" },
@@ -35,7 +49,12 @@ function Items({ open }) {
         open={open}
         subItems={productSubItems}
       />
-      <MenuItem icon={GrUserSettings} label="Customer" open={open} />
+      <MenuItem
+        icon={GrUserSettings}
+        label="Customer"
+        open={open}
+        subItems={CustomerSubItems}
+      />
     </ul>
   );
 }

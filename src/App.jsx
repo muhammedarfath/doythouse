@@ -7,6 +7,7 @@ import AddProduct from './pages/Product/AddProduct';
 import Category from './pages/Category/Category';
 import SubCategory from './pages/Category/SubCategory';
 import Shopinformation from './pages/Shopinformation';
+import CustomerList from './pages/CustomerList';
 function App() {
 
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/category" element={<Category/>} />
             <Route path="/subcategory" element={<SubCategory/>} />
             <Route path="/shopinformation" element={<Shopinformation/>} />
+            <Route path="/customerlist" element={<CustomerList/>} />
           </Route>
           <Route path="/login" element={<Login />} />
         </Routes>

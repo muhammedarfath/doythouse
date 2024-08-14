@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   @font-face {
     font-family: 'Nunito Sans';
@@ -22,16 +21,13 @@
     font-family: 'Nunito Sans', sans-serif;
     background-color: #F8F6F5;
   }
-
 }
 
 @keyframes bounce {
-
   0%,
   100% {
     transform: translateY(0);
   }
-
   50% {
     transform: translateY(-5px);
   }
