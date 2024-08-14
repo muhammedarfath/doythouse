@@ -43,12 +43,14 @@ function Items({ open }) {
         open={open}
         subItems={masterSubItems}
       />
-      <MenuItem
-        icon={LuInbox}
-        label="Product"
-        open={open}
-        subItems={productSubItems}
-      />
+      <Link to="/product">
+        <MenuItem
+          icon={LuInbox}
+          label="Product"
+          open={open}
+          subItems={productSubItems}
+        />
+      </Link>
       <MenuItem
         icon={GrUserSettings}
         label="Customer"

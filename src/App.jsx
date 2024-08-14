@@ -8,6 +8,7 @@ import Category from './pages/Category/Category';
 import SubCategory from './pages/Category/SubCategory';
 import Shopinformation from './pages/Shopinformation';
 import CustomerList from './pages/CustomerList';
+import ProductList from './pages/Product/ProductList';
 function App() {
 
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route element={<Sidebar />}>
             <Route path='/' element={<Dashboard />} />
             <Route path="/addproduct" element={<AddProduct/>} />
+            <Route path="/product" element={<ProductList/>} />
             <Route path="/category" element={<Category/>} />
             <Route path="/subcategory" element={<SubCategory/>} />
             <Route path="/shopinformation" element={<Shopinformation/>} />
