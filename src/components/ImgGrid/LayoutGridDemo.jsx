@@ -8,7 +8,7 @@ import product4 from "../../assets/Doyt House Feb 8.jpg";
 
 export function LayoutGridDemo() {
   return (
-    <div className="h-screen py-20 w-full">
+    <div className="h-screen py-10 w-full">
       <LayoutGrid cards={cards} />
     </div>
   );

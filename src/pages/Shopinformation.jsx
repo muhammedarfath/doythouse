@@ -122,7 +122,14 @@ function Shopinformation() {
                     </div>
                   </div>
                 </div>
-                <LayoutGridDemo />
+                <div >
+                  <div className="flex items-center justify-center mt-16">
+                    <h1 className="text-2xl font-bold underline">Gallery</h1>
+                  </div>
+                  <div>
+                    <LayoutGridDemo />
+                  </div>
+                </div>
                 <footer className="relative bg-blueGray-200 pt-8 pb-6 mt-8">
                   <div className="container mx-auto px-4">
                     <div className="flex flex-wrap items-center md:justify-between justify-center">

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaAngleDown } from "react-icons/fa6";
+import { FaAngleDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 function MenuItem({ icon: Icon, label, open, subItems }) {
@@ -14,7 +14,7 @@ function MenuItem({ icon: Icon, label, open, subItems }) {
   return (
     <>
       <li
-        className="text-black text-sm flex items-center justify-between cursor-pointer py-2 gap-2 px-4 rounded-xl hover:bg-[#D8E9E7] mt-1"
+        className={`text-black text-sm flex items-center justify-between cursor-pointer py-2 gap-2 px-4 rounded-xl hover:bg-[#D8E9E7] mt-1 ${open ? "w-full" : "w-20"} transition-all duration-300`}
         onClick={toggleExpand}
       >
         <div className="flex items-center gap-x-4">
@@ -29,16 +29,16 @@ function MenuItem({ icon: Icon, label, open, subItems }) {
           />
         )}
       </li>
-      <hr className={open ? "w-56 duration-500" : "w-20 "} />
-      {isExpanded && subItems && (
-        <ul className="pl-8">
+      {subItems && isExpanded && (
+        <ul className={`relative pl-8 transition-all duration-300 ${open ? "block" : "hidden"}`}>
+          <div className="absolute left-8 top-0 bottom-0 min-w-0.5 bg-[#308E87]"></div>
           {subItems.map((subItem, index) => (
             <li key={index}>
               <Link
                 to={subItem.path}
                 className="text-black text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-[#F4F6F8] rounded-sm mt-2"
               >
-                <subItem.icon className="text-2xl ml-2" />
+                <span className="w-1 h-1 bg-black rounded-full"></span>
                 <span className="origin-left duration-200">{subItem.label}</span>
               </Link>
             </li>

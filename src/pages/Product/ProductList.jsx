@@ -9,13 +9,14 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import { AiFillEdit, AiFillDelete } from "react-icons/ai";
+import { AiFillEdit } from "react-icons/ai";
 import ProductDetailsModal from "@/components/modal/ProductDetailsModal";
+import { MdOutlineDelete } from "react-icons/md";
 
 const products = [
   {
     id: 1,
-    image: "https://example.com/image1.jpg",
+    image: "https://5.imimg.com/data5/SELLER/Default/2023/12/370243758/WM/QC/JF/810231/party-wear-kurti.jpeg",
     name: "Aline Kurthi Printed",
     code: "CH003",
     hsn: "6109",
@@ -26,7 +27,7 @@ const products = [
   },
   {
     id: 2,
-    image: "https://example.com/image2.jpg",
+    image: "https://media.shopkund.com/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/p/r/prt9929-1viscose-straight-kurti-with-plain-in-sky-blue-kti1872_1_.jpg",
     name: "Cotton Palazzo Set",
     code: "PL001",
     hsn: "6204",
@@ -82,7 +83,7 @@ function ProductList() {
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="w-16 h-16 object-cover rounded"
+                        className="w-10 h-15 object-cover rounded"
                       />
                     </TableCell>
                     <TableCell>{product.name}</TableCell>
@@ -97,7 +98,7 @@ function ProductList() {
                           <AiFillEdit className="text-white text-xl" />
                         </Button>
                         <Button className="bg-[#f90303] hover:bg-[#ff1d52] transition-transform transform hover:scale-110">
-                          <AiFillDelete className="text-white text-xl" />
+                          <MdOutlineDelete className="text-white text-xl" />
                         </Button>
                       </div>
                     </TableCell>

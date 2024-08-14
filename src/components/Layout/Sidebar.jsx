@@ -10,18 +10,23 @@ function Sidebar() {
 
   return (
     <div className="flex h-screen">
+      {/* Sidebar */}
       <div
         className={`${
           open ? "w-60" : "w-20"
-        } duration-500 bg-white relative shadow z-50`} 
+        } duration-500 bg-white relative shadow z-50 flex flex-col`}
       >
+        {/* Toggle Button */}
         <div
-          className={`absolute cursor-pointer border-2 rounded-full p-1 right-5 bg-white ${
-            !open ? "top-4" : "top-6"
-          } text-2xl text-black ${!open && "rotate-180"}`}
+          className={`absolute cursor-pointer border-2 rounded-full p-1 right-4 bg-white transform ${
+            open ? "top-6 rotate-0" : "top-4 rotate-180"
+          } text-2xl text-black transition-transform duration-300`}
+          onClick={() => setOpen(!open)}
         >
-          <RiApps2Line onClick={() => setOpen(!open)} />
+          <RiApps2Line />
         </div>
+
+        {/* Logo and Title */}
         <div className="flex gap-x-2 p-5 items-center border-b-2 bg-[#308E87]">
           {open && (
             <img
@@ -38,17 +43,22 @@ function Sidebar() {
             DOYT HOUSE
           </h1>
         </div>
+
+        {/* Section Title */}
         <div className="flex justify-center">
           <span className="mt-3 text-sm text-gray-400">GENERAL</span>
         </div>
+
+        {/* Sidebar Items */}
         <div className="flex flex-col items-start">
           <Items open={open} />
         </div>
       </div>
 
+      {/* Main Content */}
       <div className="flex-1 flex flex-col">
         <Header open={open} />
-        <main className="flex-1 overflow-y-auto mt-16">
+        <main className="flex-1 overflow-y-auto p-4 mt-16 bg-gray-100">
           <Outlet />
         </main>
       </div>
