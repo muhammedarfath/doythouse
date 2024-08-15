@@ -21,6 +21,10 @@ function Items({ open }) {
       label: "Shop Information",
       path: "/shopinformation",
     },
+    {
+      label: "Expense List",
+      path: "/expenselist",
+    },
   ];
 
   const customerSubItems = [

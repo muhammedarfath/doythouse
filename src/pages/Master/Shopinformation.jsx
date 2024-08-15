@@ -1,7 +1,6 @@
 import React from "react";
-import logo from "../assets/logo.jpg";
+import logo from "../../assets/logo.jpg";
 import ShopInformationModal from "@/components/modal/ShopInformationModal";
-import ZoomParallax from "@/components/ui/ZoomParallax";
 import { LayoutGridDemo } from "@/components/ImgGrid/LayoutGridDemo";
 
 function Shopinformation() {

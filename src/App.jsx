@@ -6,9 +6,10 @@ import Login from './pages/authentication/Login';
 import AddProduct from './pages/Product/AddProduct';
 import Category from './pages/Category/Category';
 import SubCategory from './pages/Category/SubCategory';
-import Shopinformation from './pages/Shopinformation';
 import CustomerList from './pages/CustomerList';
 import ProductList from './pages/Product/ProductList';
+import Shopinformation from './pages/Master/Shopinformation';
+import ExpenseList from './pages/Master/ExpenseList';
 function App() {
 
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/subcategory" element={<SubCategory/>} />
             <Route path="/shopinformation" element={<Shopinformation/>} />
             <Route path="/customerlist" element={<CustomerList/>} />
+            <Route path="/expenselist" element={<ExpenseList/>} />
           </Route>
           <Route path="/login" element={<Login />} />
         </Routes>
