@@ -14,6 +14,7 @@ import ProductDetailsModal from "@/components/modal/ProductDetailsModal";
 import { MdOutlineDelete } from "react-icons/md";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { BiSolidTrashAlt } from "react-icons/bi";
 
 const products = [
   {
@@ -104,12 +105,8 @@ function ProductList() {
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
                         <ProductDetailsModal />
-                        <Button className="bg-[#308E87] hover:bg-[#308E87] transition-transform transform hover:scale-110">
-                          <AiFillEdit className="text-white text-xl" />
-                        </Button>
-                        <Button className="bg-[#f90303] hover:bg-[#ff1d52] transition-transform transform hover:scale-110">
-                          <MdOutlineDelete className="text-white text-xl" />
-                        </Button>
+                        <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110  cursor-pointer" />
+                        <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                       </div>
                     </TableCell>
                   </TableRow>

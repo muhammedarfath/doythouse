@@ -138,13 +138,12 @@ function CustomerInformationModal() {
             Create New Customer
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-[80%] overflow-auto max-h-[80%]">
+        <DialogContent className="max-w-[90%] overflow-auto max-h-[90%]">
           <DialogHeader>
             <DialogTitle>Customer Information</DialogTitle>
             <DialogDescription>Create New Information</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4">
-            {/* Main Fields */}
             <div className="grid grid-cols-4 gap-4">
               <Label htmlFor="customer-name" className="text-right">
                 Customer Name
@@ -201,7 +200,6 @@ function CustomerInformationModal() {
               <Input id="customer-id" className="col-span-3" />
             </div>
 
-            {/* Measurements Section */}
             <div className="border-t border-gray-300 my-6 pt-4 flex">
               <div className="w-5/6">
                 <div className="text-lg font-semibold mb-4">Measurements:</div>
@@ -604,7 +602,7 @@ function CustomerInformationModal() {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit">Save Changes</Button>
+            <Button type="submit" className="bg-[#308E87] hover:bg-[#308E87]">Save Changes</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
