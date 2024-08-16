@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "../components/ui/button";
+import { Badge } from "../components/ui/badge"
+
 import {
   Table,
   TableBody,
@@ -11,7 +13,7 @@ import {
 } from "../components/ui/table";
 import { AiFillEdit } from "react-icons/ai";
 import ProductDetailsModal from "@/components/modal/ProductDetailsModal";
-import { MdOutlineDelete } from "react-icons/md";
+import { BiSolidTrashAlt } from "react-icons/bi";
 import CustomerInformationModal from "@/components/modal/CustomerInformationModal";
 import { CiFilter } from "react-icons/ci";
 
@@ -161,25 +163,13 @@ function CustomerList() {
                     <TableCell>{order.totalPrice}</TableCell>
                     <TableCell>{order.balancedPrice}</TableCell>
                     <TableCell>
-                      <span
-                        className={`px-2 py-1 rounded text-white ${
-                          order.status === "Pending"
-                            ? "bg-yellow-500"
-                            : "bg-green-500"
-                        }`}
-                      >
-                        {order.status}
-                      </span>
+                    {order.status === "Pending" ? (<Badge variant="secondary"  className="bg-yellow-400">{order.status}</Badge>):(<Badge variant="secondary" className="bg-green-400">{order.status}</Badge>)}
                     </TableCell>
                     <TableCell className="text-center">
-                      <div className="flex justify-center gap-4">
+                      <div className="flex justify-center gap-3">
                         <ProductDetailsModal />
-                        <Button className="bg-[#308E87] hover:bg-[#308E87] transition-transform transform hover:scale-110">
-                          <AiFillEdit className="text-white text-xl" />
-                        </Button>
-                        <Button className="bg-[#f90303] hover:bg-[#ff1d52] transition-transform transform hover:scale-110">
-                          <MdOutlineDelete className="text-white text-xl" />
-                        </Button>
+                          <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110  cursor-pointer" />
+                          <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                       </div>
                     </TableCell>
                   </TableRow>

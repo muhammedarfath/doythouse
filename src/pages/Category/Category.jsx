@@ -11,6 +11,7 @@ import {
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 
 import CategoryModal from "@/components/modal/CategoryModal";
+import { BiSolidTrashAlt } from "react-icons/bi";
 
 const invoices = [
   {
@@ -106,12 +107,9 @@ function Category() {
                     </TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <button className="text-blue-500 hover:text-blue-700">
-                          <AiFillEdit />
-                        </button>
-                        <button className="text-red-500 hover:text-red-700">
-                          <AiFillDelete />
-                        </button>
+                        <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110  cursor-pointer" />
+
+                        <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                       </div>
                     </TableCell>
                   </TableRow>

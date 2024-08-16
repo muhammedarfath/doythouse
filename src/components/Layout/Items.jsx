@@ -11,6 +11,7 @@ import { BiHomeSmile } from "react-icons/bi";
 import { RiShoppingBag4Line } from "react-icons/ri";
 import { TiUserOutline } from "react-icons/ti";
 import { TbTruck } from "react-icons/tb";
+import { TbReportAnalytics } from "react-icons/tb";
 
 function Items({ open }) {
   const masterSubItems = [
@@ -39,6 +40,18 @@ function Items({ open }) {
     { label: "Add Product", path: "/addproduct" },
     { label: "Category", path: "/category" },
     { label: "SubCategory", path: "/subcategory" },
+  ];
+
+
+  const ReportSubItems = [
+    {
+      label: "Stock Report",
+      path: "/stockreport",
+    },
+    {
+      label: "Tax Report",
+      path: "/taxreport",
+    },
   ];
 
   return (
@@ -70,6 +83,14 @@ function Items({ open }) {
       />
       <Link to="/supplier">
         <MenuItem icon={TbTruck} label="Supplier" open={open} />
+      </Link>
+      <Link to="/salesreport">
+        <MenuItem
+          icon={TbReportAnalytics}
+          label="Sales Report"
+          open={open}
+          subItems={ReportSubItems}
+        />
       </Link>
     </ul>
   );

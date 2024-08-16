@@ -11,30 +11,34 @@ import {
 } from "../../components/ui/table";
 import { AiFillEdit } from "react-icons/ai";
 import { MdOutlineDelete } from "react-icons/md";
-import ExpenseModal from "@/components/modal/ExpenseModal";
 import { CiFilter } from "react-icons/ci";
-import { BiSolidTrashAlt } from "react-icons/bi";
 
-const expenses = [
+const salesData = [
   {
     id: 1,
     date: "2024-08-01",
-    type: "Travel",
-    amount: "₹2000",
-    employee: "John Doe",
-    notes: "Business trip to Delhi",
+    invoiceNumber: "INV001",
+    customer: "John Doe",
+    gstAmount: "₹180",
+    discount: "₹200",
+    netTotal: "₹2000",
+    credit: "₹0",
+    profit: "₹500",
   },
   {
     id: 2,
     date: "2024-08-10",
-    type: "Office Supplies",
-    amount: "₹500",
-    employee: "Jane Smith",
-    notes: "Purchased stationery items",
+    invoiceNumber: "INV002",
+    customer: "Jane Smith",
+    gstAmount: "₹90",
+    discount: "₹50",
+    netTotal: "₹1500",
+    credit: "₹200",
+    profit: "₹300",
   },
 ];
 
-function ExpenseList() {
+function SalesReport() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
 
   const toggleFilter = () => {
@@ -45,7 +49,7 @@ function ExpenseList() {
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-screen-xl mx-auto">
         <div className="flex flex-col gap-6 mt-8">
-          <h2 className="font-semibold text-xl text-black">Expense List</h2>
+          <h2 className="font-semibold text-xl text-black">Sales Report</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
             <div className="flex items-center justify-between mb-4">
               <div className="flex gap-2">
@@ -63,8 +67,9 @@ function ExpenseList() {
                 >
                   <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
                 </div>
-
-                <ExpenseModal />
+                <Button className="bg-[#308E87] hover:bg-[#308E87]">
+                  Download XLS
+                </Button>
               </div>
             </div>
 
@@ -91,26 +96,11 @@ function ExpenseList() {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <label htmlFor="sort-by-type" className="text-sm font-medium">
-                    Sort by Expense Type
-                  </label>
-                  <select
-                    id="sort-by-type"
-                    className="h-10 border rounded px-4 bg-gray-50"
-                  >
-                    <option value="">Select Type</option>
-                    <option value="Travel">Travel</option>
-                    <option value="Office Supplies">Office Supplies</option>
-                    <option value="Meals">Meals</option>
-                    <option value="Accommodation">Accommodation</option>
-                  </select>
-                </div>
-                <div className="flex flex-col">
                   <label
                     htmlFor="sort-by-employee"
                     className="text-sm font-medium"
                   >
-                    Sort by Employee Name
+                    Sort by Employee
                   </label>
                   <select
                     id="sort-by-employee"
@@ -125,41 +115,37 @@ function ExpenseList() {
             )}
 
             <Table className="w-full">
-              <TableCaption>A list of your expenses.</TableCaption>
+              <TableCaption>A list of your sales reports.</TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[50px]">Select</TableHead>
                   <TableHead className="w-[50px]">SINO</TableHead>
                   <TableHead>Date</TableHead>
-                  <TableHead>Expense Type</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
-                  <TableHead>Employee</TableHead>
-                  <TableHead>Notes</TableHead>
-                  <TableHead className="text-center w-[150px]">
-                    Actions
-                  </TableHead>
+                  <TableHead>Invoice Number</TableHead>
+                  <TableHead>Customer</TableHead>
+                  <TableHead className="text-right">GST Amount</TableHead>
+                  <TableHead className="text-right">Discount</TableHead>
+                  <TableHead className="text-right">Net Total</TableHead>
+                  <TableHead className="text-right">Credit</TableHead>
+                  <TableHead className="text-right">Profit</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {expenses.map((expense, index) => (
-                  <TableRow key={expense.id}>
+                {salesData.map((sale, index) => (
+                  <TableRow key={sale.id}>
                     <TableCell>
                       <input type="checkbox" />
                     </TableCell>
                     <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>{expense.date}</TableCell>
-                    <TableCell>{expense.type}</TableCell>
-                    <TableCell className="text-right">
-                      {expense.amount}
-                    </TableCell>
-                    <TableCell>{expense.employee}</TableCell>
-                    <TableCell>{expense.notes}</TableCell>
-                    <TableCell className="text-center">
-                      <div className="flex justify-center gap-4">
-                        <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110  cursor-pointer" />
-                        <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
-                      </div>
-                    </TableCell>
+                    <TableCell>{sale.date}</TableCell>
+                    <TableCell>{sale.invoiceNumber}</TableCell>
+                    <TableCell>{sale.customer}</TableCell>
+                    <TableCell className="text-right">{sale.gstAmount}</TableCell>
+                    <TableCell className="text-right">{sale.discount}</TableCell>
+                    <TableCell className="text-right">{sale.netTotal}</TableCell>
+                    <TableCell className="text-right">{sale.credit}</TableCell>
+                    <TableCell className="text-right">{sale.profit}</TableCell>
+                    
                   </TableRow>
                 ))}
               </TableBody>
@@ -171,4 +157,4 @@ function ExpenseList() {
   );
 }
 
-export default ExpenseList;
+export default SalesReport;

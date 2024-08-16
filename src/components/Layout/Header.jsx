@@ -33,7 +33,7 @@ function Header({ open }) {
             <input
               type="text"
               id="simple-search"
-              className="bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-black focus:border-black block w-full pl-10 pr-3 py-4"
+              className="bg-[#F9F7F6] border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-black focus:border-black block w-full pl-10 pr-3 py-4"
               placeholder="Search branch name..."
               required
             />

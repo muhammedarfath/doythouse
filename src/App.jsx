@@ -12,6 +12,9 @@ import Shopinformation from './pages/Master/Shopinformation';
 import ExpenseList from './pages/Master/ExpenseList';
 import SupplierList from './pages/supplier/SupplierList';
 import EmployeeList from './pages/Master/EmployeeList';
+import SalesReport from './pages/Report/SalesReport';
+import StockReport from './pages/Report/StockReport';
+import TaxReport from './pages/Report/TaxReport';
 function App() {
 
   return (
@@ -29,6 +32,9 @@ function App() {
             <Route path="/customerlist" element={<CustomerList/>} />
             <Route path="/expenselist" element={<ExpenseList/>} />
             <Route path="/supplier" element={<SupplierList/>} />
+            <Route path="/salesreport" element={<SalesReport/>} />
+            <Route path="/stockreport" element={<StockReport/>} />
+            <Route path="/taxreport" element={<TaxReport/>} />
           </Route>
           <Route path="/login" element={<Login />} />
         </Routes>

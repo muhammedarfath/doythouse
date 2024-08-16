@@ -36,12 +36,12 @@
   }
 
   body {
-    @apply bg-[#f5e4db] text-black;
+    @apply bg-[#F9F7F6] text-black;
     font-family: 'Nunito Sans', sans-serif; 
   }
 
   .dark body {
-    @apply bg-[#1E1E1E] text-white; 
+    @apply bg-[#1a202c] text-white; 
   }
 }
 

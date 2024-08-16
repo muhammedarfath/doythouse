@@ -52,7 +52,7 @@ function Sidebar() {
 
       <div className="flex-1 flex flex-col">
         <Header open={open} />
-        <main className="flex-1 overflow-y-auto p-4 mt-16 bg-gray-100">
+        <main className="flex-1 overflow-y-auto p-4 mt-16">
           <Outlet />
         </main>
       </div>
