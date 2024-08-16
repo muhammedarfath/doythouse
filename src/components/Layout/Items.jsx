@@ -12,8 +12,9 @@ import { RiShoppingBag4Line } from "react-icons/ri";
 import { TiUserOutline } from "react-icons/ti";
 import { TbTruck } from "react-icons/tb";
 import { TbReportAnalytics } from "react-icons/tb";
+import { GiThermometerScale } from "react-icons/gi";
 
-function Items({ open }) {
+function  Items({ open }) {
   const masterSubItems = [
     {
       label: "Shop Information",
@@ -41,7 +42,6 @@ function Items({ open }) {
     { label: "Category", path: "/category" },
     { label: "SubCategory", path: "/subcategory" },
   ];
-
 
   const ReportSubItems = [
     {
@@ -74,6 +74,9 @@ function Items({ open }) {
           open={open}
           subItems={productSubItems}
         />
+      </Link>
+      <Link to="/units">
+        <MenuItem icon={GiThermometerScale} label="Units" open={open} />
       </Link>
       <MenuItem
         icon={TiUserOutline}

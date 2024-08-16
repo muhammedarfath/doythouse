@@ -16,9 +16,9 @@ function Sidebar() {
         } duration-500 bg-white relative shadow z-50 flex flex-col`}
       >
         <div
-          className={`absolute cursor-pointer border-2 rounded-full p-1 right-6 bg-white transform ${
+          className={`absolute cursor-pointer border-2 rounded-full p-1 right-6 bg-[#D8E9E7] transform ${
             open ? "top-6 rotate-0" : "top-5 rotate-180"
-          } text-2xl text-black transition-transform duration-300`}
+          } text-2xl text-[#308e87] transition-transform duration-300`}
           onClick={() => setOpen(!open)}
         >
           <RiApps2Line />

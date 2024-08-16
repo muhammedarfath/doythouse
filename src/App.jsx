@@ -15,6 +15,7 @@ import EmployeeList from './pages/Master/EmployeeList';
 import SalesReport from './pages/Report/SalesReport';
 import StockReport from './pages/Report/StockReport';
 import TaxReport from './pages/Report/TaxReport';
+import Units from './pages/Units/Units';
 function App() {
 
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="/salesreport" element={<SalesReport/>} />
             <Route path="/stockreport" element={<StockReport/>} />
             <Route path="/taxreport" element={<TaxReport/>} />
+            <Route path="/units" element={<Units/>} />
           </Route>
           <Route path="/login" element={<Login />} />
         </Routes>
