@@ -58,7 +58,7 @@ function AddProduct() {
                   <small className="ml-12">Add product name & details</small>
                 </div>
 
-                <div className="border-l border-dotted border-gray-400 h-20"></div>
+                <div className="border-l-2 border-dotted border-gray-400 h-20"></div>
 
                 <div
                   className="flex flex-col pr-2 cursor-pointer rounded-lg"
@@ -85,7 +85,7 @@ function AddProduct() {
                   </small>
                 </div>
 
-                <div className="border-l border-dotted border-gray-400 h-20"></div>
+                <div className="border-l-2 border-dotted border-gray-400 h-20"></div>
 
                 <div
                   className="flex flex-col pr-2 cursor-pointer rounded-lg"
@@ -110,7 +110,7 @@ function AddProduct() {
                   <small className="ml-12">Add product category</small>
                 </div>
 
-                <div className="border-l border-dotted border-gray-400 h-20"></div>
+                <div className="border-l-2 border-dotted border-gray-400 h-20"></div>
 
                 <div
                   className="flex flex-col pr-2 cursor-pointer rounded-lg"

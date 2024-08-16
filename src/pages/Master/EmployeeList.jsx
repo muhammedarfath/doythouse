@@ -10,43 +10,37 @@ import {
   TableRow,
 } from "../../components/ui/table";
 import { AiFillEdit } from "react-icons/ai";
-import ProductDetailsModal from "@/components/modal/ProductDetailsModal";
 import { MdOutlineDelete } from "react-icons/md";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import EmployeeModal from "@/components/modal/EmployeeModal";
 
-const products = [
+// Sample data for employees
+const employees = [
   {
     id: 1,
-    image:
-      "https://5.imimg.com/data5/SELLER/Default/2023/12/370243758/WM/QC/JF/810231/party-wear-kurti.jpeg",
-    name: "Aline Kurthi Printed",
-    code: "CH003",
-    hsn: "6109",
-    cgst: "9%",
-    sgst: "9%",
-    description:
-      "A beautifully printed Aline Kurthi made from high-quality fabric.",
+    name: "John Doe",
+    department: "HR",
+    mobile: "123-456-7890",
+    address: "123 Main St, Cityville",
+    username: "johndoe",
   },
   {
     id: 2,
-    image:
-      "https://media.shopkund.com/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/p/r/prt9929-1viscose-straight-kurti-with-plain-in-sky-blue-kti1872_1_.jpg",
-    name: "Cotton Palazzo Set",
-    code: "PL001",
-    hsn: "6204",
-    cgst: "5%",
-    sgst: "5%",
-    description: "Comfortable cotton Palazzo set perfect for casual wear.",
+    name: "Jane Smith",
+    department: "Marketing",
+    mobile: "098-765-4321",
+    address: "456 Elm St, Townsville",
+    username: "janesmith",
   },
 ];
 
-function ProductList() {
+function EmployeeList() {
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-screen-xl mx-auto">
         <div className="flex flex-col gap-6 mt-8">
-          <h2 className="font-semibold text-xl text-black">Product List</h2>
+          <h2 className="font-semibold text-xl text-black">Employee List</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
             <div className="flex items-center justify-between mb-4">
               <div className="flex gap-2">
@@ -57,53 +51,39 @@ function ProductList() {
                   className="h-10 border rounded px-4 w-64 bg-gray-50"
                 />
               </div>
-              <Link to="/addproduct">
-                <Button className="bg-[#308E87] hover:bg-[#308E87]">
-                  <FiPlus className="text-white text-xl" />
-                  Add New Product
-                </Button>
-              </Link>
+              <EmployeeModal />
             </div>
 
             <Table className="w-full">
-              <TableCaption>A list of your products.</TableCaption>
+              <TableCaption>A list of your employees.</TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[50px]">Select</TableHead>
                   <TableHead className="w-[50px]">SINO</TableHead>
-                  <TableHead>Image</TableHead>
-                  <TableHead>Product Details</TableHead>
-                  <TableHead className="text-right">Product Code</TableHead>
-                  <TableHead className="w-[50px]">HSN</TableHead>
-                  <TableHead className="w-[50px]">CGST</TableHead>
-                  <TableHead className="w-[50px]">SGST</TableHead>
+                  <TableHead>Employee Name</TableHead>
+                  <TableHead>Department</TableHead>
+                  <TableHead>Mobile No</TableHead>
+                  <TableHead>Address</TableHead>
+                  <TableHead>Username</TableHead>
                   <TableHead className="text-center w-[150px]">
                     Actions
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {products.map((product, index) => (
-                  <TableRow key={product.id}>
+                {employees.map((employee, index) => (
+                  <TableRow key={employee.id}>
                     <TableCell>
                       <input type="checkbox" />
                     </TableCell>
                     <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-10 h-15 object-cover rounded"
-                      />
-                    </TableCell>
-                    <TableCell>{product.name}</TableCell>
-                    <TableCell className="text-right">{product.code}</TableCell>
-                    <TableCell>{product.hsn}</TableCell>
-                    <TableCell>{product.cgst}</TableCell>
-                    <TableCell>{product.sgst}</TableCell>
+                    <TableCell>{employee.name}</TableCell>
+                    <TableCell>{employee.department}</TableCell>
+                    <TableCell>{employee.mobile}</TableCell>
+                    <TableCell>{employee.address}</TableCell>
+                    <TableCell>{employee.username}</TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <ProductDetailsModal />
                         <Button className="bg-[#308E87] hover:bg-[#308E87] transition-transform transform hover:scale-110">
                           <AiFillEdit className="text-white text-xl" />
                         </Button>
@@ -123,4 +103,4 @@ function ProductList() {
   );
 }
 
-export default ProductList;
+export default EmployeeList;

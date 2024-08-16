@@ -5,15 +5,12 @@ import {
   AiOutlineSetting,
 } from "react-icons/ai";
 import { LuBadgeCheck } from "react-icons/lu";
-import { LuInbox } from "react-icons/lu";
-import { GrUserSettings } from "react-icons/gr";
-import { BiCategory } from "react-icons/bi";
-import { TbCategory2 } from "react-icons/tb";
 import MenuItem from "./MenuItem";
 import { Link } from "react-router-dom";
 import { BiHomeSmile } from "react-icons/bi";
 import { RiShoppingBag4Line } from "react-icons/ri";
 import { TiUserOutline } from "react-icons/ti";
+import { TbTruck } from "react-icons/tb";
 
 function Items({ open }) {
   const masterSubItems = [
@@ -24,6 +21,10 @@ function Items({ open }) {
     {
       label: "Expense List",
       path: "/expenselist",
+    },
+    {
+      label: "Employee List",
+      path: "/employelist",
     },
   ];
 
@@ -67,6 +68,9 @@ function Items({ open }) {
         open={open}
         subItems={customerSubItems}
       />
+      <Link to="/supplier">
+        <MenuItem icon={TbTruck} label="Supplier" open={open} />
+      </Link>
     </ul>
   );
 }

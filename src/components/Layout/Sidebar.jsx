@@ -16,8 +16,8 @@ function Sidebar() {
         } duration-500 bg-white relative shadow z-50 flex flex-col`}
       >
         <div
-          className={`absolute cursor-pointer border-2 rounded-full p-1 right-4 bg-white transform ${
-            open ? "top-6 rotate-0" : "top-4 rotate-180"
+          className={`absolute cursor-pointer border-2 rounded-full p-1 right-6 bg-white transform ${
+            open ? "top-6 rotate-0" : "top-5 rotate-180"
           } text-2xl text-black transition-transform duration-300`}
           onClick={() => setOpen(!open)}
         >

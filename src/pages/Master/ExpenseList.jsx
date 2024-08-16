@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../../components/ui/button";
 import {
   Table,
@@ -12,6 +12,7 @@ import {
 import { AiFillEdit } from "react-icons/ai";
 import { MdOutlineDelete } from "react-icons/md";
 import ExpenseModal from "@/components/modal/ExpenseModal";
+import { CiFilter } from "react-icons/ci";
 
 const expenses = [
   {
@@ -33,6 +34,12 @@ const expenses = [
 ];
 
 function ExpenseList() {
+  const [isFilterVisible, setIsFilterVisible] = useState(false);
+
+  const toggleFilter = () => {
+    setIsFilterVisible(!isFilterVisible);
+  };
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-screen-xl mx-auto">
@@ -48,8 +55,70 @@ function ExpenseList() {
                   className="h-10 border rounded px-4 w-64 bg-gray-50"
                 />
               </div>
-              <ExpenseModal />
+              <div className="flex items-center gap-5">
+                <div className="border rounded-md p-2 bg-[#D8E9E7] text-[#308E87] "onClick={toggleFilter} >
+                  <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
+                </div>
+
+                <ExpenseModal />
+              </div>
             </div>
+
+            {isFilterVisible && (
+              <div className="flex flex-wrap gap-4 mb-4">
+                <div className="flex flex-col">
+                  <label htmlFor="from-date" className="text-sm font-medium">
+                    From Date
+                  </label>
+                  <input
+                    type="date"
+                    id="from-date"
+                    className="h-10 border rounded px-4 bg-gray-50"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="to-date" className="text-sm font-medium">
+                    To Date
+                  </label>
+                  <input
+                    type="date"
+                    id="to-date"
+                    className="h-10 border rounded px-4 bg-gray-50"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="sort-by-type" className="text-sm font-medium">
+                    Sort by Expense Type
+                  </label>
+                  <select
+                    id="sort-by-type"
+                    className="h-10 border rounded px-4 bg-gray-50"
+                  >
+                    <option value="">Select Type</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Office Supplies">Office Supplies</option>
+                    <option value="Meals">Meals</option>
+                    <option value="Accommodation">Accommodation</option>
+                  </select>
+                </div>
+                <div className="flex flex-col">
+                  <label
+                    htmlFor="sort-by-employee"
+                    className="text-sm font-medium"
+                  >
+                    Sort by Employee Name
+                  </label>
+                  <select
+                    id="sort-by-employee"
+                    className="h-10 border rounded px-4 bg-gray-50"
+                  >
+                    <option value="">Select Employee</option>
+                    <option value="John Doe">John Doe</option>
+                    <option value="Jane Smith">Jane Smith</option>
+                  </select>
+                </div>
+              </div>
+            )}
 
             <Table className="w-full">
               <TableCaption>A list of your expenses.</TableCaption>
@@ -76,7 +145,9 @@ function ExpenseList() {
                     <TableCell className="font-medium">{index + 1}</TableCell>
                     <TableCell>{expense.date}</TableCell>
                     <TableCell>{expense.type}</TableCell>
-                    <TableCell className="text-right">{expense.amount}</TableCell>
+                    <TableCell className="text-right">
+                      {expense.amount}
+                    </TableCell>
                     <TableCell>{expense.employee}</TableCell>
                     <TableCell>{expense.notes}</TableCell>
                     <TableCell className="text-center">

@@ -13,7 +13,7 @@ function ProductPrices() {
             <select
               name="Category"
               id="Category"
-              className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+              className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             >
               <option value="">Choose Category</option>
               <option value="category1">Category 1</option>
@@ -27,7 +27,7 @@ function ProductPrices() {
                 type="text"
                 name="code"
                 id="code"
-                className="transition-all flex w-28 items-center h-10 border mt-1 rounded px-4 bg-gray-50"
+                className="transition-all flex w-28 items-center h-10 border mt-1 rounded px-4 bg-[#fff]"
                 placeholder="Code"
               />
             </div>
@@ -39,7 +39,7 @@ function ProductPrices() {
             <select
               name="SubCategory"
               id="SubCategory"
-              className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+              className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             >
               <option value="">Choose SubCategory</option>
               <option value="subcategory1">SubCategory 1</option>

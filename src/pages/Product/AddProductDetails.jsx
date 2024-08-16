@@ -11,7 +11,7 @@ function AddProductDetails() {
             type="text"
             name="product_name"
             id="product_name"
-            className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Product Name"
           />
         </div>
@@ -22,7 +22,7 @@ function AddProductDetails() {
             type="text"
             name="Discription"
             id="Discription"
-            className="border rounded p-4 w-full bg-gray-50"
+            className="border rounded p-4 w-full bg-[#fff]"
             placeholder="Discription"
           />
         </div>
@@ -33,14 +33,14 @@ function AddProductDetails() {
             type="text"
             name="zipcode"
             id="zipcode"
-            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Code"
           />
         </div>
 
         <div className="md:col-span-2">
           <label for="unit">Product Unit</label>
-          <div className="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+          <div className="h-10 bg-[#fff] flex border border-gray-200 rounded items-center mt-1">
             <input
               name="unit"
               id="unit"
@@ -52,7 +52,7 @@ function AddProductDetails() {
 
         <div className="md:col-span-2">
           <label for="Re-Level">Reorder Level</label>
-          <div className="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+          <div className="h-10 bg-[#fff] flex border border-gray-200 rounded items-center mt-1">
             <input
               name="state"
               id="Level"
@@ -64,7 +64,7 @@ function AddProductDetails() {
 
         <div className="md:col-span-2">
           <label for="unit">HSN ACS Code</label>
-          <div className="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+          <div className="h-10 bg-[#fff] flex border border-gray-200 rounded items-center mt-1">
             <input
               name="unit"
               id="unit"
@@ -80,7 +80,7 @@ function AddProductDetails() {
             type="text"
             name="CGST"
             id="CGST"
-            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="CGST"
           />
         </div>
@@ -91,14 +91,14 @@ function AddProductDetails() {
             type="text"
             name="SGST"
             id="SGST"
-            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="SGST"
           />
         </div>
 
         <div className="md:col-span-2">
           <label for="unit">Sales Unit</label>
-          <div className="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+          <div className="h-10 bg-[#fff] flex border border-gray-200 rounded items-center mt-1">
             <input
               name="unit"
               id="unit"
@@ -114,7 +114,7 @@ function AddProductDetails() {
             type="text"
             name="Size"
             id="Size"
-            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Size"
           />
         </div>

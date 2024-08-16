@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
     --chart-1: 12 76% 61%;
@@ -21,7 +20,6 @@
   }
 }
 
-
 @layer base {
   @font-face {
     font-family: 'Nunito Sans';
@@ -36,22 +34,19 @@
       url('/assets/fonts/NunitoSans-Bold.woff') format('woff');
     font-style: normal;
   }
-  
+
   body {
-    @apply bg-[#F8F6F5] text-black;
+    @apply bg-[#f5e4db] text-black;
     font-family: 'Nunito Sans', sans-serif; 
   }
-  
+
   .dark body {
     @apply bg-[#1E1E1E] text-white; 
   }
-  
-
 }
 
 @keyframes bounce {
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0);
   }
   50% {
@@ -61,4 +56,14 @@
 
 .animate-bounce-on-hover:hover {
   animation: bounce 0.5s ease-in-out;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  50% { transform: translateX(2px); }
+  75% { transform: translateX(-2px); }
+}
+
+.hover\:animate-shake:hover {
+  animation: shake 0.3s ease-in-out;
 }

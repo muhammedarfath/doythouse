@@ -15,17 +15,24 @@ import { FiPlus } from "react-icons/fi";
 
 function ExpenseModal() {
   const [expenseTypes, setExpenseTypes] = useState([
-    "Travel",
-    "Office Supplies",
-    "Entertainment",
+    { type: "Travel", subTypes: ["Local", "International"] },
+    { type: "Office Supplies", subTypes: [] },
+    { type: "Entertainment", subTypes: ["Movies", "Events"] },
   ]);
   const [newExpenseType, setNewExpenseType] = useState("");
+  const [newSubExpenseType, setNewSubExpenseType] = useState("");
+  const [selectedExpenseType, setSelectedExpenseType] = useState("");
   const [showNewTypeInput, setShowNewTypeInput] = useState(false);
 
   const handleAddNewExpenseType = () => {
     if (newExpenseType) {
-      setExpenseTypes([...expenseTypes, newExpenseType]);
+      const newExpense = {
+        type: newExpenseType,
+        subTypes: newSubExpenseType ? [newSubExpenseType] : [],
+      };
+      setExpenseTypes([...expenseTypes, newExpense]);
       setNewExpenseType("");
+      setNewSubExpenseType("");
       setShowNewTypeInput(false);
     }
   };
@@ -37,6 +44,14 @@ function ExpenseModal() {
   const handleHideNewTypeInput = () => {
     setShowNewTypeInput(false);
   };
+
+  const handleExpenseTypeChange = (e) => {
+    setSelectedExpenseType(e.target.value);
+  };
+
+  const selectedExpense = expenseTypes.find(
+    (type) => type.type === selectedExpenseType
+  );
 
   return (
     <div>
@@ -52,7 +67,7 @@ function ExpenseModal() {
             <DialogTitle>{showNewTypeInput ? "Add New Expense Type" : "Add Expense"}</DialogTitle>
             <DialogDescription>
               {showNewTypeInput
-                ? "Enter the new expense type you want to add."
+                ? "Enter the new expense type and sub expense type you want to add."
                 : "Fill out the details of the expense"}
             </DialogDescription>
           </DialogHeader>
@@ -63,18 +78,36 @@ function ExpenseModal() {
                 <Label htmlFor="new-type" className="text-right">
                   New Expense Type
                 </Label>
-                <div className="col-span-3 flex gap-2">
-                  <Input
-                    id="new-type"
-                    value={newExpenseType}
-                    onChange={(e) => setNewExpenseType(e.target.value)}
-                    placeholder="Enter new expense type"
-                  />
-                  <Button onClick={handleAddNewExpenseType}>Add</Button>
-                  <Button variant="secondary" onClick={handleHideNewTypeInput}>
-                    Cancel
-                  </Button>
-                </div>
+                <Input
+                  id="new-type"
+                  value={newExpenseType}
+                  onChange={(e) => setNewExpenseType(e.target.value)}
+                  placeholder="Enter new expense type"
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="new-subtype" className="text-right">
+                  Sub Expense Type
+                </Label>
+                <Input
+                  id="new-subtype"
+                  value={newSubExpenseType}
+                  onChange={(e) => setNewSubExpenseType(e.target.value)}
+                  placeholder="Enter new sub expense type"
+                  className="col-span-3"
+                />
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  className="bg-[#308E87] text-white hover:bg-[#308E87]"
+                  onClick={handleAddNewExpenseType}
+                >
+                  Add
+                </Button>
+                <Button variant="secondary" onClick={handleHideNewTypeInput}>
+                  Cancel
+                </Button>
               </div>
             </div>
           ) : (
@@ -89,17 +122,37 @@ function ExpenseModal() {
                 <Label htmlFor="type" className="text-right">
                   Expense Type
                 </Label>
-                <select id="type" className="col-span-3 p-2 border rounded">
+                <select
+                  id="type"
+                  className="col-span-3 p-2 border rounded"
+                  value={selectedExpenseType}
+                  onChange={handleExpenseTypeChange}
+                >
                   <option value="">Select expense type</option>
                   {expenseTypes.map((type, index) => (
-                    <option key={index} value={type}>
-                      {type}
+                    <option key={index} value={type.type}>
+                      {type.type}
                     </option>
                   ))}
                 </select>
               </div>
+              {selectedExpense?.subTypes.length > 0 && (
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="sub-type" className="text-right">
+                    Sub Expense Type
+                  </Label>
+                  <select id="sub-type" className="col-span-3 p-2 border rounded">
+                    <option value="">Select sub expense type</option>
+                    {selectedExpense.subTypes.map((subType, index) => (
+                      <option key={index} value={subType}>
+                        {subType}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
               <Button
-                className="col-span-4 text-left text-blue-500"
+                className="col-span-4 text-left bg-[#308E87] text-white hover:bg-[#308E87] "
                 onClick={handleShowNewTypeInput}
               >
                 + Add New Expense Type
@@ -131,7 +184,7 @@ function ExpenseModal() {
           )}
           {!showNewTypeInput && (
             <DialogFooter>
-              <Button type="submit">Save Expense</Button>
+              <Button className="bg-[#308E87] text-white hover:bg-[#308E87]" type="submit">Save Expense</Button>
             </DialogFooter>
           )}
         </DialogContent>

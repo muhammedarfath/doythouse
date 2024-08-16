@@ -33,7 +33,6 @@ import {
   ChartTooltipContent,
 } from "../components/ui/chart"
 import { Separator } from "../components/ui/separator"
-import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 

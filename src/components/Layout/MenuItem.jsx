@@ -36,7 +36,7 @@ function MenuItem({ icon: Icon, label, open, subItems }) {
             <li key={index}>
               <Link
                 to={subItem.path}
-                className="text-black text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-[#F4F6F8] rounded-sm mt-2"
+                className="text-black text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-[#D8E9E7] rounded-xl mt-2"
               >
                 <span className="w-1 h-1 bg-black rounded-full"></span>
                 <span className="origin-left duration-200">{subItem.label}</span>

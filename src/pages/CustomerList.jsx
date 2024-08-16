@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { Button } from "../components/ui/button";
 import {
   Table,
   TableBody,
@@ -8,107 +9,177 @@ import {
   TableHeader,
   TableRow,
 } from "../components/ui/table";
-import { AiFillEdit, AiFillDelete } from "react-icons/ai";
+import { AiFillEdit } from "react-icons/ai";
+import ProductDetailsModal from "@/components/modal/ProductDetailsModal";
+import { MdOutlineDelete } from "react-icons/md";
 import CustomerInformationModal from "@/components/modal/CustomerInformationModal";
-const invoices = [
+import { CiFilter } from "react-icons/ci";
+
+const orders = [
   {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
+    id: 1,
+    orderNo: "ORD123",
+    customerName: "John Doe",
+    expectedDelivery: "2023-12-20",
+    itemCategory: "Kurthi",
+    totalPrice: "$150.00",
+    balancedPrice: "$50.00",
+    status: "Pending",
   },
   {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
+    id: 2,
+    orderNo: "ORD124",
+    customerName: "Jane Smith",
+    expectedDelivery: "2023-12-22",
+    itemCategory: "Palazzo",
+    totalPrice: "$120.00",
+    balancedPrice: "$20.00",
+    status: "Completed",
   },
 ];
+
 function CustomerList() {
+  const [isFilterVisible, setIsFilterVisible] = useState(false);
+
+  const toggleFilter = () => {
+    setIsFilterVisible(!isFilterVisible);
+  };
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-screen-xl mx-auto">
         <div className="flex flex-col gap-6 mt-8">
-          <h2 className="font-semibold text-xl text-black">Customer List</h2>
+          <h2 className="font-semibold text-xl text-black">Order List</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
             <div className="flex items-center justify-between mb-4">
               <div className="flex gap-2">
-                <span className="">Serach</span>
+                <span>Search</span>
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="h-10 border rounded px-4 w-64 bg-gray-50"
+                  className="h-10 border rounded px-4 w-64 bg-[#fff] border-gray-300 text-gray-900 text-sm  focus:ring-black focus:border-black block pl-5 pr-3 py-4"
                 />
               </div>
-              <CustomerInformationModal/>
+              <div className="flex items-center gap-5">
+                <div
+                  className="border rounded-md p-2 bg-[#D8E9E7] text-[#308E87] "
+                  onClick={toggleFilter}
+                >
+                  <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
+                </div>
+                <CustomerInformationModal />
+              </div>
             </div>
 
+            {isFilterVisible && (
+              <div className="flex flex-wrap gap-4 mb-4">
+                <div className="flex flex-col">
+                  <label htmlFor="from-date" className="text-sm font-medium">
+                    From Date
+                  </label>
+                  <input
+                    type="date"
+                    id="from-date"
+                    className="h-10 border rounded px-4 bg-gray-50"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="to-date" className="text-sm font-medium">
+                    To Date
+                  </label>
+                  <input
+                    type="date"
+                    id="to-date"
+                    className="h-10 border rounded px-4 bg-gray-50"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="sort-by-type" className="text-sm font-medium">
+                    Sort by Employeer Name
+                  </label>
+                  <select
+                    id="sort-by-type"
+                    className="h-10 border rounded px-4 bg-gray-50"
+                  >
+                    <option value="">Select Employee</option>
+                    <option value="Travel">sam</option>
+                    <option value="Office Supplies">ran</option>
+                    <option value="Meals">Meals</option>
+                    <option value="Accommodation">log</option>
+                  </select>
+                </div>
+                <div className="flex flex-col">
+                  <label
+                    htmlFor="sort-by-employee"
+                    className="text-sm font-medium"
+                  >
+                    Sort by status
+                  </label>
+                  <select
+                    id="sort-by-employee"
+                    className="h-10 border rounded px-4 bg-gray-50"
+                  >
+                    <option value="">Select Status</option>
+                    <option value="Jane Smith">Today New Order</option>
+                    <option value="John Doe">Pending</option>
+                    <option value="John Doe">Completed</option>
+                    <option value="John Doe">Delivered</option>
+                  </select>
+                </div>
+              </div>
+            )}
+
             <Table className="w-full">
-              <TableCaption>A list of your recent invoices.</TableCaption>
+              <TableCaption>A list of your orders.</TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[50px]">Select</TableHead>
-                  <TableHead className="w-[100px]">Invoice</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Method</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
-                  <TableHead className="text-center w-[120px]">
+                  <TableHead className="w-[50px]">SINO</TableHead>
+                  <TableHead>Order No.</TableHead>
+                  <TableHead>Customer Name</TableHead>
+                  <TableHead>Expected Delivery</TableHead>
+                  <TableHead>Item Category</TableHead>
+                  <TableHead>Total Price</TableHead>
+                  <TableHead>Balanced Price</TableHead>
+                  <TableHead>Status</TableHead> {/* New header */}
+                  <TableHead className="text-center w-[150px]">
                     Actions
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {invoices.map((invoice, index) => (
-                  <TableRow key={index}>
+                {orders.map((order, index) => (
+                  <TableRow key={order.id}>
                     <TableCell>
                       <input type="checkbox" />
                     </TableCell>
-                    <TableCell className="font-medium">
-                      {invoice.invoice}
-                    </TableCell>
-                    <TableCell>{invoice.paymentStatus}</TableCell>
-                    <TableCell>{invoice.paymentMethod}</TableCell>
-                    <TableCell className="text-right">
-                      {invoice.totalAmount}
+                    <TableCell className="font-medium">{index + 1}</TableCell>
+                    <TableCell>{order.orderNo}</TableCell>
+                    <TableCell>{order.customerName}</TableCell>
+                    <TableCell>{order.expectedDelivery}</TableCell>
+                    <TableCell>{order.itemCategory}</TableCell>
+                    <TableCell>{order.totalPrice}</TableCell>
+                    <TableCell>{order.balancedPrice}</TableCell>
+                    <TableCell>
+                      <span
+                        className={`px-2 py-1 rounded text-white ${
+                          order.status === "Pending"
+                            ? "bg-yellow-500"
+                            : "bg-green-500"
+                        }`}
+                      >
+                        {order.status}
+                      </span>
                     </TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <button className="text-blue-500 hover:text-blue-700">
-                          <AiFillEdit />
-                        </button>
-                        <button className="text-red-500 hover:text-red-700">
-                          <AiFillDelete />
-                        </button>
+                        <ProductDetailsModal />
+                        <Button className="bg-[#308E87] hover:bg-[#308E87] transition-transform transform hover:scale-110">
+                          <AiFillEdit className="text-white text-xl" />
+                        </Button>
+                        <Button className="bg-[#f90303] hover:bg-[#ff1d52] transition-transform transform hover:scale-110">
+                          <MdOutlineDelete className="text-white text-xl" />
+                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>

@@ -18,16 +18,26 @@ function Header({ open }) {
     <div
       className={`fixed top-0 left-0 right-0 text-black shadow-sm bg-white ${
         open ? "p-5" : "p-4"
-      } flex justify-between z-40`}
+      } flex justify-between items-center z-40`}
     >
-      <div className="flex gap-2 justify-between "></div>
-      <div className="flex-grow max-w-xl">
+      <div
+        className={`flex-grow max-w-xl ${
+          open ? "ml-72" : "ml-48"
+        } transition-all duration-300`}
+      >
         <form className="flex items-center w-full">
           <label htmlFor="simple-search" className="sr-only">
             Search
           </label>
           <div className="relative w-full">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3">
+            <input
+              type="text"
+              id="simple-search"
+              className="bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-black focus:border-black block w-full pl-10 pr-3 py-4"
+              placeholder="Search branch name..."
+              required
+            />
+            <div className="absolute inset-y-0 right-4 flex items-center pl-3">
               <svg
                 className="w-5 h-5 text-gray-500"
                 aria-hidden="true"
@@ -44,38 +54,15 @@ function Header({ open }) {
                 />
               </svg>
             </div>
-            <input
-              type="text"
-              id="simple-search"
-              className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full pl-10 pr-3 py-4"
-              placeholder="Search branch name..."
-              required
-            />
           </div>
-          <button
-            type="submit"
-            className="p-3.5 ml-2 text-sm font-medium text-white bg-[#308E87] rounded-lg focus:ring-4 focus:outline-none focus:ring-black transition-transform transform hover:scale-110"
-          >
-            <svg
-              className="w-5 h-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M19 19l-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-              />
-            </svg>
-            <span className="sr-only">Search</span>
-          </button>
         </form>
       </div>
-      <div className="flex gap-5 items-center mr-9">
+
+      <div
+        className={`flex gap-5 items-center ${
+          open ? "mr-5" : "mr-4"
+        } transition-all duration-300`}
+      >
         <ModeToggle />
         <div className="p-1.5 rounded-md border border-gray-200">
           <IoMdNotificationsOutline className="text-2xl cursor-pointer" />

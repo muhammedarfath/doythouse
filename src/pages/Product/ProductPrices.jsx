@@ -13,7 +13,7 @@ function ProductCategory() {
             type="text"
             name="Category"
             id="Category"
-            className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Choose Category"
           />
           <label for="Category">Retail Price</label>
@@ -21,7 +21,7 @@ function ProductCategory() {
             type="text"
             name="Category"
             id="Category"
-            className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Choose Category"
           />
           <label for="SubCategory">Dealer Price</label>
@@ -29,7 +29,7 @@ function ProductCategory() {
             type="text"
             name="SubCategory"
             id="SubCategory"
-            className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Choose SubCategory"
           />
           <label for="SubCategory"> Open Qty</label>
@@ -37,7 +37,7 @@ function ProductCategory() {
             type="text"
             name="SubCategory"
             id="SubCategory"
-            className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Choose SubCategory"
           />
         </div>
@@ -47,7 +47,7 @@ function ProductCategory() {
             type="text"
             name="SubCategory"
             id="SubCategory"
-            className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Choose SubCategory"
           />
           <label for="Category">Wholesale Price</label>
@@ -55,7 +55,7 @@ function ProductCategory() {
             type="text"
             name="Category"
             id="Category"
-            className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Choose Category"
           />
           <label for="SubCategory"> Special Price</label>
@@ -63,7 +63,7 @@ function ProductCategory() {
             type="text"
             name="SubCategory"
             id="SubCategory"
-            className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Choose SubCategory"
           />
         </div>
