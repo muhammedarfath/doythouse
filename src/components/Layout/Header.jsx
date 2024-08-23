@@ -12,18 +12,20 @@ import {
 } from "../../components/ui/dropdown-menu";
 import { CiDark } from "react-icons/ci";
 import { ModeToggle } from "../darkmode/mode-toggle";
+import { Toaster } from "react-hot-toast";
 
 function Header({ open }) {
   return (
     <div
       className={`fixed top-0 left-0 right-0 text-black shadow-sm bg-white ${
         open ? "p-5" : "p-4"
-      } flex justify-between items-center z-40`}
+      } flex flex-col md:flex-row justify-between items-center z-40`}
     >
+      <Toaster position="top-center"/>
       <div
         className={`flex-grow max-w-xl ${
           open ? "ml-72" : "ml-48"
-        } transition-all duration-300`}
+        } transition-all duration-300 w-full`}
       >
         <form className="flex items-center w-full">
           <label htmlFor="simple-search" className="sr-only">
@@ -59,7 +61,7 @@ function Header({ open }) {
       </div>
 
       <div
-        className={`flex gap-5 items-center ${
+        className={`flex gap-5 items-center mt-4 md:mt-0 ${
           open ? "mr-5" : "mr-4"
         } transition-all duration-300`}
       >

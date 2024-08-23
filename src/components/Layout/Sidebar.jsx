@@ -13,7 +13,7 @@ function Sidebar() {
       <div
         className={`${
           open ? "w-60" : "w-20"
-        } duration-500 bg-white relative shadow z-50 flex flex-col`}
+        } duration-500 bg-white relative shadow z-50 lg:flex md:flex flex-col hidden `}
       >
         <div
           className={`absolute cursor-pointer border-2 rounded-full p-1 right-6 bg-[#D8E9E7] transform ${

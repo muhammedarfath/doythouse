@@ -13,6 +13,7 @@ import { BiSolidTrashAlt } from "react-icons/bi";
 import axios from "axios";
 import CategoryModal from "@/components/modal/CategoryModal";
 import CategoryEditModal from "@/components/modal/CategoryEditModal";
+import toast, { Toaster } from "react-hot-toast";
 
 function Category() {
   const [category, setCategory] = useState([]);
@@ -34,7 +35,20 @@ function Category() {
 
   const handleDelete = async (categoryId) => {
     try {
-      await axios.delete(`your-backend-url/categories/${categoryId}`);
+      await axios.post(
+        `https://storeconvo.com/php/delete.php/`,
+        {
+          id: categoryId,
+          typ: "cat",
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      toast.success("delete successull")
+
     } catch (error) {
       console.error("Error deleting category:", error);
     }
@@ -85,7 +99,7 @@ function Category() {
                         <CategoryEditModal category={category} />
                         <BiSolidTrashAlt
                           className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
-                          onClick={() => handleDelete()}
+                          onClick={() => handleDelete(category.cat_id)}
                         />{" "}
                       </div>
                     </TableCell>

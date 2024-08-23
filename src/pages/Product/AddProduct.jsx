@@ -1,55 +1,72 @@
 import React, { useState } from "react";
-import { RiShoppingBag3Line } from "react-icons/ri";
+import { RiShoppingBag3Line, RiStackLine } from "react-icons/ri";
 import { LuImagePlus } from "react-icons/lu";
+import { IoPricetagsOutline } from "react-icons/io5";
 import AddProductDetails from "./AddProductDetails";
 import ProductGallery from "./ProductGallery";
-import { RiStackLine } from "react-icons/ri";
 import ProductCategory from "./ProductCategory";
 import ProductPrices from "./ProductPrices";
-import { IoPricetagsOutline } from "react-icons/io5";
+import axios from "axios";
+import { FiPlus } from "react-icons/fi";
 
 function AddProduct() {
   const [activeSection, setActiveSection] = useState("details");
-  const handleDetailsClick = () => {
-    setActiveSection("details");
+  const [productData, setProductData] = useState({
+    details: {},
+    gallery: {},
+    category: {},
+    price: {},
+  });
+
+  console.log();
+  const handleSectionChange = (section, data) => {
+    setProductData((prevData) => ({
+      ...prevData,
+      [section]: data,
+    }));
   };
 
-  const handleGalleryClick = () => {
-    setActiveSection("gallery");
-  };
-
-  const handleCategoryClick = () => {
-    setActiveSection("category");
-  };
-
-  const handlePriceClick = () => {
-    setActiveSection("price");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      console.log(productData, "this is submit ");
+      const response = await axios.post("/api/products/", productData);
+      console.log("Product added successfully:", response.data);
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
   };
 
   return (
     <div className="flex items-center justify-center">
       <div className="max-w-screen-xl mx-auto">
         <div className="flex flex-col gap-11 mt-8">
-          <h2 className="font-bold text-xl text-black ">Add New Product</h2>
+          <h2 className="font-bold text-xl text-black">Add New Product</h2>
 
           <div className="bg-white flex rounded-2xl shadow-sm p-4 px-4 md:p-8 mb-6">
-            <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
-              <div className="flex flex-col items-center ">
+            <div className="relative grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
+              <div className="flex flex-col items-center">
                 <div
                   className="flex flex-col items-center pr-2 cursor-pointer rounded-lg"
-                  onClick={handleDetailsClick}
+                  onClick={() => setActiveSection("details")}
                 >
                   <div className="flex items-center gap-2">
                     <div
                       className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                        activeSection == "details" ? "bg-[#308E87]" : " "
+                        activeSection === "details" ? "bg-[#308E87]" : ""
                       } animate-bounce`}
                     >
-                      <RiShoppingBag3Line className={`text-2xl ${activeSection == "details" ? "text-white" : "text-black"}`}  />
+                      <RiShoppingBag3Line
+                        className={`text-2xl ${
+                          activeSection === "details"
+                            ? "text-white"
+                            : "text-black"
+                        }`}
+                      />
                     </div>
                     <p
                       className={`font-medium text-lg ${
-                        activeSection == "details" ? "text-[#308E87]" : " "
+                        activeSection === "details" ? "text-[#308E87]" : ""
                       }`}
                     >
                       Add Product Details
@@ -62,22 +79,28 @@ function AddProduct() {
 
                 <div
                   className="flex flex-col pr-2 cursor-pointer rounded-lg"
-                  onClick={handleGalleryClick}
+                  onClick={() => setActiveSection("gallery")}
                 >
                   <div className="flex gap-2 items-center">
                     <div
                       className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                        activeSection == "gallery" ? "bg-[#308E87]" : " "
+                        activeSection === "gallery" ? "bg-[#308E87]" : ""
                       } animate-bounce`}
                     >
-                      <LuImagePlus className={`text-2xl ${activeSection == "gallery" ? "text-white" : "text-black"}`} />
+                      <LuImagePlus
+                        className={`text-2xl ${
+                          activeSection === "gallery"
+                            ? "text-white"
+                            : "text-black"
+                        }`}
+                      />
                     </div>
                     <p
                       className={`font-medium text-lg ${
-                        activeSection == "gallery" ? "text-[#308E87]" : " "
+                        activeSection === "gallery" ? "text-[#308E87]" : ""
                       }`}
                     >
-                      Product Gallery{" "}
+                      Product Gallery
                     </p>
                   </div>
                   <small className="ml-12">
@@ -89,22 +112,28 @@ function AddProduct() {
 
                 <div
                   className="flex flex-col pr-2 cursor-pointer rounded-lg"
-                  onClick={handleCategoryClick}
+                  onClick={() => setActiveSection("category")}
                 >
                   <div className="flex gap-2 items-center">
                     <div
                       className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                        activeSection == "category" ? "bg-[#308E87]" : " "
+                        activeSection === "category" ? "bg-[#308E87]" : ""
                       } animate-bounce`}
                     >
-                      <RiStackLine className={`text-2xl ${activeSection == "category" ? "text-white" : "text-black"}`} />
+                      <RiStackLine
+                        className={`text-2xl ${
+                          activeSection === "category"
+                            ? "text-white"
+                            : "text-black"
+                        }`}
+                      />
                     </div>
                     <p
                       className={`font-medium text-lg ${
-                        activeSection == "category" ? "text-[#308E87]" : " "
+                        activeSection === "category" ? "text-[#308E87]" : ""
                       }`}
                     >
-                      Product Categories{" "}
+                      Product Categories
                     </p>
                   </div>
                   <small className="ml-12">Add product category</small>
@@ -114,22 +143,28 @@ function AddProduct() {
 
                 <div
                   className="flex flex-col pr-2 cursor-pointer rounded-lg"
-                  onClick={handlePriceClick}
+                  onClick={() => setActiveSection("price")}
                 >
                   <div className="flex gap-2 items-center">
                     <div
                       className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                        activeSection == "price" ? "bg-[#308E87]" : " "
+                        activeSection === "price" ? "bg-[#308E87]" : ""
                       } animate-bounce`}
                     >
-                      <IoPricetagsOutline className={`text-2xl ${activeSection == "price" ? "text-white" : "text-black"}`} />
+                      <IoPricetagsOutline
+                        className={`text-2xl ${
+                          activeSection === "price"
+                            ? "text-white"
+                            : "text-black"
+                        }`}
+                      />
                     </div>
                     <p
                       className={`font-medium text-lg ${
-                        activeSection == "price" ? "text-[#308E87]" : " "
+                        activeSection === "price" ? "text-[#308E87]" : ""
                       }`}
                     >
-                      Selling Prices{" "}
+                      Selling Prices
                     </p>
                   </div>
                   <small className="ml-12">
@@ -139,10 +174,39 @@ function AddProduct() {
               </div>
 
               <div className="flex-grow w-96">
-                {activeSection === "details" && <AddProductDetails />}
-                {activeSection === "gallery" && <ProductGallery />}
-                {activeSection === "category" && <ProductCategory />}
-                {activeSection === "price" && <ProductPrices />}
+                {activeSection === "details" && (
+                  <AddProductDetails
+                    data={productData.details}
+                    onChange={(data) => handleSectionChange("details", data)}
+                  />
+                )}
+                {activeSection === "gallery" && (
+                  <ProductGallery
+                    data={productData.gallery}
+                    onChange={(data) => handleSectionChange("gallery", data)}
+                  />
+                )}
+                {activeSection === "category" && (
+                  <ProductCategory
+                    data={productData.category}
+                    onChange={(data) => handleSectionChange("category", data)}
+                  />
+                )}
+                {activeSection === "price" && (
+                  <ProductPrices
+                    data={productData.price}
+                    onChange={(data) => handleSectionChange("price", data)}
+                  />
+                )}
+              </div>
+              <div className="absolute bottom-2 right-0">
+                <button
+                  onClick={handleSubmit}
+                  className="bg-[#308E87] text-white flex items-center font-bold py-2 px-4 rounded"
+                >
+                  <FiPlus />
+                  Submit Product
+                </button>
               </div>
             </div>
           </div>

@@ -12,51 +12,46 @@ import {
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Button } from "../../components/ui/button";
-import { FiPlus } from "react-icons/fi";
+import { AiFillEdit } from "react-icons/ai";
 import toast from "react-hot-toast";
 
-function SubModal() {
-  const [category, setCategory] = useState("");
-  const [subCategoryName, setSubCategoryName] = useState("");
-  const [hsn, setHsn] = useState("");
-  const [cgst, setCgst] = useState("");
-  const [sgst, setSgst] = useState("");
+function SubCategoryEditModal({ subcategory }) {
+  const [open, setOpen] = useState(false); // State to control modal open/close
+  const [category, setCategory] = useState(subcategory.category || "");
+  const [subCategoryName, setSubCategoryName] = useState(subcategory.name || "");
+  const [hsn, setHsn] = useState(subcategory.hsn || "");
+  const [cgst, setCgst] = useState(subcategory.cgst || "");
+  const [sgst, setSgst] = useState(subcategory.sgst || "");
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
 
   const handleSave = async () => {
-    
     setLoading(true);
     try {
-      const response = await axios.post(
-        "https://storeconvo.com/php/add_subcategory.php",
-        new URLSearchParams({
-          cat_id:4,
-          subcat_name:subCategoryName,
-          hsnacs:hsn,
-          cgst:cgst,
-          sgst:sgst
-        }),
+      const response = await axios.put(
+        `https://storeconvo.com/api/editSubCategory/${subcategory.id}`,
+        {
+          category,
+          subCategoryName,
+          hsn,
+          cgst,
+          sgst,
+        },
         {
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
           },
         }
       );
-      if (response){
-        console.log(response);
-      }
 
-      // if (response.data && response.status === 200) {
-      //   setCategoryName("");
-      //   setDescription("");
-      //   alert("Category added successfully");
-      // } else {
-      //   alert("Something went wrong");
-      // }
+      if (response.data.success) {
+        toast.success("Subcategory updated successfully!");
+        setOpen(false); // Close the modal on success
+      } else {
+        toast.error("Failed to update subcategory.");
+      }
     } catch (error) {
-      console.error("Error adding category:", error);
-      alert("Failed to add category");
+      toast.error("Error updating subcategory");
+      console.error("Error updating subcategory:", error);
     } finally {
       setLoading(false);
     }
@@ -66,18 +61,15 @@ function SubModal() {
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button
-            className="bg-[#308E87] hover:bg-[#308E87]"
+          <AiFillEdit
+            className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
             onClick={() => setOpen(true)}
-          >
-            <FiPlus className="text-white text-xl" />
-            Create New Sub Category
-          </Button>
+          />
         </DialogTrigger>
         <DialogContent className="sm:max-w-[900px] ">
           <DialogHeader>
-            <DialogTitle>Add Sub Category</DialogTitle>
-            <DialogDescription>Add your Sub Category</DialogDescription>
+            <DialogTitle>Edit Sub Category</DialogTitle>
+            <DialogDescription>Update your Sub Category details</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
@@ -158,4 +150,4 @@ function SubModal() {
   );
 }
 
-export default SubModal;
+export default SubCategoryEditModal;

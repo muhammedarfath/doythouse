@@ -15,7 +15,6 @@ import { Label } from "../../components/ui/label";
 import { IoMdArrowRoundForward } from "react-icons/io";
 
 function CustomerInformationModal() {
-  
   const [formData, setFormData] = useState({
     customerName: "",
     contactNumber: "",
@@ -145,7 +144,7 @@ function CustomerInformationModal() {
             <DialogTitle>Customer Information</DialogTitle>
             <DialogDescription>Create New Information</DialogDescription>
           </DialogHeader>
-          <div className="">
+          <form>
             <div className="flex gap-4 mt-7 mx-20 ">
               <div className="flex flex-col items-start gap-1 w-1/2">
                 <Label
@@ -238,11 +237,103 @@ function CustomerInformationModal() {
                       <input type="text" className="p-2 border w-full" />
                     </tr>
                     <tr>
-                      <th class="border p-2 text-left">Header 2</th>
+                      <th class="border p-2 text-left">Yoke Round</th>
                       <input type="text" className="p-2 border w-full" />
                     </tr>
                     <tr>
-                      <th class="border p-2 text-left">Header 3</th>
+                      <th class="border p-2 text-left">Full Length</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Upper Bust</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Bust</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Under Bust</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Mid Wasit</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Hip</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Shoulder</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Shoulder Wide</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Slit Length</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Slit Round</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Sleeve Type</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Sleeve Length</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Slit Round</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Wrist</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">3/4th</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Elbow</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Arm Round</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Arm hole</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Neck</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">F/N</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">B/N</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Collar Round</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Tuck Point</th>
+                      <input type="text" className="p-2 border w-full" />
+                    </tr>
+                    <tr>
+                      <th class="border p-2 text-left">Point To Point</th>
                       <input type="text" className="p-2 border w-full" />
                     </tr>
                   </tbody>
@@ -263,11 +354,23 @@ function CustomerInformationModal() {
                         <input type="text" className="p-2 border w-full" />
                       </tr>
                       <tr>
-                        <th class="border p-2 text-left">Header 2</th>
+                        <th class="border p-2 text-left">Seat</th>
                         <input type="text" className="p-2 border w-full" />
                       </tr>
                       <tr>
-                        <th class="border p-2 text-left">Header 3</th>
+                        <th class="border p-2 text-left">Thigh</th>
+                        <input type="text" className="p-2 border w-full" />
+                      </tr>
+                      <tr>
+                        <th class="border p-2 text-left">Knee</th>
+                        <input type="text" className="p-2 border w-full" />
+                      </tr>
+                      <tr>
+                        <th class="border p-2 text-left">Caif</th>
+                        <input type="text" className="p-2 border w-full" />
+                      </tr>
+                      <tr>
+                        <th class="border p-2 text-left">Bottam Round</th>
                         <input type="text" className="p-2 border w-full" />
                       </tr>
                     </tbody>
@@ -406,7 +509,7 @@ function CustomerInformationModal() {
                 </div>
               </div>
             </div>
-          </div>
+          </form>
           <DialogFooter>
             <Button type="submit" className="bg-[#308E87] hover:bg-[#308E87]">
               Save Changes

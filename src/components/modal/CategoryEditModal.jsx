@@ -13,22 +13,65 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import axios from "axios";
 import { AiFillEdit } from "react-icons/ai";
+import toast, { Toaster } from "react-hot-toast";
 
-function CategoryEditModal({category}) {
+function CategoryEditModal({ category }) {
+  const [catName, setCatName] = useState(category.cat_name || "");
+  const [catDescription, setCatDescription] = useState(
+    category.cat_description || ""
+  );
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false); 
+  
+
+
+
+  
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "https://storeconvo.com/php/edit.php/",
+        {
+          id: category.cat_id,
+          category_name: catName,
+          category_description: catDescription,
+          typ:"cat"
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+
+
+      if (response) {
+        console.log(response);
+        toast.success("Category updated successfully");
+        setOpen(false); 
+      }
+    } catch (error) {
+      toast.error("Error updating category");
+      console.error("Error updating category:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <AiFillEdit
             className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+            onClick={() => setOpen(true)}
           />
         </DialogTrigger>
         <DialogContent className="sm:max-w-[900px]">
           <DialogHeader>
-            <DialogTitle>Add Category</DialogTitle>
-            <DialogDescription>Create your Category</DialogDescription>
+            <DialogTitle>Edit Category</DialogTitle>
+            <DialogDescription>Update your category details.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
@@ -37,7 +80,8 @@ function CategoryEditModal({category}) {
               </Label>
               <Input
                 id="category"
-                value={category.cat_name}
+                value={catName}
+                onChange={(e) => setCatName(e.target.value)}
                 className="col-span-3"
               />
             </div>
@@ -47,14 +91,15 @@ function CategoryEditModal({category}) {
               </Label>
               <textarea
                 id="description"
-                value={category.cat_description}
+                value={catDescription}
+                onChange={(e) => setCatDescription(e.target.value)}
                 className="col-span-3 p-2 border rounded"
               />
             </div>
           </div>
           <DialogFooter>
             <Button
-              type="submit"
+              onClick={handleSave}
               disabled={loading}
               className={`bg-[#308E87] hover:bg-[#308E87] ${
                 loading ? "cursor-not-allowed" : ""

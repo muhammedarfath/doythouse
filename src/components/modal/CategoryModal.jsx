@@ -40,14 +40,17 @@ function CategoryModal() {
           },
         }
       );
-
-      if (response.data && response.status === 200) {
-        setCategoryName("");
-        setDescription("");
-        alert("Category added successfully");
-      } else {
-        alert("Something went wrong");
+      if (response){
+        console.log(response);
       }
+
+      // if (response.data && response.status === 200) {
+      //   setCategoryName("");
+      //   setDescription("");
+      //   alert("Category added successfully");
+      // } else {
+      //   alert("Something went wrong");
+      // }
     } catch (error) {
       console.error("Error adding category:", error);
       alert("Failed to add category");

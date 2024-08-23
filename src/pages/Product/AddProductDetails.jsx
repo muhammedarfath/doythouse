@@ -1,49 +1,64 @@
 import React from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 
-function AddProductDetails() {
+function AddProductDetails({ data, onChange }) {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    onChange({
+      ...data,
+      [name]: value,
+    });
+  };
+
   return (
     <div className="lg:col-span-2 border-l-2 border-l-[#ECF3F3] pl-5">
       <div className="grid gap-4 gap-y-2 lg:w-[45rem] text-sm grid-cols-1 md:grid-cols-5">
         <div className="md:col-span-5">
-          <label for="product_name">Product Name</label>
+          <label htmlFor="product_name">Product Name</label>
           <input
             type="text"
             name="product_name"
             id="product_name"
+            value={data.product_name || ""}
+            onChange={handleChange}
             className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Product Name"
           />
         </div>
 
         <div className="md:col-span-5">
-          <label for="Discription">Discription</label>
+          <label htmlFor="description">Description</label>
           <textarea
-            type="text"
-            name="Discription"
-            id="Discription"
+            name="description"
+            id="description"
+            value={data.description || ""}
+            onChange={handleChange}
             className="border rounded p-4 w-full bg-[#fff]"
-            placeholder="Discription"
+            placeholder="Description"
           />
         </div>
 
         <div className="md:col-span-1">
-          <label for="zipcode">Product User Code</label>
+          <label htmlFor="zipcode">Product User Code</label>
           <input
             type="text"
             name="zipcode"
             id="zipcode"
+            value={data.zipcode || ""}
+            onChange={handleChange}
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Code"
           />
         </div>
 
         <div className="md:col-span-2">
-          <label for="unit">Product Unit</label>
+          <label htmlFor="unit">Product Unit</label>
           <div className="h-10 bg-[#fff] flex border border-gray-200 rounded items-center mt-1">
             <input
               name="unit"
               id="unit"
+              value={data.unit || ""}
+              onChange={handleChange}
               placeholder="Unit"
               className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
             />
@@ -51,11 +66,13 @@ function AddProductDetails() {
         </div>
 
         <div className="md:col-span-2">
-          <label for="Re-Level">Reorder Level</label>
+          <label htmlFor="reorder_level">Reorder Level</label>
           <div className="h-10 bg-[#fff] flex border border-gray-200 rounded items-center mt-1">
             <input
-              name="state"
-              id="Level"
+              name="reorder_level"
+              id="reorder_level"
+              value={data.reorder_level || ""}
+              onChange={handleChange}
               placeholder="Re-Level"
               className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
             />
@@ -63,11 +80,13 @@ function AddProductDetails() {
         </div>
 
         <div className="md:col-span-2">
-          <label for="unit">HSN ACS Code</label>
+          <label htmlFor="hsn_code">HSN/ACS Code</label>
           <div className="h-10 bg-[#fff] flex border border-gray-200 rounded items-center mt-1">
             <input
-              name="unit"
-              id="unit"
+              name="hsn_code"
+              id="hsn_code"
+              value={data.hsn_code || ""}
+              onChange={handleChange}
               placeholder="Code"
               className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
             />
@@ -75,33 +94,39 @@ function AddProductDetails() {
         </div>
 
         <div className="md:col-span-1">
-          <label for="CGST">CGST</label>
+          <label htmlFor="cgst">CGST</label>
           <input
             type="text"
-            name="CGST"
-            id="CGST"
+            name="cgst"
+            id="cgst"
+            value={data.cgst || ""}
+            onChange={handleChange}
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="CGST"
           />
         </div>
 
         <div className="md:col-span-1">
-          <label for="SGST">SGST</label>
+          <label htmlFor="sgst">SGST</label>
           <input
             type="text"
-            name="SGST"
-            id="SGST"
+            name="sgst"
+            id="sgst"
+            value={data.sgst || ""}
+            onChange={handleChange}
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="SGST"
           />
         </div>
 
         <div className="md:col-span-2">
-          <label for="unit">Sales Unit</label>
+          <label htmlFor="sales_unit">Sales Unit</label>
           <div className="h-10 bg-[#fff] flex border border-gray-200 rounded items-center mt-1">
             <input
-              name="unit"
-              id="unit"
+              name="sales_unit"
+              id="sales_unit"
+              value={data.sales_unit || ""}
+              onChange={handleChange}
               placeholder="Unit"
               className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
             />
@@ -109,11 +134,13 @@ function AddProductDetails() {
         </div>
 
         <div className="md:col-span-1">
-          <label for="Size">Pack Size</label>
+          <label htmlFor="size">Pack Size</label>
           <input
             type="text"
-            name="Size"
-            id="Size"
+            name="size"
+            id="size"
+            value={data.size || ""}
+            onChange={handleChange}
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Size"
           />
@@ -121,7 +148,7 @@ function AddProductDetails() {
 
         <div className="md:col-span-5 text-right">
           <div className="inline-flex items-end border rounded-md p-2">
-            <button className="hover: text-black font-bold py-2 px-4 rounded">
+            <button className="hover:text-black font-bold py-2 px-4 rounded">
               <FaArrowRightLong />
             </button>
           </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,6 +11,7 @@ import {
 import { AiFillEdit } from "react-icons/ai";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import SubModal from "@/components/modal/SubModal";
+import SubCategoryEditModal from "@/components/modal/SubCategoryEditModal";
 
 const subcategories = [
   {
@@ -43,7 +44,36 @@ const subcategories = [
   },
 ];
 
+
+
 function SubCategory() {
+
+  const [subCategory, setSubCategory] = useState([]);
+
+  useEffect(() => {
+    const fetchSubCategories = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=subcategory"
+        );
+        setSubCategory(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchSubCategories();
+  }, []);
+
+  const handleDelete = async (categoryId) => {
+    try {
+      await axios.delete(`your-backend-url/categories/${categoryId}`);
+    } catch (error) {
+      console.error("Error deleting category:", error);
+    }
+  };
+
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-screen-xl mx-auto">
@@ -92,7 +122,7 @@ function SubCategory() {
                     <TableCell>{subcategory.sgst}</TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110  cursor-pointer" />
+                        <SubCategoryEditModal subcategory={subcategory}/>
                         <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                       </div>
                     </TableCell>

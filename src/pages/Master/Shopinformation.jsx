@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo.jpg";
 import ShopInformationModal from "@/components/modal/ShopInformationModal";
 import { LayoutGridDemo } from "@/components/ImgGrid/LayoutGridDemo";
 
 function Shopinformation() {
+  const [shopInformation,setShopInformation] = useState(null)
+  useEffect(() => {
+    const fetchShopInformation = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/fetch.php?typ=shop"
+        );
+        console.log(response.data);
+        setShopInformation(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
 
-  
-
-
-
+    fetchShopInformation();
+  }, []);
 
   return (
     <>
