@@ -15,7 +15,7 @@ import { Label } from "../../components/ui/label";
 import { toast } from "react-hot-toast";
 
 function ShopInformationModal() {
-  const [loading,setLoading] =useState(false)
+  const [loading, setLoading] = useState(false);
   const [shopInfo, setShopInfo] = useState({
     shop_name: "",
     shop_email: "",
@@ -34,23 +34,24 @@ function ShopInformationModal() {
     setShopInfo((prev) => ({ ...prev, [id]: value }));
   };
 
-
-
-
-
-
-
-
-
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     setLoading(true);
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_shop.php",
         new URLSearchParams({
-          shopInfo
+          shop_name: shopInfo.shop_name,
+          shop_email: shopInfo.shop_email,
+          shop_phone: shopInfo.shop_phone,
+          shop_manager: shopInfo.shop_manager,
+          shop_gstno: shopInfo.shop_gstno,
+          shop_state: shopInfo.shop_state,
+          shop_bank: shopInfo.shop_bank,
+          shop_branch: shopInfo.shop_branch,
+          shop_bankacno: shopInfo.shop_bankacno,
+          shop_bankifsc: shopInfo.shop_bankifsc,
         }),
         {
           headers: {
@@ -58,25 +59,19 @@ function ShopInformationModal() {
           },
         }
       );
-      if (response){
-        console.log(response);
-      }
 
-      // if (response.data && response.status === 200) {
-      //   setCategoryName("");
-      //   setDescription("");
-      //   alert("Category added successfully");
-      // } else {
-      //   alert("Something went wrong");
-      // }
+      if (response) {
+        toast.success("Shop information updated successfully!");
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
     } catch (error) {
-      console.error("Error adding category:", error);
-      alert("Failed to add category");
+      console.error("Error updating shop information:", error);
+      toast.error("Failed to update shop information.");
     } finally {
       setLoading(false);
     }
   };
-
 
   return (
     <div>
@@ -86,126 +81,29 @@ function ShopInformationModal() {
             Edit Information
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[900px] ">
+        <DialogContent className="sm:max-w-[900px]">
           <DialogHeader>
             <DialogTitle>Edit Shop Information</DialogTitle>
             <DialogDescription>Update your shop details</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="shop_name" className="text-right">
-                Shop Name
-              </Label>
-              <Input
-                id="shop_name"
-                value={shopInfo.shop_name}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="shop_email" className="text-right">
-                Email
-              </Label>
-              <Input
-                id="shop_email"
-                value={shopInfo.shop_email}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="shop_phone" className="text-right">
-                Phone Number
-              </Label>
-              <Input
-                id="shop_phone"
-                value={shopInfo.shop_phone}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="shop_manager" className="text-right">
-                Manager
-              </Label>
-              <Input
-                id="shop_manager"
-                value={shopInfo.shop_manager}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="shop_gstno" className="text-right">
-                GST Number
-              </Label>
-              <Input
-                id="shop_gstno"
-                value={shopInfo.shop_gstno}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="shop_state" className="text-right">
-                State
-              </Label>
-              <Input
-                id="shop_state"
-                value={shopInfo.shop_state}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="shop_bank" className="text-right">
-                Bank
-              </Label>
-              <Input
-                id="shop_bank"
-                value={shopInfo.shop_bank}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="shop_branch" className="text-right">
-                Branch
-              </Label>
-              <Input
-                id="shop_branch"
-                value={shopInfo.shop_branch}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="shop_bankacno" className="text-right">
-                Account Number
-              </Label>
-              <Input
-                id="shop_bankacno"
-                value={shopInfo.shop_bankacno}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="shop_bankifsc" className="text-right">
-                IFSC Code
-              </Label>
-              <Input
-                id="shop_bankifsc"
-                value={shopInfo.shop_bankifsc}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
+            {Object.keys(shopInfo).map((key) => (
+              <div className="grid grid-cols-4 items-center gap-4" key={key}>
+                <Label htmlFor={key} className="text-right">
+                  {key.replace(/_/g, " ")}
+                </Label>
+                <Input
+                  id={key}
+                  value={shopInfo[key]}
+                  onChange={handleChange}
+                  className="col-span-3"
+                />
+              </div>
+            ))}
           </div>
           <DialogFooter>
-            <Button type="button" onClick={handleSubmit}>
-              Save
+            <Button type="button" onClick={handleSubmit} disabled={loading}>
+              {loading ? "Saving..." : "Save"}
             </Button>
           </DialogFooter>
         </DialogContent>

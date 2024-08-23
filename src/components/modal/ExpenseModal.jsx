@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import {
   Dialog,
   DialogContent,
@@ -14,41 +15,151 @@ import { Button } from "../../components/ui/button";
 import { FiPlus } from "react-icons/fi";
 
 function ExpenseModal() {
-  const [expenseTypes, setExpenseTypes] = useState([
-    { type: "Travel", subTypes: ["Local", "International"] },
-    { type: "Office Supplies", subTypes: [] },
-    { type: "Entertainment", subTypes: ["Movies", "Events"] },
-  ]);
+  const [expenseTypes, setExpenseTypes] = useState([]);
   const [newExpenseType, setNewExpenseType] = useState("");
   const [newSubExpenseType, setNewSubExpenseType] = useState("");
   const [selectedExpenseType, setSelectedExpenseType] = useState("");
+  const [selectedSubExpenseType, setSelectedSubExpenseType] = useState("");
+  const [date, setDate] = useState("");
+  const [amount, setAmount] = useState("");
+  const [employees, setEmployees] = useState([]);
+  const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [note, setNote] = useState("");
   const [showNewTypeInput, setShowNewTypeInput] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleAddNewExpenseType = () => {
-    if (newExpenseType) {
-      const newExpense = {
-        type: newExpenseType,
-        subTypes: newSubExpenseType ? [newSubExpenseType] : [],
-      };
-      setExpenseTypes([...expenseTypes, newExpense]);
-      setNewExpenseType("");
-      setNewSubExpenseType("");
-      setShowNewTypeInput(false);
+  // Fetch expense types on component mount
+  useEffect(() => {
+    const fetchExpenseTypes = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=expensetype"
+        );
+        setExpenseTypes(response.data);
+      } catch (error) {
+        console.error("Error fetching expense types:", error);
+      }
+    };
+    fetchExpenseTypes();
+  }, []);
+
+  // Fetch employees on component mount
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=employee"
+        );
+        console.log(response.data,"this is employee");
+        setEmployees(response.data);
+      } catch (error) {
+        console.error("Error fetching employees:", error);
+      }
+    };
+    fetchEmployees();
+  }, []);
+
+  // Handle adding a new expense type
+  const handleAddNewExpenseType = async () => {
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        "https://storeconvo.com/php/add_expensetype.php",
+        new URLSearchParams({
+          newExpenseType,
+          newSubExpenseType,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      if (response.data.success) {
+        console.log(response.data.message);
+        setExpenseTypes((prev) => [
+          ...prev,
+          { type: newExpenseType, subTypes: [newSubExpenseType] },
+        ]);
+        setNewExpenseType("");
+        setNewSubExpenseType("");
+        setShowNewTypeInput(false);
+      }
+    } catch (error) {
+      console.error("Error adding expense type:", error);
+      alert("Failed to add expense type");
+    } finally {
+      setLoading(false);
     }
   };
 
+  // Handle saving the expense
+  const handleSave = async () => {
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        "https://storeconvo.com/php/add_expense.php",
+        new URLSearchParams({
+          date,
+          selectedExpenseType,
+          selectedSubExpenseType,
+          amount,
+          selectedEmployee,
+          note,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      if (response.data.success) {
+        console.log(response.data.message);
+        // Clear form fields after successful save
+        setDate("");
+        setSelectedExpenseType("");
+        setSelectedSubExpenseType("");
+        setAmount("");
+        setSelectedEmployee("");
+        setNote("");
+      }
+    } catch (error) {
+      console.error("Error saving expense:", error);
+      alert("Failed to save expense");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Show the input form for adding a new expense type
   const handleShowNewTypeInput = () => {
     setShowNewTypeInput(true);
   };
 
+  // Hide the input form for adding a new expense type
   const handleHideNewTypeInput = () => {
     setShowNewTypeInput(false);
   };
 
+  // Handle changes to the selected expense type
   const handleExpenseTypeChange = (e) => {
     setSelectedExpenseType(e.target.value);
+    setSelectedSubExpenseType(""); // Reset sub expense type when changing main type
   };
 
+  // Handle changes to the selected sub expense type
+  const handleSubExpenseTypeChange = (e) => {
+    setSelectedSubExpenseType(e.target.value);
+  };
+
+  // Handle changes to the selected employee
+  const handleEmployeeChange = (e) => {
+    setSelectedEmployee(e.target.value);
+  };
+
+  // Get the selected expense type object from the list
   const selectedExpense = expenseTypes.find(
     (type) => type.type === selectedExpenseType
   );
@@ -64,7 +175,9 @@ function ExpenseModal() {
         </DialogTrigger>
         <DialogContent className="sm:max-w-[900px]">
           <DialogHeader>
-            <DialogTitle>{showNewTypeInput ? "Add New Expense Type" : "Add Expense"}</DialogTitle>
+            <DialogTitle>
+              {showNewTypeInput ? "Add New Expense Type" : "Add Expense"}
+            </DialogTitle>
             <DialogDescription>
               {showNewTypeInput
                 ? "Enter the new expense type and sub expense type you want to add."
@@ -102,8 +215,9 @@ function ExpenseModal() {
                 <Button
                   className="bg-[#308E87] text-white hover:bg-[#308E87]"
                   onClick={handleAddNewExpenseType}
+                  disabled={loading}
                 >
-                  Add
+                  {loading ? "Adding..." : "Add"}
                 </Button>
                 <Button variant="secondary" onClick={handleHideNewTypeInput}>
                   Cancel
@@ -116,7 +230,13 @@ function ExpenseModal() {
                 <Label htmlFor="date" className="text-right">
                   Date
                 </Label>
-                <Input id="date" type="date" className="col-span-3" />
+                <Input
+                  id="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  type="date"
+                  className="col-span-3"
+                />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="type" className="text-right">
@@ -141,7 +261,12 @@ function ExpenseModal() {
                   <Label htmlFor="sub-type" className="text-right">
                     Sub Expense Type
                   </Label>
-                  <select id="sub-type" className="col-span-3 p-2 border rounded">
+                  <select
+                    id="sub-type"
+                    className="col-span-3 p-2 border rounded"
+                    value={selectedSubExpenseType}
+                    onChange={handleSubExpenseTypeChange}
+                  >
                     <option value="">Select sub expense type</option>
                     {selectedExpense.subTypes.map((subType, index) => (
                       <option key={index} value={subType}>
@@ -155,37 +280,61 @@ function ExpenseModal() {
                 className="col-span-4 text-left bg-[#308E87] text-white hover:bg-[#308E87] "
                 onClick={handleShowNewTypeInput}
               >
-                + Add New Expense Type
+                Add New Expense Type
               </Button>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="amount" className="text-right">
                   Amount
                 </Label>
-                <Input id="amount" type="number" className="col-span-3" />
+                <Input
+                  id="amount"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  type="number"
+                  placeholder="Enter amount"
+                  className="col-span-3"
+                />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="employee" className="text-right">
                   Employee
                 </Label>
-                <select id="employee" className="col-span-3 p-2 border rounded">
+                <select
+                  id="employee"
+                  className="col-span-3 p-2 border rounded"
+                  value={selectedEmployee}
+                  onChange={handleEmployeeChange}
+                >
                   <option value="">Select employee</option>
-                  <option value="john">John Doe</option>
-                  <option value="jane">Jane Smith</option>
-                  <option value="alex">Alex Johnson</option>
+                  {employees.map((employee, index) => (
+                    <option key={index} value={employee.employee_name}>
+                      {employee.employee_name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="notes" className="text-right">
-                  Notes
+                <Label htmlFor="note" className="text-right">
+                  Note
                 </Label>
-                <textarea id="notes" className="col-span-3 p-2 border rounded" rows="3" />
+                <Input
+                  id="note"
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  placeholder="Enter note (optional)"
+                  className="col-span-3"
+                />
               </div>
+              <DialogFooter>
+                <Button
+                  className="bg-[#308E87] text-white hover:bg-[#308E87]"
+                  onClick={handleSave}
+                  disabled={loading}
+                >
+                  {loading ? "Saving..." : "Save"}
+                </Button>
+              </DialogFooter>
             </div>
-          )}
-          {!showNewTypeInput && (
-            <DialogFooter>
-              <Button className="bg-[#308E87] text-white hover:bg-[#308E87]" type="submit">Save Expense</Button>
-            </DialogFooter>
           )}
         </DialogContent>
       </Dialog>

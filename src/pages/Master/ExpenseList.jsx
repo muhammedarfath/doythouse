@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import {
   Table,
@@ -14,28 +14,29 @@ import { MdOutlineDelete } from "react-icons/md";
 import ExpenseModal from "@/components/modal/ExpenseModal";
 import { CiFilter } from "react-icons/ci";
 import { BiSolidTrashAlt } from "react-icons/bi";
-
-const expenses = [
-  {
-    id: 1,
-    date: "2024-08-01",
-    type: "Travel",
-    amount: "₹2000",
-    employee: "John Doe",
-    notes: "Business trip to Delhi",
-  },
-  {
-    id: 2,
-    date: "2024-08-10",
-    type: "Office Supplies",
-    amount: "₹500",
-    employee: "Jane Smith",
-    notes: "Purchased stationery items",
-  },
-];
+import axios from "axios";
+import EditExpenseModal from "@/components/modal/EditExpenseModal";
 
 function ExpenseList() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [expenses, setExpenses] = useState([]);
+
+  useEffect(() => {
+    const fetchExpenseList = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=expense"
+        );
+        setExpenses(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchExpenseList();
+  }, []);
+
+  console.log(expenses);
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
@@ -133,6 +134,9 @@ function ExpenseList() {
                   <TableHead>Date</TableHead>
                   <TableHead>Expense Type</TableHead>
                   <TableHead className="text-right">Amount</TableHead>
+                  {expenses.some((expense) => expense.expsub_type) && (
+                    <TableHead className="text-right">Sub Expense</TableHead>
+                  )}{" "}
                   <TableHead>Employee</TableHead>
                   <TableHead>Notes</TableHead>
                   <TableHead className="text-center w-[150px]">
@@ -147,16 +151,21 @@ function ExpenseList() {
                       <input type="checkbox" />
                     </TableCell>
                     <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>{expense.date}</TableCell>
-                    <TableCell>{expense.type}</TableCell>
+                    <TableCell>{expense.exp_date}</TableCell>
+                    <TableCell>{expense.exp_type}</TableCell>
                     <TableCell className="text-right">
-                      {expense.amount}
+                      {expense.exp_amount}
                     </TableCell>
-                    <TableCell>{expense.employee}</TableCell>
-                    <TableCell>{expense.notes}</TableCell>
+                    {expense.expsub_type && (
+                      <TableCell className="text-right">
+                        {expense.expsub_type}
+                      </TableCell>
+                    )}
+                    <TableCell>{expense.exp_employee}</TableCell>
+                    <TableCell>{expense.exp_note}</TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110  cursor-pointer" />
+                        <EditExpenseModal expense={expense} />
                         <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                       </div>
                     </TableCell>

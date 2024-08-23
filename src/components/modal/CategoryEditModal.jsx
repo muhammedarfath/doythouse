@@ -23,9 +23,6 @@ function CategoryEditModal({ category }) {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false); 
   
-
-
-
   
   const handleSave = async () => {
     setLoading(true);
