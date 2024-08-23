@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import {
   Table,
@@ -15,28 +15,76 @@ import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import EmployeeModal from "@/components/modal/EmployeeModal";
 import { BiSolidTrashAlt } from "react-icons/bi";
-
-// Sample data for employees
-const employees = [
-  {
-    id: 1,
-    name: "John Doe",
-    department: "HR",
-    mobile: "123-456-7890",
-    address: "123 Main St, Cityville",
-    username: "johndoe",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    department: "Marketing",
-    mobile: "098-765-4321",
-    address: "456 Elm St, Townsville",
-    username: "janesmith",
-  },
-];
+import axios from "axios";
+import EditEmployeeModal from "@/components/modal/EditEmployeeModal";
+import { toast } from "react-hot-toast";
 
 function EmployeeList() {
+  const [employees, setEmployees] = useState([]);
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=employee"
+        );
+        console.log(response.data, "this is employee");
+        setEmployees(response.data);
+      } catch (error) {
+        console.error("Error fetching employees:", error);
+      }
+    };
+    fetchEmployees();
+  }, []);
+
+  const handleDelete = (employeeId) => {
+    toast(
+      (t) => (
+        <div>
+          <p>Are you sure you want to delete this employee?</p>
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={() => confirmDelete(employeeId, t.id)}
+              className="bg-red-500 text-white px-4 py-1 rounded"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-gray-300 text-black px-4 py-1 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: 4000 }
+    );
+  };
+
+  const confirmDelete = async (employeeId, toastId) => {
+    try {
+      await axios.post(
+        `https://storeconvo.com/php/delete.php/`,
+        {
+          id: employeeId,
+          typ: "employee",
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      setEmployees((prevEmployees) =>
+        prevEmployees.filter((employee) => employee.employee_id !== employeeId)
+      );
+      toast.success("Delete successful", { id: toastId });
+    } catch (error) {
+      console.error("Error deleting employee:", error);
+      toast.error("Failed to delete employee", { id: toastId });
+    }
+  };
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-screen-xl mx-auto">
@@ -49,14 +97,13 @@ function EmployeeList() {
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="h-10 border rounded px-4 w-64 bg-gray-50"
+                  className="h-10 border rounded px-4 w-64 bg-white "
                 />
               </div>
-              <EmployeeModal />
+              <EmployeeModal setEmployees={setEmployees}/>
             </div>
 
             <Table className="w-full">
-              <TableCaption>A list of your employees.</TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[50px]">Select</TableHead>
@@ -72,25 +119,39 @@ function EmployeeList() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {employees.map((employee, index) => (
-                  <TableRow key={employee.id}>
-                    <TableCell>
-                      <input type="checkbox" />
-                    </TableCell>
-                    <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>{employee.name}</TableCell>
-                    <TableCell>{employee.department}</TableCell>
-                    <TableCell>{employee.mobile}</TableCell>
-                    <TableCell>{employee.address}</TableCell>
-                    <TableCell>{employee.username}</TableCell>
-                    <TableCell className="text-center">
-                      <div className="flex justify-center gap-4">
-                        <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110  cursor-pointer" />
-                        <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
-                      </div>
+                {employees.length > 0 ? (
+                  employees.map((employee, index) => (
+                    <TableRow key={employee.id}>
+                      <TableCell>
+                        <input type="checkbox" />
+                      </TableCell>
+                      <TableCell className="font-medium">{index + 1}</TableCell>
+                      <TableCell>{employee.employee_name}</TableCell>
+                      <TableCell>{employee.employee_department}</TableCell>
+                      <TableCell>{employee.employee_phone}</TableCell>
+                      <TableCell>{employee.employee_address}</TableCell>
+                      <TableCell>{employee.employee_username}</TableCell>
+                      <TableCell className="text-center">
+                        <div className="flex justify-center gap-4">
+                          <EditEmployeeModal employee={employee} />
+                          <BiSolidTrashAlt
+                            className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+                            onClick={() => handleDelete(employee.employee_id)}
+                          />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan="8"
+                      className="text-center text-gray-500 py-4"
+                    >
+                      No employees found.
                     </TableCell>
                   </TableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </div>

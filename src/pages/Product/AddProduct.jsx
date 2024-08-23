@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiShoppingBag3Line, RiStackLine } from "react-icons/ri";
 import { LuImagePlus } from "react-icons/lu";
 import { IoPricetagsOutline } from "react-icons/io5";
@@ -17,8 +17,18 @@ function AddProduct() {
     category: {},
     price: {},
   });
-
-  console.log();
+  const [productName, setProductName] = useState("");
+  const [discription, setDiscription] = useState("");
+  const [proCode, setproCode] = useState("");
+  const [proUnit, setproUnit] = useState("");
+  const [reLevel, setReLevel] = useState("");
+  const [hsnCode, setHsnCode] = useState("");
+  const [cgst, setCgst] = useState("");
+  const [sgst, setSgst] = useState("");
+  const [salesUnit, setSalesUnit] = useState("");
+  const [packSize, setPackSize] = useState("");
+  
+  
   const handleSectionChange = (section, data) => {
     setProductData((prevData) => ({
       ...prevData,
@@ -26,14 +36,37 @@ function AddProduct() {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
     try {
-      console.log(productData, "this is submit ");
-      const response = await axios.post("/api/products/", productData);
-      console.log("Product added successfully:", response.data);
+      const response = await axios.post(
+        "https://storeconvo.com/php/add_product.php",
+        new URLSearchParams(productData),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+
+      if (response.data) {
+        console.log(response.data.message);
+        setProductData({
+          details: {},
+          gallery: {},
+          category: {},
+          price: {},
+        });
+      } else {
+        alert("Failed to save product");
+      }
     } catch (error) {
-      console.error("Error adding product:", error);
+      console.error("Error saving product:", error);
+      alert("Failed to save product");
+    } finally {
+      setLoading(false);
     }
   };
 

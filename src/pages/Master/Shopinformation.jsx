@@ -25,6 +25,7 @@ function Shopinformation() {
   }, []);
 
 
+
   return (
     <>
       <div className="flex items-center justify-center w-full">
@@ -72,7 +73,7 @@ function Shopinformation() {
                     <div className="px-6">
                       <div className="flex flex-wrap justify-end">
                         <div className="w-full lg:w-4/12 p-4 lg:order-3 lg:text-right lg:self-center">
-                          <ShopInformationModal />
+                          <ShopInformationModal shopInformation={shopInformation}/>
                         </div>
                       </div>
                       <div className="text-center mt-12">

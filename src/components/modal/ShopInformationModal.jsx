@@ -14,7 +14,7 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { toast } from "react-hot-toast";
 
-function ShopInformationModal() {
+function ShopInformationModal({shopInformation}) {
   const [loading, setLoading] = useState(false);
   const [shopInfo, setShopInfo] = useState({
     shop_name: "",
@@ -29,6 +29,8 @@ function ShopInformationModal() {
     shop_bankifsc: "",
   });
 
+  console.log(shopInformation,"this is one data");
+
   const handleChange = (e) => {
     const { id, value } = e.target;
     setShopInfo((prev) => ({ ...prev, [id]: value }));
@@ -40,8 +42,9 @@ function ShopInformationModal() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://storeconvo.com/php/add_shop.php",
+        "https://storeconvo.com/php/edit.php",
         new URLSearchParams({
+    
           shop_name: shopInfo.shop_name,
           shop_email: shopInfo.shop_email,
           shop_phone: shopInfo.shop_phone,

@@ -18,7 +18,7 @@ function EditExpenseModal({ expense }) {
   const [open, setOpen] = useState(false);
   const [type, setType] = useState(expense.type || "");
   const [subType, setSubType] = useState(expense.subType || "");
-  const [amount, setAmount] = useState(expense.amount || "");
+  const [amount, setAmount] = useState(expense.exp_amount || "");
   const [selectedEmployee, setSelectedEmployee] = useState(
     expense.employee || ""
   );
@@ -28,12 +28,15 @@ function EditExpenseModal({ expense }) {
   const [loading, setLoading] = useState(false);
   const [note, setNote] = useState(expense.note || "");
 
+
+
+
   useEffect(() => {
     const fetchEmployeesAndExpenseTypes = async () => {
       try {
         const [employeesResponse, typesResponse] = await Promise.all([
           axios.get("https://storeconvo.com/php/fetch.php?typ=employee"),
-          axios.get("https://storeconvo.com/php/fetch.php?typ=expenseType"),
+          axios.get("https://storeconvo.com/php/fetch.php?typ=expense_type"),
         ]);
 
         setEmployees(employeesResponse.data);
@@ -45,7 +48,6 @@ function EditExpenseModal({ expense }) {
 
     fetchEmployeesAndExpenseTypes();
   }, []);
-
   // Fetch sub-types when expense type changes
   useEffect(() => {
     const fetchSubTypes = async () => {
@@ -66,10 +68,41 @@ function EditExpenseModal({ expense }) {
     fetchSubTypes();
   }, [type]);
 
+
+
   const handleSave = async () => {
     setLoading(true);
-    setLoading(false);
+
+    try {
+      const response = await axios.post(
+        "https://storeconvo.com/php/edit.php",
+        new URLSearchParams({
+          id:expense.exp_id,
+          exp_date:expense.exp_date,
+          exp_type:"expenseTypes",
+          expsub_type:"hi",
+          exp_amount:amount,
+          exp_employee:selectedEmployee,
+          exp_note:note,
+          typ:"exp"
+        }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      if (response.data) {
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.error("Error saving expense:", error);
+      alert("Failed to save expense");
+    } finally {
+      setLoading(false);
+    }
   };
+
 
   return (
     <div>
@@ -99,7 +132,7 @@ function EditExpenseModal({ expense }) {
                 <option value="">Select expense type</option>
                 {expenseTypes.map((expenseType, index) => (
                   <option key={index} value={expenseType.type_name}>
-                    {expenseType.type_name}
+                    {expenseType.exp_type}
                   </option>
                 ))}
               </select>
@@ -164,7 +197,7 @@ function EditExpenseModal({ expense }) {
               </Label>
               <Input
                 id="note"
-                value={note}
+                value={expense.exp_note}
                 onChange={(e) => setNote(e.target.value)}
                 placeholder="Enter note (optional)"
                 className="col-span-3"
