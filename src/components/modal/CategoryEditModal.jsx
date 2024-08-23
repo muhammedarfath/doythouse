@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button } from "../../components/ui/button";
-import { FiPlus } from "react-icons/fi";
 import {
   Dialog,
   DialogContent,
@@ -13,57 +12,18 @@ import {
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import axios from "axios";
+import { AiFillEdit } from "react-icons/ai";
 
-function CategoryModal() {
-  const [categoryName, setCategoryName] = useState("");
-  const [description, setDescription] = useState("");
+function CategoryEditModal({category}) {
   const [loading, setLoading] = useState(false);
-
-  const handleSave = async () => {
-    if (!categoryName || !description) {
-      alert("Please fill out all fields");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const response = await axios.post(
-        "https://storeconvo.com/php/add_category.php",
-        new URLSearchParams({
-          cat_name: categoryName,
-          cat_description: description,
-        }),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
-
-      if (response.data && response.status === 200) {
-        setCategoryName("");
-        setDescription("");
-        alert("Category added successfully");
-      } else {
-        alert("Something went wrong");
-      }
-    } catch (error) {
-      console.error("Error adding category:", error);
-      alert("Failed to add category");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="bg-[#308E87] hover:bg-[#308E87]">
-            <FiPlus className="text-white text-xl" />
-            Create New Category
-          </Button>
+          <AiFillEdit
+            className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+          />
         </DialogTrigger>
         <DialogContent className="sm:max-w-[900px]">
           <DialogHeader>
@@ -77,8 +37,7 @@ function CategoryModal() {
               </Label>
               <Input
                 id="category"
-                value={categoryName}
-                onChange={(e) => setCategoryName(e.target.value)}
+                value={category.cat_name}
                 className="col-span-3"
               />
             </div>
@@ -88,8 +47,7 @@ function CategoryModal() {
               </Label>
               <textarea
                 id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={category.cat_description}
                 className="col-span-3 p-2 border rounded"
               />
             </div>
@@ -97,7 +55,6 @@ function CategoryModal() {
           <DialogFooter>
             <Button
               type="submit"
-              onClick={handleSave}
               disabled={loading}
               className={`bg-[#308E87] hover:bg-[#308E87] ${
                 loading ? "cursor-not-allowed" : ""
@@ -112,4 +69,4 @@ function CategoryModal() {
   );
 }
 
-export default CategoryModal;
+export default CategoryEditModal;

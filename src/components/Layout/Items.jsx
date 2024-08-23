@@ -13,8 +13,9 @@ import { TiUserOutline } from "react-icons/ti";
 import { TbTruck } from "react-icons/tb";
 import { TbReportAnalytics } from "react-icons/tb";
 import { GiThermometerScale } from "react-icons/gi";
+import { RiShoppingCart2Line } from "react-icons/ri";
 
-function  Items({ open }) {
+function Items({ open }) {
   const masterSubItems = [
     {
       label: "Shop Information",
@@ -54,6 +55,13 @@ function  Items({ open }) {
     },
   ];
 
+  const PurchaseItems = [
+    {
+      label: "New Purchase Entry",
+      path: "/purchaseentry",
+    },
+  ];
+
   return (
     <ul
       className={`pt-6 ${open ? "pl-4" : "pl-1"} transition-all duration-300`}
@@ -86,6 +94,14 @@ function  Items({ open }) {
       />
       <Link to="/supplier">
         <MenuItem icon={TbTruck} label="Supplier" open={open} />
+      </Link>
+      <Link>
+        <MenuItem
+          icon={RiShoppingCart2Line}
+          label="Purchase Entry"
+          open={open}
+          subItems={PurchaseItems}
+        />
       </Link>
       <Link to="/salesreport">
         <MenuItem

@@ -4,6 +4,12 @@ import ShopInformationModal from "@/components/modal/ShopInformationModal";
 import { LayoutGridDemo } from "@/components/ImgGrid/LayoutGridDemo";
 
 function Shopinformation() {
+
+  
+
+
+
+
   return (
     <>
       <div className="flex items-center justify-center w-full">

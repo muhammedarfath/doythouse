@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { RiApps2Line } from "react-icons/ri";
 import Items from "./Items";
 import Header from "./Header";
 import { Outlet } from "react-router-dom";
 import logo from "../../assets/logo.jpg";
+import { RiAppsLine } from "react-icons/ri";
 
 function Sidebar() {
   const [open, setOpen] = useState(true);
@@ -21,7 +21,7 @@ function Sidebar() {
           } text-2xl text-[#308e87] transition-transform duration-300`}
           onClick={() => setOpen(!open)}
         >
-          <RiApps2Line />
+          <RiAppsLine />
         </div>
 
         <div className="flex gap-x-2 p-5 items-center border-b-2 bg-[#308E87]">

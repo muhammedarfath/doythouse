@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -8,57 +8,38 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-
-import CategoryModal from "@/components/modal/CategoryModal";
+import { AiFillEdit } from "react-icons/ai";
 import { BiSolidTrashAlt } from "react-icons/bi";
-
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
+import axios from "axios";
+import CategoryModal from "@/components/modal/CategoryModal";
+import CategoryEditModal from "@/components/modal/CategoryEditModal";
 
 function Category() {
+  const [category, setCategory] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=category"
+        );
+        setCategory(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const handleDelete = async (categoryId) => {
+    try {
+      await axios.delete(`your-backend-url/categories/${categoryId}`);
+    } catch (error) {
+      console.error("Error deleting category:", error);
+    }
+  };
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-screen-xl mx-auto">
@@ -67,7 +48,7 @@ function Category() {
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
             <div className="flex items-center justify-between mb-4">
               <div className="flex gap-2">
-                <span className="">Serach</span>
+                <span className="">Search</span>
                 <input
                   type="text"
                   placeholder="Search..."
@@ -78,38 +59,34 @@ function Category() {
             </div>
 
             <Table className="w-full">
-              <TableCaption>A list of your recent invoices.</TableCaption>
+              <TableCaption>A list of your categories.</TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[50px]">Select</TableHead>
-                  <TableHead className="w-[100px]">Invoice</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Method</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
+                  <TableHead>Category Name</TableHead>
+                  <TableHead>Description</TableHead>
                   <TableHead className="text-center w-[120px]">
                     Actions
                   </TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
-                {invoices.map((invoice, index) => (
+              <TableBody className="text-black">
+                {category.map((category, index) => (
                   <TableRow key={index}>
                     <TableCell>
                       <input type="checkbox" />
                     </TableCell>
                     <TableCell className="font-medium">
-                      {invoice.invoice}
+                      {category.cat_name}
                     </TableCell>
-                    <TableCell>{invoice.paymentStatus}</TableCell>
-                    <TableCell>{invoice.paymentMethod}</TableCell>
-                    <TableCell className="text-right">
-                      {invoice.totalAmount}
-                    </TableCell>
+                    <TableCell>{category.cat_description}</TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110  cursor-pointer" />
-
-                        <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
+                        <CategoryEditModal category={category} />
+                        <BiSolidTrashAlt
+                          className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+                          onClick={() => handleDelete()}
+                        />{" "}
                       </div>
                     </TableCell>
                   </TableRow>
