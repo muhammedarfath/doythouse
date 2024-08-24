@@ -19,6 +19,15 @@ function AddProduct() {
     category: {},
     price: {},
   });
+  const [productname,setProductName] = useState("")
+  // const [productname,setProductDescription] = useState("")
+  // const [productname,setProductName] = useState("")
+  // const [productname,setProductName] = useState("")
+  // const [productname,setProductName] = useState("")
+  // const [productname,setProductName] = useState("")
+  // const [productname,setProductName] = useState("")
+
+  console.log(productname);
 
   const handleSectionChange = (section, data) => {
     setProductData((prevData) => ({
@@ -30,30 +39,31 @@ function AddProduct() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
+   
 
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_product.php",
         new URLSearchParams({
-          productname: productData.details.product_name,
-          productdescription: productData.details.description,
-          productusercode: productData.details.usercode,
-          unitid: productData.details.unit,
-          reorderlevel: productData.details.reorder_level,
-          hsn: productData.details.hsn_code,
-          cgst: productData.details.cgst,
-          sgst: productData.details.sgst,
-          salesunit: productData.details.sales_unit,
-          packsize: productData.details.size,
-          cateoryid: productData.category.category,
-          subcategoryid: productData.category.subcategory,
-          mrp: productData.price.mrp,
-          purchaseprice: productData.price.purchasePrice,
-          retailprice: productData.price.retailPrice,
-          wholesaleprice: productData.price.wholesalePrice,
-          specialprice: productData.price.specialPrice,
-          dealerprice: productData.price.dealerPrice,
-          openqty: productData.price.openQty,
+          productName: productname,
+          productDescription: "",
+          productUserCode: "",
+          unitId: 2,
+          reorderLevel: "",
+          hsn: "",
+          cgst: "",
+          sgst: "",
+          salesUnit: "",
+          packSize: "",
+          cateoryId: 5,
+          subCategoryId: 5,
+          mrp: "",
+          purchasePrice: "",
+          retailPrice: "",
+          wholesalePrice: "",
+          specialPrice: "",
+          dealerPrice: "",
+          openQty: "",
         }),
         {
           headers: {
@@ -61,6 +71,7 @@ function AddProduct() {
           },
         }
       );
+      console.log(response);
 
       if (response.data) {
         console.log(response.data.message);
@@ -80,7 +91,6 @@ function AddProduct() {
       setLoading(false);
     }
   };
-  console.log(productData);
 
   return (
     <div className="flex items-center justify-center">
@@ -221,8 +231,9 @@ function AddProduct() {
               <div className="flex-grow lg:w-96">
                 {activeSection === "details" && (
                   <AddProductDetails
-                    data={productData.details}
-                    onChange={(data) => handleSectionChange("details", data)}
+                  productname={productname}
+                  setProductName={setProductName}
+                  
                   />
                 )}
                 {activeSection === "gallery" && (
@@ -257,7 +268,8 @@ function AddProduct() {
               </div>
             </div>
           </div>
-          <div className="lg:hidden md:hidden w-full flex items-center justify-center gap-3  rounded-xl shadow-lg bg-white h-20">
+
+          <div className="lg:hidden md:hidden w-full flex items-center justify-center gap-3 p-3 rounded-xl shadow-lg bg-white h-20">
             <div
               className="flex flex-col items-center pr-2 cursor-pointer rounded-lg"
               onClick={() => setActiveSection("details")}
@@ -334,6 +346,7 @@ function AddProduct() {
               </div>
             </div>
           </div>
+
           <div className="lg:hidden md:hidden flex justify-end">
             <button
               onClick={handleSubmit}

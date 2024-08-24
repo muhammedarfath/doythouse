@@ -13,6 +13,7 @@ import {
 import { ModeToggle } from "../darkmode/mode-toggle";
 import { Toaster } from "react-hot-toast";
 import { RiMenu2Fill } from "react-icons/ri";
+import MobileSidebar from "./MobileSidebar";
 
 function Header({ open }) {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -127,10 +128,7 @@ function Header({ open }) {
           isSidebarOpen ? "translate-x-0" : "-translate-x-64"
         }`}
       >
-        <div className="p-4">
-          <h2 className="text-xl font-semibold">Sidebar</h2>
-          {/* Add your sidebar content here */}
-        </div>
+      <MobileSidebar  />
       </div>
     </div>
   );

@@ -1,13 +1,10 @@
 import React from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 
-function AddProductDetails({ data, onChange }) {
+function AddProductDetails({ productname,setProductName }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    onChange({
-      ...data,
-      [name]: value,
-    });
+    setProductName(value)
   };
 
   return (
@@ -19,13 +16,13 @@ function AddProductDetails({ data, onChange }) {
             type="text"
             name="product_name"
             id="product_name"
-            value={data.product_name || ""}
+            value={productname || ""}
             onChange={handleChange}
             className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Product Name"
           />
         </div>
-
+{/* 
         <div className="md:col-span-5">
           <label htmlFor="description">Description</label>
           <textarea
@@ -144,7 +141,7 @@ function AddProductDetails({ data, onChange }) {
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Size"
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

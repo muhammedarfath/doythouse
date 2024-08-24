@@ -12,6 +12,7 @@ import {
 import { AiFillEdit } from "react-icons/ai";
 import { MdOutlineDelete } from "react-icons/md";
 import { CiFilter } from "react-icons/ci";
+import * as XLSX from "xlsx";
 
 const salesData = [
   {
@@ -45,6 +46,13 @@ function SalesReport() {
     setIsFilterVisible(!isFilterVisible);
   };
 
+  const downloadExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(salesData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sales Report");
+    XLSX.writeFile(workbook, "sales_report.xlsx");
+  };
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-screen-xl mx-auto">
@@ -67,7 +75,10 @@ function SalesReport() {
                 >
                   <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
                 </div>
-                <Button className="bg-[#308E87] hover:bg-[#308E87]">
+                <Button
+                  className="bg-[#308E87] hover:bg-[#308E87]"
+                  onClick={downloadExcel}
+                >
                   Download XLS
                 </Button>
               </div>
@@ -76,7 +87,10 @@ function SalesReport() {
             {isFilterVisible && (
               <div className="flex flex-wrap gap-4 mb-4">
                 <div className="flex flex-col">
-                  <label htmlFor="from-date" className="text-sm font-medium">
+                  <label
+                    htmlFor="from-date"
+                    className="text-sm font-medium"
+                  >
                     From Date
                   </label>
                   <input
@@ -136,16 +150,27 @@ function SalesReport() {
                     <TableCell>
                       <input type="checkbox" />
                     </TableCell>
-                    <TableCell className="font-medium">{index + 1}</TableCell>
+                    <TableCell className="font-medium">
+                      {index + 1}
+                    </TableCell>
                     <TableCell>{sale.date}</TableCell>
                     <TableCell>{sale.invoiceNumber}</TableCell>
                     <TableCell>{sale.customer}</TableCell>
-                    <TableCell className="text-right">{sale.gstAmount}</TableCell>
-                    <TableCell className="text-right">{sale.discount}</TableCell>
-                    <TableCell className="text-right">{sale.netTotal}</TableCell>
-                    <TableCell className="text-right">{sale.credit}</TableCell>
-                    <TableCell className="text-right">{sale.profit}</TableCell>
-                    
+                    <TableCell className="text-right">
+                      {sale.gstAmount}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {sale.discount}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {sale.netTotal}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {sale.credit}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {sale.profit}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
