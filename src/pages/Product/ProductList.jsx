@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import {
   Table,
@@ -15,34 +15,28 @@ import { MdOutlineDelete } from "react-icons/md";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { BiSolidTrashAlt } from "react-icons/bi";
-
-const products = [
-  {
-    id: 1,
-    image:
-      "https://5.imimg.com/data5/SELLER/Default/2023/12/370243758/WM/QC/JF/810231/party-wear-kurti.jpeg",
-    name: "Aline Kurthi Printed",
-    code: "CH003",
-    hsn: "6109",
-    cgst: "9%",
-    sgst: "9%",
-    description:
-      "A beautifully printed Aline Kurthi made from high-quality fabric.",
-  },
-  {
-    id: 2,
-    image:
-      "https://media.shopkund.com/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/p/r/prt9929-1viscose-straight-kurti-with-plain-in-sky-blue-kti1872_1_.jpg",
-    name: "Cotton Palazzo Set",
-    code: "PL001",
-    hsn: "6204",
-    cgst: "5%",
-    sgst: "5%",
-    description: "Comfortable cotton Palazzo set perfect for casual wear.",
-  },
-];
+import axios from "axios";
 
 function ProductList() {
+  const [products, setProduct] = useState([]);
+
+  useEffect(() => {
+    const fetchProductList = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=product"
+        );
+        setProduct(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchProductList();
+  }, []);
+
+  
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-screen-xl mx-auto">
@@ -67,7 +61,6 @@ function ProductList() {
             </div>
 
             <Table className="w-full">
-              <TableCaption>A list of your products.</TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[50px]">Select</TableHead>
@@ -84,33 +77,46 @@ function ProductList() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {products.map((product, index) => (
-                  <TableRow key={product.id}>
-                    <TableCell>
-                      <input type="checkbox" />
-                    </TableCell>
-                    <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-10 h-15 object-cover rounded"
-                      />
-                    </TableCell>
-                    <TableCell>{product.name}</TableCell>
-                    <TableCell className="text-right">{product.code}</TableCell>
-                    <TableCell>{product.hsn}</TableCell>
-                    <TableCell>{product.cgst}</TableCell>
-                    <TableCell>{product.sgst}</TableCell>
-                    <TableCell className="text-center">
-                      <div className="flex justify-center gap-4">
-                        <ProductDetailsModal />
-                        <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110  cursor-pointer" />
-                        <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
-                      </div>
+                {products.length > 0 ? (
+                  products.map((product, index) => (
+                    <TableRow key={product.id}>
+                      <TableCell>
+                        <input type="checkbox" />
+                      </TableCell>
+                      <TableCell className="font-medium">{index + 1}</TableCell>
+                      <TableCell>
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-10 h-15 object-cover rounded"
+                        />
+                      </TableCell>
+                      <TableCell>{product.name}</TableCell>
+                      <TableCell className="text-right">
+                        {product.code}
+                      </TableCell>
+                      <TableCell>{product.hsn}</TableCell>
+                      <TableCell>{product.cgst}</TableCell>
+                      <TableCell>{product.sgst}</TableCell>
+                      <TableCell className="text-center">
+                        <div className="flex justify-center gap-4">
+                          <ProductDetailsModal />
+                          <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
+                          <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan="8"
+                      className="text-center text-gray-500 py-4"
+                    >
+                      No products found.
                     </TableCell>
                   </TableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </div>

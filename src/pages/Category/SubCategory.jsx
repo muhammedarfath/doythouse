@@ -12,37 +12,8 @@ import { AiFillEdit } from "react-icons/ai";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import SubModal from "@/components/modal/SubModal";
 import SubCategoryEditModal from "@/components/modal/SubCategoryEditModal";
+import axios from "axios";
 
-const subcategories = [
-  {
-    categoryName: "Electronics",
-    subcategoryName: "Mobile Phones",
-    hsn: "8517",
-    cgst: "9%",
-    sgst: "9%",
-  },
-  {
-    categoryName: "Clothing",
-    subcategoryName: "Men's T-Shirts",
-    hsn: "6109",
-    cgst: "6%",
-    sgst: "6%",
-  },
-  {
-    categoryName: "Furniture",
-    subcategoryName: "Office Chairs",
-    hsn: "9401",
-    cgst: "12%",
-    sgst: "12%",
-  },
-  {
-    categoryName: "Groceries",
-    subcategoryName: "Organic Vegetables",
-    hsn: "0709",
-    cgst: "5%",
-    sgst: "5%",
-  },
-];
 
 
 
@@ -56,6 +27,7 @@ function SubCategory() {
         const response = await axios.get(
           "https://storeconvo.com/php/fetch.php?typ=subcategory"
         );
+        console.log(response);
         setSubCategory(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -108,16 +80,16 @@ function SubCategory() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {subcategories.map((subcategory, index) => (
+                {subCategory.map((subcategory, index) => (
                   <TableRow key={index}>
                     <TableCell>
                       <input type="checkbox" />
                     </TableCell>
                     <TableCell className="font-medium">
-                      {subcategory.categoryName}
+                      {subcategory.cat_id}
                     </TableCell>
-                    <TableCell>{subcategory.subcategoryName}</TableCell>
-                    <TableCell>{subcategory.hsn}</TableCell>
+                    <TableCell>{subcategory.subcat_name}</TableCell>
+                    <TableCell>{subcategory.hsnacs}</TableCell>
                     <TableCell>{subcategory.cgst}</TableCell>
                     <TableCell>{subcategory.sgst}</TableCell>
                     <TableCell className="text-center">

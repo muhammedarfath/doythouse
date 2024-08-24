@@ -228,7 +228,7 @@ function ExpenseModal() {
                   value={selectedSubExpenseType}
                   onChange={handleSubExpenseTypeChange}
                 >
-                  <option value="">Select expense type</option>
+                  <option value="">Select Sub expense type</option>
                   {expenseTypes.map((type, index) => (
                     <option key={index} value={type.type}>
                       {type.exp_type}

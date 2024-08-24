@@ -9,10 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import { AiFillEdit } from "react-icons/ai";
-import { MdOutlineDelete } from "react-icons/md";
-import { FiPlus } from "react-icons/fi";
-import { Link } from "react-router-dom";
 import EmployeeModal from "@/components/modal/EmployeeModal";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import axios from "axios";

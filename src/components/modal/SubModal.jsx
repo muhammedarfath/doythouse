@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Dialog,
@@ -16,7 +16,8 @@ import { FiPlus } from "react-icons/fi";
 import toast from "react-hot-toast";
 
 function SubModal() {
-  const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [subCategoryName, setSubCategoryName] = useState("");
   const [hsn, setHsn] = useState("");
   const [cgst, setCgst] = useState("");
@@ -25,17 +26,16 @@ function SubModal() {
   const [open, setOpen] = useState(false);
 
   const handleSave = async () => {
-    
     setLoading(true);
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_subcategory.php",
         new URLSearchParams({
-          cat_id:4,
-          subcat_name:subCategoryName,
-          hsnacs:hsn,
-          cgst:cgst,
-          sgst:sgst
+          cat_id: selectedCategory,
+          subcat_name: subCategoryName,
+          hsnacs: hsn,
+          cgst: cgst,
+          sgst: sgst,
         }),
         {
           headers: {
@@ -43,24 +43,35 @@ function SubModal() {
           },
         }
       );
-      if (response){
-        console.log(response);
+      console.log(response);
+      if (response.status === 200) {
+        toast.success("Subcategory added successfully!");
+        setOpen(false);
+        // Reset form or handle success
       }
-
-      // if (response.data && response.status === 200) {
-      //   setCategoryName("");
-      //   setDescription("");
-      //   alert("Category added successfully");
-      // } else {
-      //   alert("Something went wrong");
-      // }
     } catch (error) {
-      console.error("Error adding category:", error);
-      alert("Failed to add category");
+      console.error("Error adding subcategory:", error);
+      toast.error("Failed to add subcategory.");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=category"
+        );
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
 
   return (
     <div>
@@ -74,7 +85,7 @@ function SubModal() {
             Create New Sub Category
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[900px] ">
+        <DialogContent className="sm:max-w-[900px]">
           <DialogHeader>
             <DialogTitle>Add Sub Category</DialogTitle>
             <DialogDescription>Add your Sub Category</DialogDescription>
@@ -82,18 +93,20 @@ function SubModal() {
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="category" className="text-right">
-                Category Name
+                Category
               </Label>
               <select
                 id="category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
                 className="col-span-3 p-2 border rounded"
               >
-                <option value="">Select a category</option>
-                <option value="category1">Category 1</option>
-                <option value="category2">Category 2</option>
-                <option value="category3">Category 3</option>
+                <option value="">Choose Category</option>
+                {categories.map((cat) => (
+                  <option key={cat.cat_id} value={cat.cat_id}>
+                    {cat.cat_name}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">

@@ -36,7 +36,7 @@ function ExpenseList() {
     fetchExpenseList();
   }, []);
 
-  console.log(expenses);
+
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);

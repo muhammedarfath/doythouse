@@ -39,12 +39,12 @@ function AddProductDetails({ data, onChange }) {
         </div>
 
         <div className="md:col-span-1">
-          <label htmlFor="zipcode">Product User Code</label>
+          <label htmlFor="usercode">Product User Code</label>
           <input
             type="text"
-            name="zipcode"
-            id="zipcode"
-            value={data.zipcode || ""}
+            name="usercode"
+            id="usercode"
+            value={data.usercode || ""}
             onChange={handleChange}
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Code"
@@ -144,14 +144,6 @@ function AddProductDetails({ data, onChange }) {
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Size"
           />
-        </div>
-
-        <div className="md:col-span-5 text-right">
-          <div className="inline-flex items-end border rounded-md p-2">
-            <button className="hover:text-black font-bold py-2 px-4 rounded">
-              <FaArrowRightLong />
-            </button>
-          </div>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { FaArrowRightLong } from "react-icons/fa6";
 import SubModal from "@/components/modal/SubModal";
 import CategoryModal from "@/components/modal/CategoryModal";
@@ -11,36 +12,41 @@ function ProductCategory({ data, onChange }) {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const fetchedCategories = [
-        { id: "category1", name: "Category 1" },
-        { id: "category2", name: "Category 2" },
-        { id: "category3", name: "Category 3" },
-      ];
-      setCategories(fetchedCategories);
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=category"
+        );
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
     };
 
     fetchCategories();
   }, []);
+  console.log(categories);
+  console.log(subcategories);
+  console.log(selectedCategory);
 
   useEffect(() => {
-    if (selectedCategory) {
-      const fetchSubcategories = async () => {
-        const fetchedSubcategories = [
-          { id: "subcategory1", name: "SubCategory 1" },
-          { id: "subcategory2", name: "SubCategory 2" },
-          { id: "subcategory3", name: "SubCategory 3" },
-        ];
-        setSubcategories(fetchedSubcategories);
-      };
+    const fetchSubCategories = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=subcategory"
+        );
+        setSubcategories(response.data);
+      } catch (error) {
+        console.error("Error fetching subcategories:", error);
+      }
+    };
 
-      fetchSubcategories();
-    }
-  }, [selectedCategory]);
+    fetchSubCategories();
+  }, []);
 
   const handleCategoryChange = (e) => {
     const newCategory = e.target.value;
+    console.log(newCategory,"this new category");
     setSelectedCategory(newCategory);
-    setSelectedSubcategory(""); 
     onChange({
       ...data,
       category: newCategory,
@@ -71,22 +77,13 @@ function ProductCategory({ data, onChange }) {
           >
             <option value="">Choose Category</option>
             {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
+              <option key={cat.cat_id} value={cat.cat_id}>
+                {cat.cat_name}
               </option>
             ))}
           </select>
 
-          <div className="md:col-span-1">
-            <label htmlFor="code">Product User Code</label>
-            <input
-              type="text"
-              name="code"
-              id="code"
-              className="transition-all flex w-28 items-center h-10 border mt-1 rounded px-4 bg-[#fff]"
-              placeholder="Code"
-            />
-          </div>
+
           <CategoryModal />
         </div>
 
@@ -98,24 +95,17 @@ function ProductCategory({ data, onChange }) {
             className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             value={selectedSubcategory}
             onChange={handleSubcategoryChange}
-            disabled={!selectedCategory}
           >
-            <option value="">Choose SubCategory</option>
-            {subcategories.map((sub) => (
-              <option key={sub.id} value={sub.id}>
-                {sub.name}
-              </option>
-            ))}
+            <option value="">Choose Subcategory</option>
+            {subcategories
+              .filter(subcat => subcat.cat_id === selectedCategory)
+              .map((subcat) => (
+                <option key={subcat.subcat_id} value={subcat.subcat_id}>
+                  {subcat.subcat_name}
+                </option>
+              ))}
           </select>
           <SubModal />
-        </div>
-
-        <div className="md:col-span-5 text-right">
-          <div className="inline-flex items-end border rounded-md p-2">
-            <button className="hover:text-black font-bold py-2 px-4 rounded">
-              <FaArrowRightLong />
-            </button>
-          </div>
         </div>
       </div>
     </div>

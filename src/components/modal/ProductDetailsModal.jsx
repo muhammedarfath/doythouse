@@ -22,7 +22,7 @@ function ProductDetailsModal() {
         <DialogTrigger asChild>
           <AiFillEye className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[1200px] max-h-[900px] overflow-scroll">
+        <DialogContent className="sm:max-w-[1200px] max-h-[900px] overflow-scroll lg:mt-0 mt-40">
           <DialogHeader>
             <DialogTitle>Add Category</DialogTitle>
           </DialogHeader>
