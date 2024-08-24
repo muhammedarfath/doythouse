@@ -13,80 +13,11 @@ import {
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { IoMdArrowRoundForward } from "react-icons/io";
+import { AiFillEdit } from "react-icons/ai";
 
-function CustomerInformationModal() {
-  const [formData, setFormData] = useState({
-    customerName: "",
-    contactNumber: "",
-    trialDate: "",
-    expectedDelivery: "",
-    itemCategory: "",
-    designerName: "",
-    orderNumber: "",
-    orderDate: "",
-    emergency: "",
-
-    // Measurements fields
-    yokeLength: "",
-    yokeRound: "",
-    fullLength: "",
-    upperBust: "",
-    bust: "",
-    underBust: "",
-    midWaist: "",
-    hip: "",
-    shoulder: "",
-    shoulderWidth: "",
-    slitLength: "",
-    slitRound: "",
-    sleeveType: "",
-    sleeveLength: "",
-    wrist: "",
-    threeFourth: "",
-    elbow: "",
-    armRound: "",
-    armHole: "",
-    neck: "",
-    frontNeck: "",
-    backNeck: "",
-    collarRound: "",
-    tuckPoint: "",
-    pointToPoint: "",
-
-    // Skirt & Pant fields
-    skirtFullLength: "",
-    seat: "",
-    thigh: "",
-    knee: "",
-    calf: "",
-    bottomRound: "",
-
-    // Options fields
-    pad: false,
-    zip: false,
-    backOpen: false,
-    frontOpen: false,
-    image: "",
-
-    // Additional fields
-    cutting: "",
-    stitching: "",
-    handWork: "",
-    measurer: "",
-    checker: "",
-    tailor: "",
-    dateIn: "",
-    completedDate: "",
-
-    // Payment Information
-    totalPrice: "",
-    advancedPrice: "",
-    balancePrice: "",
-
-    // Note
-    note: "",
-  });
-
+function EditCustomerDetailsModal() {
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState({});
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -95,96 +26,19 @@ function CustomerInformationModal() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add form submission logic here
-
-    // After successful submission, clear form fields if necessary
-    setFormData({
-      customerName: "",
-      contactNumber: "",
-      trialDate: "",
-      expectedDelivery: "",
-      itemCategory: "",
-      designerName: "",
-      orderNumber: "",
-      orderDate: "",
-      emergency: "",
-
-      // Measurements fields
-      yokeLength: "",
-      yokeRound: "",
-      fullLength: "",
-      upperBust: "",
-      bust: "",
-      underBust: "",
-      midWaist: "",
-      hip: "",
-      shoulder: "",
-      shoulderWidth: "",
-      slitLength: "",
-      slitRound: "",
-      sleeveType: "",
-      sleeveLength: "",
-      wrist: "",
-      threeFourth: "",
-      elbow: "",
-      armRound: "",
-      neck: "",
-      frontNeck: "",
-      backNeck: "",
-      collarRound: "",
-      tuckPoint: "",
-      pointToPoint: "",
-
-      // Skirt & Pant fields
-      skirtFullLength: "",
-      seat: "",
-      thigh: "",
-      knee: "",
-      calf: "",
-      bottomRound: "",
-
-      // Options fields
-      pad: false,
-      zip: false,
-      backOpen: false,
-      frontOpen: false,
-      image: "",
-
-      // Additional fields
-      cutting: "",
-      stitching: "",
-      handWork: "",
-      measurer: "",
-      checker: "",
-      tailor: "",
-      dateIn: "",
-      completedDate: "",
-
-      // Payment Information
-      totalPrice: "",
-      advancedPrice: "",
-      balancePrice: "",
-
-      // Note
-      note: "",
-    });
-  };
-
   return (
     <div>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="bg-[#308E87] hover:bg-[#308E87]">
-            <FiPlus className="text-white text-xl" />
-            Create New Customer
-          </Button>
+          <AiFillEdit
+            className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+            onClick={() => setOpen(true)}
+          />
         </DialogTrigger>
         <DialogContent className="lg:max-w-[90%] overflow-scroll lg:max-h-[90%] sm:max-w-[90px] mt-3 h-full">
           <DialogHeader>
-            <DialogTitle>Customer Information</DialogTitle>
-            <DialogDescription>Create New Information</DialogDescription>
+            <DialogTitle>Edit Customer Information</DialogTitle>
+            <DialogDescription>Edit Customer Information</DialogDescription>
           </DialogHeader>
           <form>
             <div className="p-4 sm:p-6 lg:p-8">
@@ -222,7 +76,10 @@ function CustomerInformationModal() {
                     className="w-full"
                   />
 
-                  <Label htmlFor="expected-delivery" className="text-md font-bold">
+                  <Label
+                    htmlFor="expected-delivery"
+                    className="text-md font-bold"
+                  >
                     Expected Delivery
                   </Label>
                   <Input
@@ -288,7 +145,6 @@ function CustomerInformationModal() {
                 </div>
               </div>
             </div>
-
 
             <div className="border-t  border-gray-300 my-6 pt-4 lg:flex md:flex gap-8">
               <div className="lg:w-1/3 md:w-1/3">
@@ -763,4 +619,4 @@ function CustomerInformationModal() {
   );
 }
 
-export default CustomerInformationModal;
+export default EditCustomerDetailsModal;

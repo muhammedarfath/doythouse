@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../../components/ui/button";
 import { FiPlus } from "react-icons/fi";
 import {
@@ -12,21 +12,24 @@ import {
 } from "../../components/ui/dialog";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
+import { AiFillEdit } from "react-icons/ai";
 
-function NewPurchaseEntryModal() {
+function EditPurchaseEntryModal() {
+    const [open, setOpen] = useState(false); 
+
   return (
     <div>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="bg-[#308E87] hover:bg-[#308E87]">
-            <FiPlus className="text-white text-xl" />
-            Create New Purchase Entry
-          </Button>
+          <AiFillEdit
+            className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+            onClick={() => setOpen(true)}
+          />
         </DialogTrigger>
         <DialogContent className="sm:max-w-[90%] md:max-w-[80%] lg:max-w-[70%] mx-auto mt-3 h-full overflow-scroll">
           <DialogHeader>
-            <DialogTitle>Add Purchase Entry</DialogTitle>
-            <DialogDescription>Enter the details of your new purchase entry</DialogDescription>
+            <DialogTitle>Edit Purchase Entry</DialogTitle>
+            <DialogDescription>Edit the details of your purchase entry</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             {/* First Row */}
@@ -138,4 +141,4 @@ function NewPurchaseEntryModal() {
   );
 }
 
-export default NewPurchaseEntryModal;
+export default EditPurchaseEntryModal;

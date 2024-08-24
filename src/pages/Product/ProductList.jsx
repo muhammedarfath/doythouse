@@ -16,6 +16,7 @@ import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import axios from "axios";
+import ProductEditModal from "@/components/modal/ProductEditModal";
 
 function ProductList() {
   const [products, setProduct] = useState([]);
@@ -101,7 +102,7 @@ function ProductList() {
                       <TableCell className="text-center">
                         <div className="flex justify-center gap-4">
                           <ProductDetailsModal />
-                          <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
+                          <ProductEditModal product={product}/>
                           <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                         </div>
                       </TableCell>

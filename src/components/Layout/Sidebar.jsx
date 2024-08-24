@@ -24,7 +24,7 @@ function Sidebar() {
           <RiAppsLine />
         </div>
 
-        <div className="flex gap-x-2 p-5 items-center border-b-2 bg-[#308E87]">
+        <div className="flex gap-x-2 p-5 items-center rounded-b-2xl   border-b-2 bg-[#308E87]">
           {open && (
             <img
               src={logo}

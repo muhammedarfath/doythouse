@@ -1,27 +1,33 @@
-import React, { useState, useEffect } from "react";
-import { FaArrowLeftLong } from "react-icons/fa6";
-import { Button } from "../../components/ui/button";
-import { FiPlus } from "react-icons/fi";
+import React, { useEffect } from "react";
 
-function ProductPrices({ data, onChange }) {
-  const [mrp, setMrp] = useState(data.mrp || "");
-  const [retailPrice, setRetailPrice] = useState(data.retailPrice || "");
-  const [dealerPrice, setDealerPrice] = useState(data.dealerPrice || "");
-  const [openQty, setOpenQty] = useState(data.openQty || "");
-  const [purchasePrice, setPurchasePrice] = useState(data.purchasePrice || "");
-  const [wholesalePrice, setWholesalePrice] = useState(data.wholesalePrice || "");
-  const [specialPrice, setSpecialPrice] = useState(data.specialPrice || "");
-
+function ProductPrices({
+  mrp,
+  purchasePrice,
+  retailPrice,
+  wholesalePrice,
+  specialPrice,
+  dealerPrice,
+  openQty,
+  setMrp,
+  setPurchasePrice,
+  setRetailPrice,
+  setWholesalePrice,
+  setSpecialPrice,
+  setDealerPrice,
+  setOpenQty,
+}) {
   useEffect(() => {
-    onChange({
-      mrp,
-      retailPrice,
-      dealerPrice,
-      openQty,
-      purchasePrice,
-      wholesalePrice,
-      specialPrice,
-    });
+    if (typeof onChange === 'function') {
+      onChange({
+        mrp,
+        retailPrice,
+        dealerPrice,
+        openQty,
+        purchasePrice,
+        wholesalePrice,
+        specialPrice,
+      });
+    }
   }, [mrp, retailPrice, dealerPrice, openQty, purchasePrice, wholesalePrice, specialPrice]);
 
   return (

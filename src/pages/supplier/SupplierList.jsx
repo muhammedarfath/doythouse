@@ -13,6 +13,7 @@ import { MdOutlineDelete } from "react-icons/md";
 import SupplierModal from "@/components/modal/SupplierModal";
 import { Button } from "../../components/ui/button";
 import { BiSolidTrashAlt } from "react-icons/bi";
+import EditSupplierModal from "@/components/modal/EditSupplierModal";
 
 const suppliers = [
   {
@@ -94,7 +95,7 @@ function SupplierList() {
                     </TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110  cursor-pointer" />
+                        <EditSupplierModal/>
                         <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                       </div>
                     </TableCell>

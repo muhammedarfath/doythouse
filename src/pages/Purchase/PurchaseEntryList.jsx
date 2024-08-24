@@ -11,6 +11,7 @@ import {
 import { AiFillEdit } from "react-icons/ai";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import NewPurchaseEntryModal from '@/components/modal/NewPurchaseEntryModal';
+import EditPurchaseEntryModal from '@/components/modal/EditPurchaseEntryModal';
 
 const purchaseEntries = [
   {
@@ -96,7 +97,7 @@ function PurchaseEntryList() {
                     <TableCell>{entry.sgst}</TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
+                        <EditPurchaseEntryModal/>
                         <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                       </div>
                     </TableCell>

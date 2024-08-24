@@ -13,34 +13,30 @@ import { FaArrowRight } from "react-icons/fa6";
 function AddProduct() {
   const [activeSection, setActiveSection] = useState("details");
   const [loading, setLoading] = useState(false);
-  const [productData, setProductData] = useState({
-    details: {},
-    gallery: {},
-    category: {},
-    price: {},
-  });
   const [productname,setProductName] = useState("")
-  // const [productname,setProductDescription] = useState("")
-  // const [productname,setProductName] = useState("")
-  // const [productname,setProductName] = useState("")
-  // const [productname,setProductName] = useState("")
-  // const [productname,setProductName] = useState("")
-  // const [productname,setProductName] = useState("")
-
-  console.log(productname);
-
-  const handleSectionChange = (section, data) => {
-    setProductData((prevData) => ({
-      ...prevData,
-      [section]: data,
-    }));
-  };
+  const [ProductDescription,setProductDescription] = useState("")
+  const [productUserCode,setProductUserCode] = useState("")
+  const [unitId,setUnitId] = useState("")
+  const [reorderLevel,setReorderLevel] = useState("")
+  const [hsn,setHsn] = useState("")
+  const [cgst,setCgst] = useState("")
+  const [sgst,setSgst] = useState("")
+  const [salesUnit,setSalesUnit] = useState("")
+  const [packSize,setPackSize] = useState("")
+  const [image,setSetImage] = useState("")
+  const [cateory,setCateory] = useState("")
+  const [subCategory,setSubCategory] = useState("")
+  const [mrp,setMrp] = useState("")
+  const [purchasePrice,setPurchasePrice] = useState("")
+  const [retailPrice,setRetailPrice] = useState("")
+  const [wholesalePrice,setWholesalePrice] = useState("")
+  const [specialPrice,setSpecialPrice] = useState("")
+  const [dealerPrice,setDealerPrice] = useState("")
+  const [openQty,setOpenQty] = useState("")
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-   
-
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_product.php",
@@ -48,15 +44,15 @@ function AddProduct() {
           productName: productname,
           productDescription: "",
           productUserCode: "",
-          unitId: 2,
+          unitId: "",
           reorderLevel: "",
           hsn: "",
           cgst: "",
           sgst: "",
           salesUnit: "",
           packSize: "",
-          cateoryId: 5,
-          subCategoryId: 5,
+          cateoryId: "",
+          subCategoryId: "",
           mrp: "",
           purchasePrice: "",
           retailPrice: "",
@@ -75,12 +71,6 @@ function AddProduct() {
 
       if (response.data) {
         console.log(response.data.message);
-        setProductData({
-          details: {},
-          gallery: {},
-          category: {},
-          price: {},
-        });
       } else {
         alert("Failed to save product");
       }
@@ -91,6 +81,28 @@ function AddProduct() {
       setLoading(false);
     }
   };
+
+
+  console.log("Product Name:", productname);
+  console.log("Product Description:", ProductDescription);
+  console.log("Product User Code:", productUserCode);
+  console.log("Unit ID:", unitId);
+  console.log("Reorder Level:", reorderLevel);
+  console.log("HSN:", hsn);
+  console.log("CGST:", cgst);
+  console.log("SGST:", sgst);
+  console.log("Sales Unit:", salesUnit);
+  console.log("Pack Size:", packSize);
+  console.log("image:", image);
+  console.log("Category ID:", cateory);
+  console.log("Sub-Category ID:", subCategory);
+  console.log("MRP:", mrp);
+  console.log("Purchase Price:", purchasePrice);
+  console.log("Retail Price:", retailPrice);
+  console.log("Wholesale Price:", wholesalePrice);
+  console.log("Special Price:", specialPrice);
+  console.log("Dealer Price:", dealerPrice);
+  console.log("Open Qty:", openQty);
 
   return (
     <div className="flex items-center justify-center">
@@ -233,25 +245,57 @@ function AddProduct() {
                   <AddProductDetails
                   productname={productname}
                   setProductName={setProductName}
+                  ProductDescription={ProductDescription}
+                  setProductDescription={setProductDescription}
+                  productUserCode={productUserCode}
+                  setProductUserCode={setProductUserCode}
+                  unitId={unitId}
+                  setUnitId={setUnitId}
+                  reorderLevel={reorderLevel}
+                  setReorderLevel={setReorderLevel}
+                  hsn={hsn}
+                  setHsn={setHsn}
+                  cgst={cgst}
+                  setCgst={setCgst}
+                  sgst={sgst}
+                  setSgst={setSgst}
+                  salesUnit={salesUnit}
+                  setSalesUnit={setSalesUnit}
+                  packSize={packSize}
+                  setPackSize={setPackSize}
                   
                   />
                 )}
                 {activeSection === "gallery" && (
                   <ProductGallery
-                    data={productData.gallery}
-                    onChange={(data) => handleSectionChange("gallery", data)}
+                  image={image}
+                  setSetImage={setSetImage}
                   />
                 )}
                 {activeSection === "category" && (
                   <ProductCategory
-                    data={productData.category}
-                    onChange={(data) => handleSectionChange("category", data)}
+                  cateory={cateory}
+                  setCateory={setCateory}
+                  subCategory={subCategory}
+                  setSubCategory={setSubCategory}
                   />
                 )}
                 {activeSection === "price" && (
                   <ProductPrices
-                    data={productData.price}
-                    onChange={(data) => handleSectionChange("price", data)}
+                  mrp={mrp}
+                  purchasePrice={purchasePrice}
+                  retailPrice={retailPrice}
+                  wholesalePrice={wholesalePrice}
+                  specialPrice={specialPrice}
+                  dealerPrice={dealerPrice}
+                  openQty={openQty}
+                  setMrp={setMrp}
+                  setPurchasePrice={setPurchasePrice}
+                  setRetailPrice={setRetailPrice}
+                  setWholesalePrice={setWholesalePrice}
+                  setSpecialPrice={setSpecialPrice}
+                  setDealerPrice={setDealerPrice}
+                  setOpenQty={setOpenQty}
                   />
                 )}
               </div>
@@ -269,7 +313,7 @@ function AddProduct() {
             </div>
           </div>
 
-          <div className="lg:hidden md:hidden w-full flex items-center justify-center gap-3 p-3 rounded-xl shadow-lg bg-white h-20">
+          <div className="lg:hidden md:hidden w-full flex items-center justify-center gap-3 p-3 rounded-full shadow-lg bg-white h-20">
             <div
               className="flex flex-col items-center pr-2 cursor-pointer rounded-lg"
               onClick={() => setActiveSection("details")}

@@ -13,7 +13,7 @@ import { LuBadgeCheck } from "react-icons/lu";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-function MobileSidebar() {
+function MobileSidebar({ onClose }) {
   const [openSubMenu, setOpenSubMenu] = useState({});
 
   const toggleSubMenu = (label) => {
@@ -27,46 +27,56 @@ function MobileSidebar() {
     { icon: <AiOutlineDashboard />, label: "Dashboard", path: "/" },
     {
       icon: <LuBadgeCheck />,
-      label: "Badge",
+      label: "Master",
       subItems: [
-        { label: "Shop Information" },
-        { label: "Expense List" },
-        { label: "Employee List" },
+        { label: "Shop Information", path: "/shopinformation" },
+        { label: "Expense List", path: "/expenselist" },
+        { label: "Employee List", path: "/employelist" },
       ],
     },
     {
       icon: <RiShoppingBag4Line />,
       label: "Product",
+      path: "/product",
       subItems: [
-        { label: "Add Product" },
-        { label: "Category" },
-        { label: "Subcategory" },
+        { label: "Add Product", path: "/addproduct" },
+        { label: "Category", path: "/category" },
+        { label: "Subcategory", path: "/subcategory" },
       ],
     },
-    { icon: <GiThermometerScale />, label: "Units" },
+    { icon: <GiThermometerScale />, label: "Units", path: "/units" },
     {
       icon: <TiUserOutline />,
       label: "Customer",
-      subItems: [{ label: "Customer List" }],
+      subItems: [{ label: "Customer List", path: "/CustomerList" }],
     },
-    { icon: <TbTruck />, label: "Supplier" },
+    { icon: <TbTruck />, label: "Supplier", path: "/supplier" },
     {
       icon: <RiShoppingCart2Line />,
       label: "Purchase Entry",
-      subItems: [{ label: "New Purchase Entry" }],
+      subItems: [{ label: "New Purchase Entry", path: "/purchaseentry" }],
     },
     {
       icon: <TbReportAnalytics />,
       label: "Sales Report",
-      subItems: [{ label: "Stock Report" }, { label: "Tax Report" }],
+      path: "/salesreport",
+      subItems: [
+        { label: "Stock Report", path: "/stockreport" },
+        { label: "Tax Report",path:"/taxreport" },
+      ],
     },
   ];
+  const handleItemClick = () => {
+    onClose(); 
+  };
+
+
   return (
-    <div className="p-4 bg-white text-black overflow-scroll h-screen">
+    <div className="p-4 bg-white text-black overflow-auto h-screen">
       <ul className="flex flex-col space-y-4">
         {sidebarItems.map((item, index) => (
           <li key={index}>
-            <Link  to={item.path}>
+            <Link to={item.path} onClick={handleItemClick}>
               <div
                 className="flex items-center space-x-2 p-2 hover:bg-[#D8E9E7] rounded-md cursor-pointer"
                 onClick={() => item.subItems && toggleSubMenu(item.label)}
@@ -94,6 +104,7 @@ function MobileSidebar() {
                       <Link
                         to={subItem.path}
                         className="flex items-center space-x-2 p-2 hover:bg-[#EAF6F5] rounded-md cursor-pointer"
+                        onClick={handleItemClick}
                       >
                         <span className="w-1 h-1 bg-black rounded-full"></span>
                         <span className="text-sm">{subItem.label}</span>

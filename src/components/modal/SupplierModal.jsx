@@ -22,7 +22,7 @@ import {
               Add New Supplier
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[900px]">
+          <DialogContent className="sm:max-w-[90px] mt-3 h-full overflow-scroll">
             <DialogHeader>
               <DialogTitle>Add New Supplier</DialogTitle>
               <DialogDescription>Add Your Supplier Details</DialogDescription>

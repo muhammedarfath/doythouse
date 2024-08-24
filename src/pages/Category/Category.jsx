@@ -60,7 +60,7 @@ function Category() {
         <div className="flex flex-col gap-6 mt-8">
           <h2 className="font-semibold text-xl text-black">Category List</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 gap-8">
               <div className="flex gap-2">
                 <span className="">Search</span>
                 <input

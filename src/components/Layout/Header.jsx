@@ -21,6 +21,10 @@ function Header({ open }) {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
+
 
   return (
     <div>
@@ -34,45 +38,13 @@ function Header({ open }) {
           className={`flex-grow max-w-xl ${
             isSidebarOpen ? "ml-72" : "ml-48"
           } transition-all duration-300 w-full`}
-        >
-          {/* <form className="lg:flex md:flex hidden items-center w-full">
-            <label htmlFor="simple-search" className="sr-only">
-              Search
-            </label>
-            <div className="relative w-full">
-              <input
-                type="text"
-                id="simple-search"
-                className="bg-[#F9F7F6] border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-black focus:border-black block w-full pl-10 pr- py-4"
-                placeholder="Search branch name..."
-                required
-              />
-              <div className="absolute inset-y-0 right-4 flex items-center pl-3">
-                <svg
-                  className="w-5 h-5 text-gray-500"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 19l-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </form> */}
-        </div>
+        ></div>
         <div className="flex justify-between items-center w-full">
           <div
             className="p-1.5 lg:hidden md:hidden rounded-md border border-gray-200 mt-5 cursor-pointer"
             onClick={toggleSidebar}
           >
-            <RiMenu2Fill className="text-2xl cursor-pointer"/>
+            <RiMenu2Fill className="text-2xl cursor-pointer" />
           </div>
           <div></div>
 
@@ -128,7 +100,7 @@ function Header({ open }) {
           isSidebarOpen ? "translate-x-0" : "-translate-x-64"
         }`}
       >
-      <MobileSidebar  />
+        <MobileSidebar onClose={closeSidebar} />
       </div>
     </div>
   );

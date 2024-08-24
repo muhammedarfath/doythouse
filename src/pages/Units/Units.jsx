@@ -12,6 +12,7 @@ import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { Button } from "../../components/ui/button"; 
 import { useState } from "react";
 import UnitModal from "@/components/modal/UnitModal";
+import EditUnitModal from "@/components/modal/EditUnitModal";
 
 const units = [
   {
@@ -65,12 +66,12 @@ function Units() {
               <TableBody>
                 {units.map((unit, index) => (
                   <TableRow key={unit.id}>
-                    <TableCell>{index + 1}</TableCell> {/* SiNo */}
+                    <TableCell>{index + 1}</TableCell> 
                     <TableCell className="font-medium">{unit.unitName}</TableCell>
                     <TableCell>{unit.unitCode}</TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
+                        <EditUnitModal/>
                         <AiFillDelete className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                       </div>
                     </TableCell>

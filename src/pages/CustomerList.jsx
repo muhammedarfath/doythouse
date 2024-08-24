@@ -16,6 +16,7 @@ import ProductDetailsModal from "@/components/modal/ProductDetailsModal";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import CustomerInformationModal from "@/components/modal/CustomerInformationModal";
 import { CiFilter } from "react-icons/ci";
+import EditCustomerDetailsModal from "@/components/modal/EditCustomerDetailsModal";
 
 const orders = [
   {
@@ -168,7 +169,7 @@ function CustomerList() {
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-3">
                         <ProductDetailsModal />
-                          <AiFillEdit className="text-[#495057] text-xl transition-transform transform hover:scale-110  cursor-pointer" />
+                        <EditCustomerDetailsModal/>
                           <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                       </div>
                     </TableCell>

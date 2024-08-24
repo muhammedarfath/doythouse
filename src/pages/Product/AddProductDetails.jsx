@@ -1,10 +1,64 @@
 import React from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 
-function AddProductDetails({ productname,setProductName }) {
+function AddProductDetails({
+  productname,
+  setProductName,
+  ProductDescription,
+  setProductDescription,
+  productUserCode,
+  setProductUserCode,
+  unitId,
+  setUnitId,
+  reorderLevel,
+  setReorderLevel,
+  hsn,
+  setHsn,
+  cgst,
+  setCgst,
+  sgst,
+  setSgst,
+  salesUnit,
+  setSalesUnit,
+  packSize,
+  setPackSize,
+}) {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProductName(value)
+    switch (name) {
+      case "product_name":
+        setProductName(value);
+        break;
+      case "description":
+        setProductDescription(value);
+        break;
+      case "usercode":
+        setProductUserCode(value);
+        break;
+      case "unit":
+        setUnitId(value);
+        break;
+      case "reorder_level":
+        setReorderLevel(value);
+        break;
+      case "hsn_code":
+        setHsn(value);
+        break;
+      case "cgst":
+        setCgst(value);
+        break;
+      case "sgst":
+        setSgst(value);
+        break;
+      case "sales_unit":
+        setSalesUnit(value);
+        break;
+      case "size":
+        setPackSize(value);
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -22,13 +76,13 @@ function AddProductDetails({ productname,setProductName }) {
             placeholder="Product Name"
           />
         </div>
-{/* 
+
         <div className="md:col-span-5">
           <label htmlFor="description">Description</label>
           <textarea
             name="description"
             id="description"
-            value={data.description || ""}
+            value={ProductDescription || ""}
             onChange={handleChange}
             className="border rounded p-4 w-full bg-[#fff]"
             placeholder="Description"
@@ -41,7 +95,7 @@ function AddProductDetails({ productname,setProductName }) {
             type="text"
             name="usercode"
             id="usercode"
-            value={data.usercode || ""}
+            value={productUserCode || ""}
             onChange={handleChange}
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Code"
@@ -54,7 +108,7 @@ function AddProductDetails({ productname,setProductName }) {
             <input
               name="unit"
               id="unit"
-              value={data.unit || ""}
+              value={unitId || ""}
               onChange={handleChange}
               placeholder="Unit"
               className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
@@ -68,7 +122,7 @@ function AddProductDetails({ productname,setProductName }) {
             <input
               name="reorder_level"
               id="reorder_level"
-              value={data.reorder_level || ""}
+              value={reorderLevel || ""}
               onChange={handleChange}
               placeholder="Re-Level"
               className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
@@ -82,7 +136,7 @@ function AddProductDetails({ productname,setProductName }) {
             <input
               name="hsn_code"
               id="hsn_code"
-              value={data.hsn_code || ""}
+              value={hsn || ""}
               onChange={handleChange}
               placeholder="Code"
               className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
@@ -96,7 +150,7 @@ function AddProductDetails({ productname,setProductName }) {
             type="text"
             name="cgst"
             id="cgst"
-            value={data.cgst || ""}
+            value={cgst || ""}
             onChange={handleChange}
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="CGST"
@@ -109,7 +163,7 @@ function AddProductDetails({ productname,setProductName }) {
             type="text"
             name="sgst"
             id="sgst"
-            value={data.sgst || ""}
+            value={sgst || ""}
             onChange={handleChange}
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="SGST"
@@ -122,7 +176,7 @@ function AddProductDetails({ productname,setProductName }) {
             <input
               name="sales_unit"
               id="sales_unit"
-              value={data.sales_unit || ""}
+              value={salesUnit || ""}
               onChange={handleChange}
               placeholder="Unit"
               className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
@@ -136,12 +190,12 @@ function AddProductDetails({ productname,setProductName }) {
             type="text"
             name="size"
             id="size"
-            value={data.size || ""}
+            value={packSize || ""}
             onChange={handleChange}
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Size"
           />
-        </div> */}
+        </div>
       </div>
     </div>
   );
