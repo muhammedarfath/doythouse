@@ -222,7 +222,10 @@ function CustomerInformationModal() {
                     className="w-full"
                   />
 
-                  <Label htmlFor="expected-delivery" className="text-md font-bold">
+                  <Label
+                    htmlFor="expected-delivery"
+                    className="text-md font-bold"
+                  >
                     Expected Delivery
                   </Label>
                   <Input
@@ -288,7 +291,6 @@ function CustomerInformationModal() {
                 </div>
               </div>
             </div>
-
 
             <div className="border-t  border-gray-300 my-6 pt-4 lg:flex md:flex gap-8">
               <div className="lg:w-1/3 md:w-1/3">
@@ -737,6 +739,35 @@ function CustomerInformationModal() {
                       type="text"
                       className="col-span-1"
                       placeholder="Enter balance price"
+                    />
+                    <div className="flex gap-3">
+                      <Label htmlFor="cgst" className="text-left">
+                        CGST
+                      </Label>
+                      <Input
+                        id="cgst"
+                        type="text"
+                        className="col-span-1"
+                        placeholder="CGST"
+                      />
+                      <Label htmlFor="sgst" className="text-left">
+                        SGST
+                      </Label>
+                      <Input
+                        id="sgst"
+                        type="text"
+                        className="col-span-1"
+                        placeholder="SGST"
+                      />
+                    </div>
+                    <Label htmlFor="balance-price" className="text-left">
+                      Discount Price
+                    </Label>
+                    <Input
+                      id="balance-price"
+                      type="text"
+                      className="col-span-1"
+                      placeholder="Discount Price"
                     />
                     <Label htmlFor="note" className="text-lg font-semibold ">
                       Note

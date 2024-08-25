@@ -74,6 +74,7 @@ function AddProductDetails({
             onChange={handleChange}
             className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Product Name"
+            required
           />
         </div>
 
@@ -86,6 +87,7 @@ function AddProductDetails({
             onChange={handleChange}
             className="border rounded p-4 w-full bg-[#fff]"
             placeholder="Description"
+            required
           />
         </div>
 
@@ -99,6 +101,7 @@ function AddProductDetails({
             onChange={handleChange}
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Code"
+            required
           />
         </div>
 
@@ -112,6 +115,7 @@ function AddProductDetails({
               onChange={handleChange}
               placeholder="Unit"
               className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
+              required
             />
           </div>
         </div>
@@ -126,6 +130,7 @@ function AddProductDetails({
               onChange={handleChange}
               placeholder="Re-Level"
               className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
+              required
             />
           </div>
         </div>
@@ -140,6 +145,7 @@ function AddProductDetails({
               onChange={handleChange}
               placeholder="Code"
               className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
+              required
             />
           </div>
         </div>
@@ -154,7 +160,9 @@ function AddProductDetails({
             onChange={handleChange}
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="CGST"
+            required
           />
+
         </div>
 
         <div className="md:col-span-1">
@@ -167,6 +175,7 @@ function AddProductDetails({
             onChange={handleChange}
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="SGST"
+            required
           />
         </div>
 
@@ -180,7 +189,9 @@ function AddProductDetails({
               onChange={handleChange}
               placeholder="Unit"
               className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
+              required
             />
+
           </div>
         </div>
 
@@ -194,6 +205,7 @@ function AddProductDetails({
             onChange={handleChange}
             className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Size"
+            required
           />
         </div>
       </div>

@@ -16,6 +16,7 @@ import { CiFilter } from "react-icons/ci";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import axios from "axios";
 import EditExpenseModal from "@/components/modal/EditExpenseModal";
+import { toast } from "react-hot-toast";
 
 function ExpenseList() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -27,7 +28,7 @@ function ExpenseList() {
         const response = await axios.get(
           "https://storeconvo.com/php/fetch.php?typ=expense"
         );
-        setExpenses(response.data);
+        setExpenses(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -36,7 +37,54 @@ function ExpenseList() {
     fetchExpenseList();
   }, []);
 
+  const handleDelete = (expensesId) => {
+    toast(
+      (t) => (
+        <div>
+          <p>Are you sure you want to delete this Expense?</p>
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={() => confirmDelete(expensesId, t.id)}
+              className="bg-red-500 text-white px-4 py-1 rounded"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-gray-300 text-black px-4 py-1 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: 4000 }
+    );
+  };
 
+  const confirmDelete = async (expensesId, toastId) => {
+    try {
+      await axios.post(
+        `https://storeconvo.com/php/delete.php/`,
+        {
+          id: expensesId,
+          typ: "expense",
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      setExpenses((prevExpense) =>
+        prevExpense.filter((expense) => expense.exp_id !== expensesId)
+      );
+      toast.success("Delete successful", { id: toastId });
+    } catch (error) {
+      console.error("Error deleting expense:", error);
+      toast.error("Failed to delete expense", { id: toastId });
+    }
+  };
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
@@ -54,7 +102,7 @@ function ExpenseList() {
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="h-10 border rounded px-4 w-64 bg-gray-50"
+                  className="h-10 border rounded px-4 w-64 bg-white"
                 />
               </div>
               <div className="flex items-center gap-5">
@@ -134,43 +182,41 @@ function ExpenseList() {
                   <TableHead>Date</TableHead>
                   <TableHead>Expense Type</TableHead>
                   <TableHead className="text-right">Amount</TableHead>
-                  {expenses.some((expense) => expense.expsub_type) && (
+                  {Array.isArray(expenses) && expenses.some((expense) => expense.expsub_type) && (
                     <TableHead className="text-right">Sub Expense</TableHead>
-                  )}{" "}
+                  )}
                   <TableHead>Employee</TableHead>
-                  <TableHead>Notes</TableHead>
-                  <TableHead className="text-center w-[150px]">
-                    Actions
-                  </TableHead>
+                  <TableHead>Note</TableHead>
+                  <TableHead className="text-center">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {expenses.map((expense, index) => (
-                  <TableRow key={expense.id}>
-                    <TableCell>
-                      <input type="checkbox" />
-                    </TableCell>
-                    <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>{expense.exp_date}</TableCell>
-                    <TableCell>{expense.exp_type}</TableCell>
-                    <TableCell className="text-right">
-                      {expense.exp_amount}
-                    </TableCell>
-                    {expense.expsub_type && (
-                      <TableCell className="text-right">
-                        {expense.expsub_type}
+                {Array.isArray(expenses) &&
+                  expenses.map((expense, index) => (
+                    <TableRow key={expense.exp_id}>
+                      <TableCell>
+                        <input type="checkbox" />
                       </TableCell>
-                    )}
-                    <TableCell>{expense.exp_employee}</TableCell>
-                    <TableCell>{expense.exp_note}</TableCell>
-                    <TableCell className="text-center">
-                      <div className="flex justify-center gap-4">
-                        <EditExpenseModal expense={expense} />
-                        <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                      <TableCell className="font-medium">{index + 1}</TableCell>
+                      <TableCell>{expense.exp_date}</TableCell>
+                      <TableCell>{expense.exp_type}</TableCell>
+                      <TableCell className="text-right">{expense.exp_amount}</TableCell>
+                      {expense.expsub_type && (
+                        <TableCell className="text-right">{expense.expsub_type}</TableCell>
+                      )}
+                      <TableCell>{expense.exp_employee}</TableCell>
+                      <TableCell>{expense.exp_note}</TableCell>
+                      <TableCell className="text-center">
+                        <div className="flex justify-center gap-4">
+                          <EditExpenseModal expense={expense} />
+                          <BiSolidTrashAlt
+                            className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+                            onClick={() => handleDelete(expense.exp_id)}
+                          />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </div>

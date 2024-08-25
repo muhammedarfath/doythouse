@@ -9,17 +9,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog";
-import { Input } from "../../components/ui/input";
-import { Label } from "../../components/ui/label";
 import { Button } from "../../components/ui/button";
 import { FiPlus } from "react-icons/fi";
+import NewExpenseModal from "./Expenses/NewExpenseModal";
+import NewSubExpenseModal from "./Expenses/NewSubExpenseModal";
+import ExpenseAddModal from "./Expenses/ExpenseAddModal";
 
 function ExpenseModal() {
+  const [newExpenseType, setNewExpenseType] = useState([]);
+  const [newSubExpenseType, setNewSubExpenseType] = useState([]);
+
   const [expenseTypes, setExpenseTypes] = useState([]);
-  const [newExpenseType, setNewExpenseType] = useState("");
-  const [newSubExpenseType, setNewSubExpenseType] = useState("");
-  const [selectedExpenseType, setSelectedExpenseType] = useState("");
-  const [selectedSubExpenseType, setSelectedSubExpenseType] = useState("");
   const [date, setDate] = useState("");
   const [amount, setAmount] = useState("");
   const [employees, setEmployees] = useState([]);
@@ -43,6 +43,22 @@ function ExpenseModal() {
       }
     };
     fetchExpenseTypes();
+  }, []);
+
+  // Fetch expense types on component mount
+  useEffect(() => {
+    const fetchSubExpenseTypes = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=subexpense_type"
+        );
+        console.log(response, "this is sublist");
+        setSubExpenseTypes(response.data);
+      } catch (error) {
+        console.error("Error fetching expense types:", error);
+      }
+    };
+    fetchSubExpenseTypes();
   }, []);
 
   // Fetch employees on component mount
@@ -70,7 +86,7 @@ function ExpenseModal() {
         "https://storeconvo.com/php/add_expensetype.php",
         new URLSearchParams({
           exp_type: newExpenseType,
-          subexp_type: newSubExpenseType,
+          subexp_id: selectedSubExpenseTypes,
         }),
         {
           headers: {
@@ -86,6 +102,36 @@ function ExpenseModal() {
           { type: newExpenseType, subTypes: [newSubExpenseType] },
         ]);
         setNewExpenseType("");
+        setNewSubExpenseType("");
+        setShowNewTypeInput(false);
+      }
+    } catch (error) {
+      console.error("Error adding expense type:", error);
+      alert("Failed to add expense type");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddNewSubExpenseType = async () => {
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        "https://storeconvo.com/php/add_subexpensetype.php",
+        new URLSearchParams({
+          subexp_name: newSubExpenseType,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      if (response.data) {
+        console.log(response.data);
+        alert("successs");
+        subexpenseTypes((prev) => [...prev, { type: newSubExpenseType }]);
         setNewSubExpenseType("");
         setShowNewTypeInput(false);
       }
@@ -159,12 +205,18 @@ function ExpenseModal() {
   // Handle changes to the selected expense type
   const handleExpenseTypeChange = (e) => {
     setSelectedExpenseType(e.target.value);
-    setSelectedSubExpenseType(""); // Reset sub expense type when changing main type
   };
 
   // Handle changes to the selected sub expense type
   const handleSubExpenseTypeChange = (e) => {
-    setSelectedSubExpenseType(e.target.value);
+    const options = e.target.options;
+    const selectedValues = [];
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].selected) {
+        selectedValues.push(options[i].value);
+      }
+    }
+    setSelectedSubExpenseTypes(selectedValues);
   };
 
   // Handle changes to the selected employee
@@ -205,199 +257,45 @@ function ExpenseModal() {
           </DialogHeader>
 
           {showNewTypeInput ? (
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="new-type" className="text-right">
-                  New Expense Type
-                </Label>
-                <Input
-                  id="new-type"
-                  value={newExpenseType}
-                  onChange={(e) => setNewExpenseType(e.target.value)}
-                  placeholder="Enter new expense type"
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="type" className="text-right">
-                  Sub Expense Type
-                </Label>
-                <select
-                  id="type"
-                  className="col-span-3 p-2 border rounded"
-                  value={selectedSubExpenseType}
-                  onChange={handleSubExpenseTypeChange}
-                >
-                  <option value="">Select Sub expense type</option>
-                  {expenseTypes.map((type, index) => (
-                    <option key={index} value={type.type}>
-                      {type.exp_type}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  className="bg-[#308E87] text-white hover:bg-[#308E87]"
-                  onClick={handleAddNewExpenseType}
-                  disabled={loading}
-                >
-                  {loading ? "Adding..." : "Add"}
-                </Button>
-                <Button variant="secondary" onClick={handleHideNewTypeInput}>
-                  Cancel
-                </Button>
-              </div>
-            </div>
+            <NewExpenseModal
+              newExpenseType={newExpenseType}
+              setNewExpenseType={setNewExpenseType}
+              handleAddNewExpenseType={handleAddNewExpenseType}
+              loading={loading}
+              handleHideNewTypeInput={handleHideNewTypeInput}
+            />
           ) : showNewSubTypeInput ? (
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="new-type" className="text-right">
-                  New Sub Expense Type
-                </Label>
-                <Input
-                  id="new-type"
-                  value={newExpenseType}
-                  onChange={(e) => setNewExpenseType(e.target.value)}
-                  placeholder="Enter new expense type"
-                  className="col-span-3"
-                />
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  className="bg-[#308E87] text-white hover:bg-[#308E87]"
-                  onClick={handleAddNewExpenseType}
-                  disabled={loading}
-                >
-                  {loading ? "Adding..." : "Add"}
-                </Button>
-                <Button variant="secondary" onClick={handleHideSubNewTypeInput}>
-                  Cancel
-                </Button>
-              </div>
-            </div>
+            <NewSubExpenseModal
+              newSubExpenseType={newSubExpenseType}
+              setNewSubExpenseType={setNewSubExpenseType}
+              selectedExpenseTypes={selectedExpenseTypes}
+              handleExpenseTypeChange={handleExpenseTypeChange}
+              handleAddNewSubExpenseType={handleAddNewSubExpenseType}
+              loading={loading}
+              handleHideSubNewTypeInput={handleHideSubNewTypeInput}
+            />
           ) : (
-            <>
-              <div className="flex justify-end">
-                <Button
-                  className="col-span-4 text-left  mr-3 bg-[#308E87] text-white hover:bg-[#308E87] "
-                  onClick={handleShowNewTypeInput}
-                >
-                  Add New Expense Type
-                </Button>
-                <Button
-                  className="col-span-4 text-left  bg-[#308E87] text-white hover:bg-[#308E87] "
-                  onClick={handleShowNewSubTypeInput}
-                >
-                  Add New Sub Expense Type
-                </Button>
-              </div>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="date" className="text-right">
-                    Date
-                  </Label>
-                  <Input
-                    id="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    type="date"
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="type" className="text-right">
-                    Expense Type
-                  </Label>
-                  <select
-                    id="type"
-                    className="col-span-3 p-2 border rounded"
-                    value={selectedExpenseType}
-                    onChange={handleExpenseTypeChange}
-                  >
-                    <option value="">Select expense type</option>
-                    {expenseTypes.map((type, index) => (
-                      <option key={index} value={type.type}>
-                        {type.exp_type}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                {selectedExpense?.subTypes.length > 0 && (
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="sub-type" className="text-right">
-                      Sub Expense Type
-                    </Label>
-                    <select
-                      id="sub-type"
-                      className="col-span-3 p-2 border rounded"
-                      value={selectedSubExpenseType}
-                      onChange={handleSubExpenseTypeChange}
-                    >
-                      <option value="">Select sub expense type</option>
-                      {selectedExpense.subTypes.map((subType, index) => (
-                        <option key={index} value={subType}>
-                          {subType}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="amount" className="text-right">
-                    Amount
-                  </Label>
-                  <Input
-                    id="amount"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    type="number"
-                    placeholder="Enter amount"
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="employee" className="text-right">
-                    Employee
-                  </Label>
-                  <select
-                    id="employee"
-                    className="col-span-3 p-2 border rounded"
-                    value={selectedEmployee}
-                    onChange={handleEmployeeChange}
-                  >
-                    <option value="">Select employee</option>
-                    {employees.map((employee, index) => (
-                      <option key={index} value={employee.employee_name}>
-                        {employee.employee_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="note" className="text-right">
-                    Note
-                  </Label>
-                  <Input
-                    id="note"
-                    value={note}
-                    onChange={(e) => setNote(e.target.value)}
-                    placeholder="Enter note (optional)"
-                    className="col-span-3"
-                  />
-                </div>
-
-                <DialogFooter>
-                  <Button
-                    className="bg-[#308E87] text-white hover:bg-[#308E87]"
-                    onClick={handleSave}
-                    disabled={loading}
-                  >
-                    {loading ? "Saving..." : "Save"}
-                  </Button>
-                </DialogFooter>
-              </div>
-            </>
+            <ExpenseAddModal
+              handleShowNewTypeInput={handleShowNewTypeInput}
+              handleShowNewSubTypeInput={handleShowNewSubTypeInput}
+              setDate={setDate}
+              date={date}
+              selectedExpenseType={selectedExpenseType}
+              handleExpenseTypeChange={handleExpenseTypeChange}
+              expenseTypes={expenseTypes}
+              selectedSubExpenseTypes={selectedSubExpenseTypes}
+              handleSubExpenseTypeChange={handleSubExpenseTypeChange}
+              selectedExpense={selectedExpense}
+              amount={amount}
+              setAmount={setAmount}
+              selectedEmployee={selectedEmployee}
+              employees={employees}
+              handleEmployeeChange={handleEmployeeChange}
+              setNote={setNote}
+              note={note}
+              handleSave={handleSave}
+              loading={loading}
+            />
           )}
         </DialogContent>
       </Dialog>

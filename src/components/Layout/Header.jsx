@@ -28,7 +28,7 @@ function Header({ open }) {
 
   return (
     <div>
-      <Toaster position="top-center" />
+      <Toaster position="top-right" />
       <div
         className={`fixed top-0 left-0 right-0 text-black shadow-sm bg-white ${
           open ? "p-5" : "p-4"
@@ -94,7 +94,6 @@ function Header({ open }) {
         </div>
       </div>
 
-      {/* Sidebar */}
       <div
         className={`fixed top-0 left-0 h-full z-50 mt-[6.5rem] duration-500 bg-white text-black w-64 shadow-md transition-transform  transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-64"

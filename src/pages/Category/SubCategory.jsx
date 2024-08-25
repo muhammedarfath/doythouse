@@ -46,6 +46,9 @@ function SubCategory() {
   };
 
 
+  console.log(subCategory,"this is subcategiry");
+
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-screen-xl mx-auto">
@@ -86,7 +89,7 @@ function SubCategory() {
                       <input type="checkbox" />
                     </TableCell>
                     <TableCell className="font-medium">
-                      {subcategory.cat_id}
+                      {subcategory.cat_name}
                     </TableCell>
                     <TableCell>{subcategory.subcat_name}</TableCell>
                     <TableCell>{subcategory.hsnacs}</TableCell>

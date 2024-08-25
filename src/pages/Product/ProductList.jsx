@@ -36,6 +36,10 @@ function ProductList() {
     fetchProductList();
   }, []);
 
+
+  console.log(products,"tjos ");
+
+
   
 
   return (
@@ -92,9 +96,9 @@ function ProductList() {
                           className="w-10 h-15 object-cover rounded"
                         />
                       </TableCell>
-                      <TableCell>{product.name}</TableCell>
+                      <TableCell>{product.productname}</TableCell>
                       <TableCell className="text-right">
-                        {product.code}
+                        {product.productusercode}
                       </TableCell>
                       <TableCell>{product.hsn}</TableCell>
                       <TableCell>{product.cgst}</TableCell>

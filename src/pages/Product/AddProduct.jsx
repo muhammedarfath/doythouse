@@ -9,57 +9,82 @@ import ProductPrices from "./ProductPrices";
 import axios from "axios";
 import { FiPlus } from "react-icons/fi";
 import { FaArrowRight } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 function AddProduct() {
   const [activeSection, setActiveSection] = useState("details");
   const [loading, setLoading] = useState(false);
-  const [productname,setProductName] = useState("")
-  const [ProductDescription,setProductDescription] = useState("")
-  const [productUserCode,setProductUserCode] = useState("")
-  const [unitId,setUnitId] = useState("")
-  const [reorderLevel,setReorderLevel] = useState("")
-  const [hsn,setHsn] = useState("")
-  const [cgst,setCgst] = useState("")
-  const [sgst,setSgst] = useState("")
-  const [salesUnit,setSalesUnit] = useState("")
-  const [packSize,setPackSize] = useState("")
-  const [image,setSetImage] = useState("")
-  const [cateory,setCateory] = useState("")
-  const [subCategory,setSubCategory] = useState("")
-  const [mrp,setMrp] = useState("")
-  const [purchasePrice,setPurchasePrice] = useState("")
-  const [retailPrice,setRetailPrice] = useState("")
-  const [wholesalePrice,setWholesalePrice] = useState("")
-  const [specialPrice,setSpecialPrice] = useState("")
-  const [dealerPrice,setDealerPrice] = useState("")
-  const [openQty,setOpenQty] = useState("")
+  const [productname, setProductName] = useState("");
+  const [ProductDescription, setProductDescription] = useState("");
+  const [productUserCode, setProductUserCode] = useState("");
+  const [unitId, setUnitId] = useState("");
+  const [reorderLevel, setReorderLevel] = useState("");
+  const [hsn, setHsn] = useState("");
+  const [cgst, setCgst] = useState("");
+  const [sgst, setSgst] = useState("");
+  const [salesUnit, setSalesUnit] = useState("");
+  const [packSize, setPackSize] = useState("");
+  const [image, setImage] = useState("");
+  const [category, setCategory] = useState("");
+  const [subCategory, setSubCategory] = useState("");
+  const [mrp, setMrp] = useState("");
+  const [purchasePrice, setPurchasePrice] = useState("");
+  const [retailPrice, setRetailPrice] = useState("");
+  const [wholesalePrice, setWholesalePrice] = useState("");
+  const [specialPrice, setSpecialPrice] = useState("");
+  const [dealerPrice, setDealerPrice] = useState("");
+  const [openQty, setOpenQty] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Validation
+    if (!productname) return toast.error("Product name is required");
+    if (!ProductDescription) return toast.error("Product description is required");
+    if (!productUserCode) return toast.error("Product user code is required");
+    if (!unitId) return toast.error("Unit ID is required");
+    if (!reorderLevel) return toast.error("Reorder level is required");
+    if (!hsn) return toast.error("HSN is required");
+    if (!cgst || isNaN(cgst)) return toast.error("CGST should be a valid number");
+    if (!sgst || isNaN(sgst)) return toast.error("SGST should be a valid number");
+    if (!image) return toast.error("Image URL is required");
+    if (!salesUnit) return toast.error("Sales unit is required");
+    if (!packSize) return toast.error("Pack size is required");
+    if (!category) return toast.error("Category is required");
+    if (!subCategory) return toast.error("Sub-category is required");
+    if (!mrp || isNaN(mrp)) return toast.error("MRP should be a valid number");
+    if (!purchasePrice || isNaN(purchasePrice)) return toast.error("Purchase price should be a valid number");
+    if (!retailPrice || isNaN(retailPrice)) return toast.error("Retail price should be a valid number");
+    if (!wholesalePrice || isNaN(wholesalePrice)) return toast.error("Wholesale price should be a valid number");
+    if (!specialPrice || isNaN(specialPrice)) return toast.error("Special price should be a valid number");
+    if (!dealerPrice || isNaN(dealerPrice)) return toast.error("Dealer price should be a valid number");
+    if (!openQty || isNaN(openQty)) return toast.error("Open quantity should be a valid number");
     setLoading(true);
+
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_product.php",
         new URLSearchParams({
           productName: productname,
-          productDescription: "",
-          productUserCode: "",
-          unitId: "",
-          reorderLevel: "",
-          hsn: "",
-          cgst: "",
-          sgst: "",
-          salesUnit: "",
-          packSize: "",
-          cateoryId: "",
-          subCategoryId: "",
-          mrp: "",
-          purchasePrice: "",
-          retailPrice: "",
-          wholesalePrice: "",
-          specialPrice: "",
-          dealerPrice: "",
-          openQty: "",
+          productDescription: ProductDescription,
+          productUserCode: productUserCode,
+          unitId: unitId,
+          reorderLevel: reorderLevel,
+          hsn: hsn,
+          cgst: cgst,
+          sgst: sgst,
+          image_url: image,
+          salesUnit: salesUnit,
+          packSize: packSize,
+          categoryId: category,
+          subCategoryId: subCategory,
+          mrp: mrp,
+          purchasePrice: purchasePrice,
+          retailPrice: retailPrice,
+          wholesalePrice: wholesalePrice,
+          specialPrice: specialPrice,
+          dealerPrice: dealerPrice,
+          openQty: openQty,
         }),
         {
           headers: {
@@ -67,42 +92,20 @@ function AddProduct() {
           },
         }
       );
-      console.log(response);
 
       if (response.data) {
+        toast.success("Product saved successfully!");
         console.log(response.data.message);
       } else {
-        alert("Failed to save product");
+        toast.error("Failed to save product");
       }
     } catch (error) {
       console.error("Error saving product:", error);
-      alert("Failed to save product");
+      toast.error("Failed to save product");
     } finally {
       setLoading(false);
     }
   };
-
-
-  console.log("Product Name:", productname);
-  console.log("Product Description:", ProductDescription);
-  console.log("Product User Code:", productUserCode);
-  console.log("Unit ID:", unitId);
-  console.log("Reorder Level:", reorderLevel);
-  console.log("HSN:", hsn);
-  console.log("CGST:", cgst);
-  console.log("SGST:", sgst);
-  console.log("Sales Unit:", salesUnit);
-  console.log("Pack Size:", packSize);
-  console.log("image:", image);
-  console.log("Category ID:", cateory);
-  console.log("Sub-Category ID:", subCategory);
-  console.log("MRP:", mrp);
-  console.log("Purchase Price:", purchasePrice);
-  console.log("Retail Price:", retailPrice);
-  console.log("Wholesale Price:", wholesalePrice);
-  console.log("Special Price:", specialPrice);
-  console.log("Dealer Price:", dealerPrice);
-  console.log("Open Qty:", openQty);
 
   return (
     <div className="flex items-center justify-center">
@@ -243,59 +246,55 @@ function AddProduct() {
               <div className="flex-grow lg:w-96">
                 {activeSection === "details" && (
                   <AddProductDetails
-                  productname={productname}
-                  setProductName={setProductName}
-                  ProductDescription={ProductDescription}
-                  setProductDescription={setProductDescription}
-                  productUserCode={productUserCode}
-                  setProductUserCode={setProductUserCode}
-                  unitId={unitId}
-                  setUnitId={setUnitId}
-                  reorderLevel={reorderLevel}
-                  setReorderLevel={setReorderLevel}
-                  hsn={hsn}
-                  setHsn={setHsn}
-                  cgst={cgst}
-                  setCgst={setCgst}
-                  sgst={sgst}
-                  setSgst={setSgst}
-                  salesUnit={salesUnit}
-                  setSalesUnit={setSalesUnit}
-                  packSize={packSize}
-                  setPackSize={setPackSize}
-                  
+                    productname={productname}
+                    setProductName={setProductName}
+                    ProductDescription={ProductDescription}
+                    setProductDescription={setProductDescription}
+                    productUserCode={productUserCode}
+                    setProductUserCode={setProductUserCode}
+                    unitId={unitId}
+                    setUnitId={setUnitId}
+                    reorderLevel={reorderLevel}
+                    setReorderLevel={setReorderLevel}
+                    hsn={hsn}
+                    setHsn={setHsn}
+                    cgst={cgst}
+                    setCgst={setCgst}
+                    sgst={sgst}
+                    setSgst={setSgst}
+                    salesUnit={salesUnit}
+                    setSalesUnit={setSalesUnit}
+                    packSize={packSize}
+                    setPackSize={setPackSize}
                   />
                 )}
                 {activeSection === "gallery" && (
-                  <ProductGallery
-                  image={image}
-                  setSetImage={setSetImage}
-                  />
+                  <ProductGallery image={image} setImage={setImage} />
                 )}
                 {activeSection === "category" && (
                   <ProductCategory
-                  cateory={cateory}
-                  setCateory={setCateory}
-                  subCategory={subCategory}
-                  setSubCategory={setSubCategory}
+                    category={category}
+                    setCategory={setCategory}
+                    subCategory={subCategory}
+                    setSubCategory={setSubCategory}
                   />
                 )}
                 {activeSection === "price" && (
                   <ProductPrices
-                  mrp={mrp}
-                  purchasePrice={purchasePrice}
-                  retailPrice={retailPrice}
-                  wholesalePrice={wholesalePrice}
-                  specialPrice={specialPrice}
-                  dealerPrice={dealerPrice}
-                  openQty={openQty}
-                  setMrp={setMrp}
-                  setPurchasePrice={setPurchasePrice}
-                  setRetailPrice={setRetailPrice}
-                  setWholesalePrice={setWholesalePrice}
-                  setSpecialPrice={setSpecialPrice}
-                  setDealerPrice={setDealerPrice}
-                  setOpenQty={setOpenQty}
+                    mrp={mrp}
+                    purchasePrice={purchasePrice}
+                    retailPrice={retailPrice}
+                    wholesalePrice={wholesalePrice}
+                    specialPrice={specialPrice}
+                    dealerPrice={dealerPrice}
+                    openQty={openQty}
+                    setMrp={setMrp}
+                    setPurchasePrice={setPurchasePrice}
+                    setRetailPrice={setRetailPrice}
+                    setWholesalePrice={setWholesalePrice}
+                    setSpecialPrice={setSpecialPrice}
+                    setDealerPrice={setDealerPrice}
+                    setOpenQty={setOpenQty}
                   />
                 )}
               </div>
@@ -332,7 +331,7 @@ function AddProduct() {
                 </div>
               </div>
             </div>
-            <FaArrowRight/>
+            <FaArrowRight />
             <div
               className="flex flex-col pr-2 cursor-pointer rounded-lg"
               onClick={() => setActiveSection("gallery")}
@@ -351,7 +350,7 @@ function AddProduct() {
                 </div>
               </div>
             </div>
-            <FaArrowRight/>
+            <FaArrowRight />
             <div
               className="flex flex-col pr-2 cursor-pointer rounded-lg"
               onClick={() => setActiveSection("category")}
@@ -370,7 +369,7 @@ function AddProduct() {
                 </div>
               </div>
             </div>
-            <FaArrowRight/>
+            <FaArrowRight />
             <div
               className="flex flex-col pr-2 cursor-pointer rounded-lg"
               onClick={() => setActiveSection("price")}

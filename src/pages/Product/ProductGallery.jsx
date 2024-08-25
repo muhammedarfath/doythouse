@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 
-function ProductGallery({ image, setImage }) {
+function ProductGallery({ setImage }) {
   const [previewUrls, setPreviewUrls] = useState([]);
   const [files, setFiles] = useState([]);
 
@@ -12,23 +12,19 @@ function ProductGallery({ image, setImage }) {
     setPreviewUrls((prevUrls) => [...prevUrls, ...newPreviewUrls]);
     setFiles((prevFiles) => [...prevFiles, ...newFiles]);
 
-    if (setImage) {
-      setImage([...files, ...newFiles]);
-    }
+    setImage([...newPreviewUrls, ...previewUrls]);
   };
 
   const handleRemoveImage = (index) => {
     const updatedPreviewUrls = previewUrls.filter((_, i) => i !== index);
     const updatedFiles = files.filter((_, i) => i !== index);
 
-    previewUrls.forEach((url) => URL.revokeObjectURL(url));
+    URL.revokeObjectURL(previewUrls[index]);
 
     setPreviewUrls(updatedPreviewUrls);
     setFiles(updatedFiles);
 
-    if (setImage) {
-      setImage(updatedFiles);
-    }
+    setImage(updatedPreviewUrls);
   };
 
   return (

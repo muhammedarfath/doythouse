@@ -4,11 +4,11 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import SubModal from "@/components/modal/SubModal";
 import CategoryModal from "@/components/modal/CategoryModal";
 
-function ProductCategory({ data, onChange }) {
+function ProductCategory({ category, setCategory, subCategory, setSubCategory }) {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(data.category || "");
-  const [selectedSubcategory, setSelectedSubcategory] = useState(data.subcategory || "");
+  const [selectedCategory, setSelectedCategory] = useState(category);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(subCategory);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -24,9 +24,6 @@ function ProductCategory({ data, onChange }) {
 
     fetchCategories();
   }, []);
-  console.log(categories);
-  console.log(subcategories);
-  console.log(selectedCategory);
 
   useEffect(() => {
     const fetchSubCategories = async () => {
@@ -45,22 +42,15 @@ function ProductCategory({ data, onChange }) {
 
   const handleCategoryChange = (e) => {
     const newCategory = e.target.value;
-    console.log(newCategory,"this new category");
     setSelectedCategory(newCategory);
-    onChange({
-      ...data,
-      category: newCategory,
-      subcategory: "", 
-    });
+    setCategory(newCategory); 
+    setSubCategory(""); 
   };
 
   const handleSubcategoryChange = (e) => {
     const newSubcategory = e.target.value;
     setSelectedSubcategory(newSubcategory);
-    onChange({
-      ...data,
-      subcategory: newSubcategory,
-    });
+    setSubCategory(newSubcategory); 
   };
 
   return (
@@ -83,7 +73,6 @@ function ProductCategory({ data, onChange }) {
             ))}
           </select>
 
-
           <CategoryModal />
         </div>
 
@@ -98,7 +87,7 @@ function ProductCategory({ data, onChange }) {
           >
             <option value="">Choose Subcategory</option>
             {subcategories
-              .filter(subcat => subcat.cat_id === selectedCategory)
+              .filter((subcat) => subcat.cat_id === selectedCategory)
               .map((subcat) => (
                 <option key={subcat.subcat_id} value={subcat.subcat_id}>
                   {subcat.subcat_name}
