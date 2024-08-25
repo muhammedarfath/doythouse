@@ -9,17 +9,17 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import { AiFillEdit } from "react-icons/ai";
-import ProductDetailsModal from "@/components/modal/ProductDetailsModal";
-import { MdOutlineDelete } from "react-icons/md";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import axios from "axios";
 import ProductEditModal from "@/components/modal/ProductEditModal";
+import ProductDetailsModal from "@/components/modal/ProductDetailsModal";
+import { toast } from "react-hot-toast";
 
 function ProductList() {
-  const [products, setProduct] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(""); 
 
   useEffect(() => {
     const fetchProductList = async () => {
@@ -27,20 +27,71 @@ function ProductList() {
         const response = await axios.get(
           "https://storeconvo.com/php/fetch.php?typ=product"
         );
-        setProduct(response.data);
+        setProducts(response.data);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching products:", error);
       }
     };
 
     fetchProductList();
   }, []);
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value.toLowerCase());
+  };
 
-  console.log(products,"tjos ");
+  const filteredProducts = products.filter((product) =>
+    product.productname.toLowerCase().includes(searchQuery)
+  );
 
+  const handleDelete = (productId) => {
+    toast(
+      (t) => (
+        <div>
+          <p>Are you sure you want to delete this product?</p>
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={() => confirmDelete(productId, t.id)}
+              className="bg-red-500 text-white px-4 py-1 rounded"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-gray-300 text-black px-4 py-1 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: 4000 }
+    );
+  };
 
-  
+  const confirmDelete = async (productId, toastId) => {
+    try {
+      await axios.post(
+        `https://storeconvo.com/php/delete.php/`,
+        {
+          id: productId,
+          typ: "product",
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      setProducts((prevProducts) =>
+        prevProducts.filter((product) => product.productid !== productId)
+      );
+      toast.success("Delete successful", { id: toastId });
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      toast.error("Failed to delete product", { id: toastId });
+    }
+  };
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -54,7 +105,9 @@ function ProductList() {
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="h-10 border rounded px-4 w-64 bg-gray-50"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  className="h-10 border rounded px-4 w-64 bg-white"
                 />
               </div>
               <Link to="/addproduct">
@@ -82,9 +135,9 @@ function ProductList() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {products.length > 0 ? (
-                  products.map((product, index) => (
-                    <TableRow key={product.id}>
+                {filteredProducts.length > 0 ? (
+                  filteredProducts.map((product, index) => (
+                    <TableRow key={product.productid}>
                       <TableCell>
                         <input type="checkbox" />
                       </TableCell>
@@ -92,7 +145,7 @@ function ProductList() {
                       <TableCell>
                         <img
                           src={product.image}
-                          alt={product.name}
+                          alt={product.productname}
                           className="w-10 h-15 object-cover rounded"
                         />
                       </TableCell>
@@ -106,8 +159,11 @@ function ProductList() {
                       <TableCell className="text-center">
                         <div className="flex justify-center gap-4">
                           <ProductDetailsModal />
-                          <ProductEditModal product={product}/>
-                          <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
+                          <ProductEditModal product={product} />
+                          <BiSolidTrashAlt
+                            onClick={() => handleDelete(product.productid)}
+                            className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+                          />
                         </div>
                       </TableCell>
                     </TableRow>

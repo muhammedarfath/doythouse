@@ -3,16 +3,15 @@ import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/label";
 import { Button } from "../../../components/ui/button";
 
-
-
-
-function NewExpenseModal({
-  newExpenseType,
-  setNewExpenseType,
-  handleAddNewExpenseType,
-  loading,
-  handleHideNewTypeInput
-}) {
+function NewExpenseModal(
+  {
+    newExpenseType,
+    setNewExpenseType,
+    handleAddNewExpenseType,
+    loading,
+    handleHideNewTypeInput
+  }
+) {
   return (
     <div className="grid gap-4 py-4">
       <div className="grid grid-cols-4 items-center gap-4">
@@ -36,7 +35,9 @@ function NewExpenseModal({
         >
           {loading ? "Adding..." : "Add"}
         </Button>
-        <Button variant="secondary" onClick={handleHideNewTypeInput}>
+        <Button variant="secondary" 
+        onClick={handleHideNewTypeInput}
+        >
           Cancel
         </Button>
       </div>

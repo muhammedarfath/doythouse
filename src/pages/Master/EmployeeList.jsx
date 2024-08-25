@@ -17,20 +17,22 @@ import { toast } from "react-hot-toast";
 
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
+
   useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=employee"
-        );
-        console.log(response.data, "this is employee");
-        setEmployees(response.data);
-      } catch (error) {
-        console.error("Error fetching employees:", error);
-      }
-    };
     fetchEmployees();
   }, []);
+
+  const fetchEmployees = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=employee"
+      );
+      console.log(response.data, "this is employee");
+      setEmployees(response.data);
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+    }
+  };
 
   const handleDelete = (employeeId) => {
     toast(
@@ -81,6 +83,7 @@ function EmployeeList() {
     }
   };
 
+  console.log(employees);
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-screen-xl mx-auto">
@@ -96,7 +99,7 @@ function EmployeeList() {
                   className="h-10 border rounded px-4 w-64 bg-white "
                 />
               </div>
-              <EmployeeModal setEmployees={setEmployees}/>
+              <EmployeeModal setEmployees={setEmployees} />
             </div>
 
             <Table className="w-full">
@@ -129,7 +132,11 @@ function EmployeeList() {
                       <TableCell>{employee.employee_username}</TableCell>
                       <TableCell className="text-center">
                         <div className="flex justify-center gap-4">
-                          <EditEmployeeModal employee={employee} />
+                          <EditEmployeeModal
+                            onSuccess={fetchEmployees}
+                            employee={employee}
+                          />
+
                           <BiSolidTrashAlt
                             className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
                             onClick={() => handleDelete(employee.employee_id)}

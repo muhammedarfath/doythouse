@@ -15,7 +15,7 @@ import axios from "axios";
 import { AiFillEdit } from "react-icons/ai";
 import toast, { Toaster } from "react-hot-toast";
 
-function CategoryEditModal({ category }) {
+function CategoryEditModal({ category,onSuccess }) {
   const [catName, setCatName] = useState(category.cat_name || "");
   const [catDescription, setCatDescription] = useState(
     category.cat_description || ""
@@ -47,6 +47,7 @@ function CategoryEditModal({ category }) {
         console.log(response);
         toast.success("Category updated successfully");
         setOpen(false); 
+        onSuccess()
       }
     } catch (error) {
       toast.error("Error updating category");

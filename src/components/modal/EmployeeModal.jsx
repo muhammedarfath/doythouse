@@ -25,8 +25,31 @@ function EmployeeModal({ setEmployees }) {
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const validateFields = () => {
+    if (!name || !department || !mobile || !address || !username || !password) {
+      toast.error("All fields are required");
+      return false;
+    }
+
+    const mobilePattern = /^[0-9]{10}$/;
+    if (!mobilePattern.test(mobile)) {
+      toast.error("Please enter a valid 10-digit mobile number");
+      return false;
+    }
+
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!validateFields()) {
+      return;
+    }
     setLoading(true);
 
     try {

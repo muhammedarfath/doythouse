@@ -62,8 +62,8 @@ function AddProductDetails({
   };
 
   return (
-    <div className="lg:col-span-2 border-l-2 border-l-[#ECF3F3] pl-5">
-      <div className="grid gap-4 gap-y-2 lg:w-[45rem] text-sm grid-cols-1 md:grid-cols-5">
+    <div className="lg:col-span-2 border-l-2 w-full border-l-[#ECF3F3] pl-5">
+      <div className="grid gap-4 gap-y-2 lg:w-full text-sm grid-cols-1 md:grid-cols-5">
         <div className="md:col-span-5">
           <label htmlFor="product_name">Product Name</label>
           <input

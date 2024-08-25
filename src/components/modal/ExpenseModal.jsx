@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -18,26 +17,24 @@ import ExpenseAddModal from "./Expenses/ExpenseAddModal";
 function ExpenseModal() {
   const [newExpenseType, setNewExpenseType] = useState([]);
   const [newSubExpenseType, setNewSubExpenseType] = useState([]);
-
-  const [expenseTypes, setExpenseTypes] = useState([]);
+  const [ExpenseType,setExpenseType] = useState([])
   const [date, setDate] = useState("");
   const [amount, setAmount] = useState("");
   const [employees, setEmployees] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [selectedExpense, setSelectedExpense] = useState("");
   const [note, setNote] = useState("");
   const [showNewTypeInput, setShowNewTypeInput] = useState(false);
   const [showNewSubTypeInput, setShowNewSubTypeInput] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Fetch expense types on component mount
   useEffect(() => {
     const fetchExpenseTypes = async () => {
       try {
         const response = await axios.get(
           "https://storeconvo.com/php/fetch.php?typ=expense_type"
         );
-        console.log(response);
-        setExpenseTypes(response.data);
+        setExpenseType(response.data);
       } catch (error) {
         console.error("Error fetching expense types:", error);
       }
@@ -45,23 +42,6 @@ function ExpenseModal() {
     fetchExpenseTypes();
   }, []);
 
-  // Fetch expense types on component mount
-  useEffect(() => {
-    const fetchSubExpenseTypes = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=subexpense_type"
-        );
-        console.log(response, "this is sublist");
-        setSubExpenseTypes(response.data);
-      } catch (error) {
-        console.error("Error fetching expense types:", error);
-      }
-    };
-    fetchSubExpenseTypes();
-  }, []);
-
-  // Fetch employees on component mount
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -77,16 +57,13 @@ function ExpenseModal() {
     fetchEmployees();
   }, []);
 
-  // Handle adding a new expense type
   const handleAddNewExpenseType = async () => {
     setLoading(true);
-
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_expensetype.php",
         new URLSearchParams({
           exp_type: newExpenseType,
-          subexp_id: selectedSubExpenseTypes,
         }),
         {
           headers: {
@@ -97,12 +74,7 @@ function ExpenseModal() {
       if (response.data) {
         console.log(response.data);
         alert("successs");
-        setExpenseTypes((prev) => [
-          ...prev,
-          { type: newExpenseType, subTypes: [newSubExpenseType] },
-        ]);
         setNewExpenseType("");
-        setNewSubExpenseType("");
         setShowNewTypeInput(false);
       }
     } catch (error) {
@@ -121,6 +93,7 @@ function ExpenseModal() {
         "https://storeconvo.com/php/add_subexpensetype.php",
         new URLSearchParams({
           subexp_name: newSubExpenseType,
+          expenseId:expenseid,
         }),
         {
           headers: {
@@ -131,7 +104,6 @@ function ExpenseModal() {
       if (response.data) {
         console.log(response.data);
         alert("successs");
-        subexpenseTypes((prev) => [...prev, { type: newSubExpenseType }]);
         setNewSubExpenseType("");
         setShowNewTypeInput(false);
       }
@@ -143,17 +115,17 @@ function ExpenseModal() {
     }
   };
 
-  // Handle saving the expense
   const handleSave = async () => {
     setLoading(true);
+
+    console.log(selectedEmployee);
 
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_expense.php",
         new URLSearchParams({
           exp_date: date,
-          exp_type: selectedExpenseType,
-          expsub_type: selectedSubExpenseType,
+
           exp_amount: amount,
           exp_employee: selectedEmployee,
           exp_note: note,
@@ -168,8 +140,7 @@ function ExpenseModal() {
         console.log(response.data.message);
         alert("success");
         setDate("");
-        setSelectedExpenseType("");
-        setSelectedSubExpenseType("");
+
         setAmount("");
         setSelectedEmployee("");
         setNote("");
@@ -182,52 +153,32 @@ function ExpenseModal() {
     }
   };
 
-  // Show the input form for adding a new expense type
   const handleShowNewTypeInput = () => {
     setShowNewTypeInput(true);
   };
 
-  // Show the input form for adding a new sub expense type
   const handleShowNewSubTypeInput = () => {
     setShowNewSubTypeInput(true);
   };
 
-  // Hide the input form for adding a new expense type
   const handleHideNewTypeInput = () => {
     setShowNewTypeInput(false);
   };
 
-  // Hide the input form for adding a new sub expense type
   const handleHideSubNewTypeInput = () => {
     setShowNewSubTypeInput(false);
   };
 
-  // Handle changes to the selected expense type
-  const handleExpenseTypeChange = (e) => {
-    setSelectedExpenseType(e.target.value);
-  };
 
-  // Handle changes to the selected sub expense type
-  const handleSubExpenseTypeChange = (e) => {
-    const options = e.target.options;
-    const selectedValues = [];
-    for (let i = 0; i < options.length; i++) {
-      if (options[i].selected) {
-        selectedValues.push(options[i].value);
-      }
-    }
-    setSelectedSubExpenseTypes(selectedValues);
-  };
-
-  // Handle changes to the selected employee
   const handleEmployeeChange = (e) => {
     setSelectedEmployee(e.target.value);
   };
 
-  // Get the selected expense type object from the list
-  const selectedExpense = expenseTypes.find(
-    (type) => type.type === selectedExpenseType
-  );
+
+  const handleExpenseChange = (e) => {
+    setSelectedExpense(e.target.value);
+  };
+
 
   return (
     <div>
@@ -268,11 +219,12 @@ function ExpenseModal() {
             <NewSubExpenseModal
               newSubExpenseType={newSubExpenseType}
               setNewSubExpenseType={setNewSubExpenseType}
-              selectedExpenseTypes={selectedExpenseTypes}
-              handleExpenseTypeChange={handleExpenseTypeChange}
               handleAddNewSubExpenseType={handleAddNewSubExpenseType}
               loading={loading}
+              ExpenseType={ExpenseType}
               handleHideSubNewTypeInput={handleHideSubNewTypeInput}
+              selectedExpense={selectedExpense}
+              handleExpenseChange={handleExpenseChange}
             />
           ) : (
             <ExpenseAddModal
@@ -280,15 +232,12 @@ function ExpenseModal() {
               handleShowNewSubTypeInput={handleShowNewSubTypeInput}
               setDate={setDate}
               date={date}
-              selectedExpenseType={selectedExpenseType}
-              handleExpenseTypeChange={handleExpenseTypeChange}
-              expenseTypes={expenseTypes}
-              selectedSubExpenseTypes={selectedSubExpenseTypes}
-              handleSubExpenseTypeChange={handleSubExpenseTypeChange}
-              selectedExpense={selectedExpense}
+              ExpenseType={ExpenseType}
+              handleExpenseChange={handleExpenseChange}
               amount={amount}
               setAmount={setAmount}
               selectedEmployee={selectedEmployee}
+              selectedExpense={selectedExpense}
               employees={employees}
               handleEmployeeChange={handleEmployeeChange}
               setNote={setNote}

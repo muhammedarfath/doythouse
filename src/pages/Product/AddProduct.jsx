@@ -40,25 +40,34 @@ function AddProduct() {
 
     // Validation
     if (!productname) return toast.error("Product name is required");
-    if (!ProductDescription) return toast.error("Product description is required");
+    if (!ProductDescription)
+      return toast.error("Product description is required");
     if (!productUserCode) return toast.error("Product user code is required");
     if (!unitId) return toast.error("Unit ID is required");
     if (!reorderLevel) return toast.error("Reorder level is required");
     if (!hsn) return toast.error("HSN is required");
-    if (!cgst || isNaN(cgst)) return toast.error("CGST should be a valid number");
-    if (!sgst || isNaN(sgst)) return toast.error("SGST should be a valid number");
+    if (!cgst || isNaN(cgst))
+      return toast.error("CGST should be a valid number");
+    if (!sgst || isNaN(sgst))
+      return toast.error("SGST should be a valid number");
     if (!image) return toast.error("Image URL is required");
     if (!salesUnit) return toast.error("Sales unit is required");
     if (!packSize) return toast.error("Pack size is required");
     if (!category) return toast.error("Category is required");
     if (!subCategory) return toast.error("Sub-category is required");
     if (!mrp || isNaN(mrp)) return toast.error("MRP should be a valid number");
-    if (!purchasePrice || isNaN(purchasePrice)) return toast.error("Purchase price should be a valid number");
-    if (!retailPrice || isNaN(retailPrice)) return toast.error("Retail price should be a valid number");
-    if (!wholesalePrice || isNaN(wholesalePrice)) return toast.error("Wholesale price should be a valid number");
-    if (!specialPrice || isNaN(specialPrice)) return toast.error("Special price should be a valid number");
-    if (!dealerPrice || isNaN(dealerPrice)) return toast.error("Dealer price should be a valid number");
-    if (!openQty || isNaN(openQty)) return toast.error("Open quantity should be a valid number");
+    if (!purchasePrice || isNaN(purchasePrice))
+      return toast.error("Purchase price should be a valid number");
+    if (!retailPrice || isNaN(retailPrice))
+      return toast.error("Retail price should be a valid number");
+    if (!wholesalePrice || isNaN(wholesalePrice))
+      return toast.error("Wholesale price should be a valid number");
+    if (!specialPrice || isNaN(specialPrice))
+      return toast.error("Special price should be a valid number");
+    if (!dealerPrice || isNaN(dealerPrice))
+      return toast.error("Dealer price should be a valid number");
+    if (!openQty || isNaN(openQty))
+      return toast.error("Open quantity should be a valid number");
     setLoading(true);
 
     try {
@@ -109,13 +118,13 @@ function AddProduct() {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="max-w-screen-xl mx-auto">
+      <div className="w-full mx-auto">
         <div className="flex flex-col gap-11 mt-8">
           <h2 className="font-bold text-xl text-black">Add New Product</h2>
 
-          <div className="bg-white flex rounded-2xl shadow-sm p-4 px-4 md:p-8 mb-6">
-            <div className="lg:relative md:relative grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
-              <div className="lg:flex md:flex lg:flex-col md:flex-col items-center hidden">
+          <div className="bg-white flex rounded-2xl shadow-sm p-4 px-4 md:p-8 mb-6 w-full">
+            <div className="lg:relative md:relative flex gap-4 gap-y-2 text-sm w-full">
+              <div className="lg:flex  md:flex lg:flex-col md:flex-col items-center hidden lg:w-1/3 md:w-2/5">
                 <div
                   className="flex flex-col items-center pr-2 cursor-pointer rounded-lg"
                   onClick={() => setActiveSection("details")}
@@ -134,18 +143,22 @@ function AddProduct() {
                         }`}
                       />
                     </div>
-                    <p
-                      className={`font-medium text-lg ${
-                        activeSection === "details" ? "text-[#308E87]" : ""
-                      }`}
-                    >
-                      Add Product Details
-                    </p>
+                    <div className="md:hidden lg:block flex flex-col items-center justify-center">
+                      <p
+                        className={`font-medium text-lg ${
+                          activeSection === "details" ? "text-[#308E87]" : ""
+                        }`}
+                      >
+                        Add Product Details
+                      </p>
+                      <small>Add product name & details</small>
+                    </div>
+
+                    <div></div>
                   </div>
-                  <small className="ml-12">Add product name & details</small>
                 </div>
 
-                <div className="border-l-2 border-dotted border-gray-400 h-20"></div>
+                <div className="border-l-2 md:mr-2 lg:mr-[186px] border-dotted border-gray-400 h-20"></div>
 
                 <div
                   className="flex flex-col pr-2 cursor-pointer rounded-lg"
@@ -165,23 +178,23 @@ function AddProduct() {
                         }`}
                       />
                     </div>
-                    <p
-                      className={`font-medium text-lg ${
-                        activeSection === "gallery" ? "text-[#308E87]" : ""
-                      }`}
-                    >
-                      Product Gallery
-                    </p>
+                    <div className="md:hidden lg:block flex flex-col items-center justify-center">
+                      <p
+                        className={`font-medium text-lg ${
+                          activeSection === "gallery" ? "text-[#308E87]" : ""
+                        }`}
+                      >
+                        Product Gallery
+                      </p>
+                      <small>Thumbnail & add product gallery</small>
+                    </div>
                   </div>
-                  <small className="ml-12">
-                    Thumbnail & add product gallery
-                  </small>
                 </div>
 
-                <div className="border-l-2 border-dotted border-gray-400 h-20"></div>
+                <div className="border-l-2 md:mr-2 lg:mr-[186px] border-dotted border-gray-400 h-20"></div>
 
                 <div
-                  className="flex flex-col pr-2 cursor-pointer rounded-lg"
+                  className="flex flex-col items-center pr-2 cursor-pointer rounded-lg"
                   onClick={() => setActiveSection("category")}
                 >
                   <div className="flex gap-2 items-center">
@@ -198,18 +211,20 @@ function AddProduct() {
                         }`}
                       />
                     </div>
-                    <p
-                      className={`font-medium text-lg ${
-                        activeSection === "category" ? "text-[#308E87]" : ""
-                      }`}
-                    >
-                      Product Categories
-                    </p>
+                    <div className="md:hidden lg:block flex flex-col items-center justify-center">
+                      <p
+                        className={`font-medium text-lg ${
+                          activeSection === "category" ? "text-[#308E87]" : ""
+                        }`}
+                      >
+                        Product Categories
+                      </p>
+                      <small>Add product category</small>
+                    </div>
                   </div>
-                  <small className="ml-12">Add product category</small>
                 </div>
 
-                <div className="border-l-2 border-dotted border-gray-400 h-20"></div>
+                <div className="border-l-2 md:mr-2 lg:mr-[186px] border-dotted border-gray-400 h-20"></div>
 
                 <div
                   className="flex flex-col pr-2 cursor-pointer rounded-lg"
@@ -229,21 +244,21 @@ function AddProduct() {
                         }`}
                       />
                     </div>
-                    <p
-                      className={`font-medium text-lg ${
-                        activeSection === "price" ? "text-[#308E87]" : ""
-                      }`}
-                    >
-                      Selling Prices
-                    </p>
+                    <div className="md:hidden lg:block flex flex-col items-center justify-center">
+                      <p
+                        className={`font-medium text-lg ${
+                          activeSection === "price" ? "text-[#308E87]" : ""
+                        }`}
+                      >
+                        Selling Prices
+                      </p>
+                      <small>Add product basic price & discount</small>
+                    </div>
                   </div>
-                  <small className="ml-12">
-                    Add product basic price & discount
-                  </small>
                 </div>
               </div>
 
-              <div className="flex-grow lg:w-96">
+              <div className="flex-grow lg:w-2/3 md:w-3/5">
                 {activeSection === "details" && (
                   <AddProductDetails
                     productname={productname}
@@ -298,6 +313,7 @@ function AddProduct() {
                   />
                 )}
               </div>
+
               <div className="absolute bottom-2 right-0 hidden lg:block md:block">
                 <button
                   onClick={handleSubmit}

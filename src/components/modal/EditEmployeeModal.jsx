@@ -13,8 +13,9 @@ import {
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
-function EditEmployeeModal({ employee }) {
+function EditEmployeeModal({ employee,onSuccess }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState(employee.employee_name || "");
   const [department, setDepartment] = useState(employee.employee_department || "");
@@ -45,10 +46,10 @@ function EditEmployeeModal({ employee }) {
           },
         }
       );
-
       if (response.data) {
-        console.log(response.data);
+        toast.success("edit successful")
         setOpen(false);
+        onSuccess()
       }
     } catch (error) {
       console.error("Error updating employee:", error);

@@ -9,8 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import { AiFillEdit } from "react-icons/ai";
-import { MdOutlineDelete } from "react-icons/md";
 import ExpenseModal from "@/components/modal/ExpenseModal";
 import { CiFilter } from "react-icons/ci";
 import { BiSolidTrashAlt } from "react-icons/bi";

@@ -46,7 +46,6 @@ function SubCategory() {
   };
 
 
-  console.log(subCategory,"this is subcategiry");
 
 
   return (
@@ -63,7 +62,7 @@ function SubCategory() {
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="h-10 border rounded px-4 w-64 bg-gray-50"
+                  className="h-10 border rounded px-4 w-64 bg-white"
                 />
               </div>
               <SubModal />

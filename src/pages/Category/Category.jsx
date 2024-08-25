@@ -19,21 +19,47 @@ function Category() {
   const [category, setCategory] = useState([]);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=category"
-        );
-        setCategory(response.data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
     fetchCategories();
   }, []);
 
-  const handleDelete = async (categoryId) => {
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=category"
+      );
+      setCategory(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const handleDelete = (categoryId) => {
+    toast(
+      (t) => (
+        <div>
+          <p>Are you sure you want to delete this Expense?</p>
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={() => confirmDelete(categoryId, t.id)}
+              className="bg-red-500 text-white px-4 py-1 rounded"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-gray-300 text-black px-4 py-1 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: 4000 }
+    );
+  };
+
+
+  const confirmDelete = async (categoryId, toastId) => {
     try {
       await axios.post(
         `https://storeconvo.com/php/delete.php/`,
@@ -47,12 +73,16 @@ function Category() {
           },
         }
       );
-      toast.success("delete successull")
+      setCategory((prevCategory) =>
+      prevCategory.filter((category) => category.cat_id !== categoryId)
+      );
+      toast.success("Delete successful", { id: toastId });
 
     } catch (error) {
       console.error("Error deleting category:", error);
     }
   };
+
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -96,7 +126,7 @@ function Category() {
                     <TableCell>{category.cat_description}</TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <CategoryEditModal category={category} />
+                        <CategoryEditModal category={category} onSuccess={fetchCategories}/>
                         <BiSolidTrashAlt
                           className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
                           onClick={() => handleDelete(category.cat_id)}

@@ -6,11 +6,12 @@ import { Button } from "../../../components/ui/button";
 function NewSubExpenseModal({
   setNewSubExpenseType,
   newSubExpenseType,
-  handleAddNewSubExpenseType,
   loading,
   handleHideSubNewTypeInput,
-  selectedExpenseTypes,
-  handleExpenseTypeChange,
+  selectedExpense,
+  handleExpenseChange,
+  handleAddNewSubExpenseType,
+  ExpenseType
 }) {
   return (
     <div className="grid gap-4 py-4">
@@ -33,20 +34,18 @@ function NewSubExpenseModal({
         <select
           id="type"
           className="col-span-3 p-2 border rounded"
-          value={selectedExpenseTypes}
-          onChange={handleExpenseTypeChange}
-          multiple
+          value={selectedExpense}
+          onChange={handleExpenseChange}
         >
-          <option value="" disabled>
-            Select expense type
-          </option>
-          {expenseTypes.map((type, index) => (
-            <option key={index} value={type.subexp_id}>
-              {type.subexp_name}
+          <option value="">Select expense type</option>
+          {ExpenseType.map((type, index) => (
+            <option key={index} value={type.type}>
+              {type.exp_type}
             </option>
           ))}
         </select>
       </div>
+
       <div className="flex gap-2">
         <Button
           className="bg-[#308E87] text-white hover:bg-[#308E87]"

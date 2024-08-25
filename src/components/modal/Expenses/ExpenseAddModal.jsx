@@ -3,17 +3,12 @@ import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/label";
 import { Button } from "../../../components/ui/button";
 import { DialogFooter } from "../../../components/ui/dialog";
+
 function ExpenseAddModal({
   handleShowNewTypeInput,
   handleShowNewSubTypeInput,
   setDate,
   date,
-  selectedExpenseType,
-  handleExpenseTypeChange,
-  expenseTypes,
-  selectedSubExpenseTypes,
-  handleSubExpenseTypeChange,
-  selectedExpense,
   amount,
   setAmount,
   employees,
@@ -23,26 +18,29 @@ function ExpenseAddModal({
   note,
   handleSave,
   loading,
+  selectedExpense,
+  handleExpenseChange,
+  ExpenseType,
 }) {
   return (
-    <>
-      <div className="flex justify-end">
+    <div className="-mb-20 lg:mb-0 md:mb-0 h-full overflow-scroll">
+      <div className="flex lg:flex-row md:flex-row flex-col gap-2 lg:gap-0 md:gap-0 justify-end lg:space-x-3 md:space-x-3 mb-4">
         <Button
-          className="col-span-4 text-left  mr-3 bg-[#308E87] text-white hover:bg-[#308E87] "
+          className="text-left bg-[#308E87] text-white hover:bg-[#308E87] w-full sm:w-auto"
           onClick={handleShowNewTypeInput}
         >
           Add New Expense Type
         </Button>
         <Button
-          className="col-span-4 text-left  bg-[#308E87] text-white hover:bg-[#308E87] "
+          className="text-left bg-[#308E87] text-white hover:bg-[#308E87] w-full sm:w-auto"
           onClick={handleShowNewSubTypeInput}
         >
           Add New Sub Expense Type
         </Button>
       </div>
-      <div className="grid gap-4 py-4">
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="date" className="text-right">
+      <div className="grid gap-4 py-4 ">
+        <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-4">
+          <Label htmlFor="date" className="lg:text-right md:text-right text-left sm:col-span-1">
             Date
           </Label>
           <Input
@@ -50,49 +48,29 @@ function ExpenseAddModal({
             value={date}
             onChange={(e) => setDate(e.target.value)}
             type="date"
-            className="col-span-3"
+            className="col-span-3 sm:col-span-3"
           />
         </div>
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="type" className="text-right">
+        <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-4">
+          <Label htmlFor="type" className="lg:text-right md:text-right text-left sm:col-span-1">
             Expense Type
           </Label>
           <select
             id="type"
-            className="col-span-3 p-2 border rounded"
-            value={selectedExpenseType}
-            onChange={handleExpenseTypeChange}
+            className="col-span-3 sm:col-span-3 p-2 border rounded"
+            value={selectedExpense}
+            onChange={handleExpenseChange}
           >
             <option value="">Select expense type</option>
-            {expenseTypes.map((type, index) => (
+            {ExpenseType.map((type, index) => (
               <option key={index} value={type.type}>
                 {type.exp_type}
               </option>
             ))}
           </select>
         </div>
-        {selectedExpense?.subTypes.length > 0 && (
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="sub-type" className="text-right">
-              Sub Expense Type
-            </Label>
-            <select
-              id="sub-type"
-              className="col-span-3 p-2 border rounded"
-              value={selectedSubExpenseTypes}
-              onChange={handleSubExpenseTypeChange}
-            >
-              <option value="">Select sub expense type</option>
-              {selectedExpense.subTypes.map((subType, index) => (
-                <option key={index} value={subType}>
-                  {subType}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="amount" className="text-right">
+        <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-4">
+          <Label htmlFor="amount" className="lg:text-right md:text-right text-left sm:col-span-1">
             Amount
           </Label>
           <Input
@@ -101,16 +79,16 @@ function ExpenseAddModal({
             onChange={(e) => setAmount(e.target.value)}
             type="number"
             placeholder="Enter amount"
-            className="col-span-3"
+            className="col-span-3 sm:col-span-3"
           />
         </div>
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="employee" className="text-right">
+        <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-4">
+          <Label htmlFor="employee" className="lg:text-right md:text-right text-left sm:col-span-1">
             Employee
           </Label>
           <select
             id="employee"
-            className="col-span-3 p-2 border rounded"
+            className="col-span-3 sm:col-span-3 p-2 border rounded"
             value={selectedEmployee}
             onChange={handleEmployeeChange}
           >
@@ -122,8 +100,8 @@ function ExpenseAddModal({
             ))}
           </select>
         </div>
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="note" className="text-right">
+        <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-4">
+          <Label htmlFor="note" className="lg:text-right md:text-right text-left sm:col-span-1">
             Note
           </Label>
           <Input
@@ -131,13 +109,12 @@ function ExpenseAddModal({
             value={note}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Enter note (optional)"
-            className="col-span-3"
+            className="col-span-3 sm:col-span-3"
           />
         </div>
-
         <DialogFooter>
           <Button
-            className="bg-[#308E87] text-white hover:bg-[#308E87]"
+            className="bg-[#308E87] text-white hover:bg-[#308E87] w-full sm:w-auto"
             onClick={handleSave}
             disabled={loading}
           >
@@ -145,7 +122,7 @@ function ExpenseAddModal({
           </Button>
         </DialogFooter>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -28,7 +28,7 @@ function ProductGallery({ setImage }) {
   };
 
   return (
-    <div className="lg:col-span-2 flex flex-col gap-9 lg:w-[45rem] border-l-2 border-l-[#ECF3F3] pl-5">
+    <div className="lg:col-span-2 flex flex-col gap-9  border-l-2 border-l-[#ECF3F3] pl-5">
       <div className="flex items-center justify-center w-full">
         <label
           htmlFor="dropzone-file"

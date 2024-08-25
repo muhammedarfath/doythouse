@@ -48,7 +48,7 @@ function EditExpenseModal({ expense }) {
 
     fetchEmployeesAndExpenseTypes();
   }, []);
-  // Fetch sub-types when expense type changes
+
   useEffect(() => {
     const fetchSubTypes = async () => {
       if (type) {
@@ -61,7 +61,7 @@ function EditExpenseModal({ expense }) {
           console.error("Error fetching sub-types:", error);
         }
       } else {
-        setSubTypes([]); // Clear subTypes if no type is selected
+        setSubTypes([]); 
       }
     };
 

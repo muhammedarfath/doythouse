@@ -44,7 +44,6 @@ function ShopInformationModal({shopInformation}) {
       const response = await axios.post(
         "https://storeconvo.com/php/edit.php",
         new URLSearchParams({
-    
           shop_name: shopInfo.shop_name,
           shop_email: shopInfo.shop_email,
           shop_phone: shopInfo.shop_phone,
