@@ -129,7 +129,7 @@ function AddProduct() {
 
           <div className="bg-white flex rounded-2xl shadow-sm p-4 px-4 md:p-8 mb-6 w-full">
             <div className="lg:relative md:relative flex gap-4 gap-y-2 text-sm w-full">
-              <div className="lg:flex  md:flex lg:flex-col md:flex-col items-center hidden lg:w-1/3 md:w-2/5">
+              <div className="lg:flex  md:flex lg:flex-col md:flex-col items-center hidden lg:w-1/3 md:w-1/6">
                 <div
                   className="flex flex-col items-center pr-2 cursor-pointer rounded-lg"
                   onClick={() => setActiveSection("details")}
@@ -263,7 +263,7 @@ function AddProduct() {
                 </div>
               </div>
 
-              <div className="flex-grow lg:w-2/3 md:w-3/5">
+              <div className="flex-grow lg:w-2/3 md:w-5/6">
                 {activeSection === "details" && (
                   <AddProductDetails
                     productname={productname}
