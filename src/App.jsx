@@ -17,7 +17,6 @@ import StockReport from './pages/Report/StockReport';
 import TaxReport from './pages/Report/TaxReport';
 import Units from './pages/Units/Units';
 import PurchaseEntryList from './pages/Purchase/PurchaseEntryList';
-import Sidebar2 from './components/Layout/Sidebar2';
 function App() {
 
   return (
