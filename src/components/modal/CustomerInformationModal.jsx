@@ -398,7 +398,7 @@ function CustomerInformationModal() {
                           value={yokeLength}
                           onChange={(e) => setYokeLength(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -409,7 +409,7 @@ function CustomerInformationModal() {
                           value={yokeRound}
                           onChange={(e) => setYokeRound(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -420,7 +420,7 @@ function CustomerInformationModal() {
                           value={fullLength}
                           onChange={(e) => setFullLength(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -431,7 +431,7 @@ function CustomerInformationModal() {
                           value={upperBust}
                           onChange={(e) => setUpperBust(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -442,7 +442,7 @@ function CustomerInformationModal() {
                           value={bust}
                           onChange={(e) => setBust(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -453,7 +453,7 @@ function CustomerInformationModal() {
                           value={underBust}
                           onChange={(e) => setUnderBust(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -464,7 +464,7 @@ function CustomerInformationModal() {
                           value={midWaist}
                           onChange={(e) => setMidWaist(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -475,7 +475,7 @@ function CustomerInformationModal() {
                           value={hip}
                           onChange={(e) => setHip(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -486,7 +486,7 @@ function CustomerInformationModal() {
                           value={shoulder}
                           onChange={(e) => setShoulder(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -497,7 +497,7 @@ function CustomerInformationModal() {
                           value={shoulderWidth}
                           onChange={(e) => setShoulderWidth(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -508,7 +508,7 @@ function CustomerInformationModal() {
                           value={slitLength}
                           onChange={(e) => setSlitLength(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -519,7 +519,7 @@ function CustomerInformationModal() {
                           value={slitRound}
                           onChange={(e) => setSlitRound(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -530,7 +530,7 @@ function CustomerInformationModal() {
                           value={sleeveType}
                           onChange={(e) => setSleeveType(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -541,7 +541,7 @@ function CustomerInformationModal() {
                           value={sleeveLength}
                           onChange={(e) => setSleeveLength(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -552,7 +552,7 @@ function CustomerInformationModal() {
                           value={wrist}
                           onChange={(e) => setWrist(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -563,7 +563,7 @@ function CustomerInformationModal() {
                           value={threeFourth}
                           onChange={(e) => setThreeFourth(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -574,7 +574,7 @@ function CustomerInformationModal() {
                           value={elbow}
                           onChange={(e) => setElbow(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -585,7 +585,7 @@ function CustomerInformationModal() {
                           value={armRound}
                           onChange={(e) => setArmRound(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -596,7 +596,7 @@ function CustomerInformationModal() {
                           value={armHole}
                           onChange={(e) => setArmHole(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -607,7 +607,7 @@ function CustomerInformationModal() {
                           value={neck}
                           onChange={(e) => setNeck(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -618,7 +618,7 @@ function CustomerInformationModal() {
                           value={frontNeck}
                           onChange={(e) => setFrontNeck(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -629,7 +629,7 @@ function CustomerInformationModal() {
                           value={backNeck}
                           onChange={(e) => setBackNeck(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -640,7 +640,7 @@ function CustomerInformationModal() {
                           value={collarRound}
                           onChange={(e) => setCollarRound(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -651,7 +651,7 @@ function CustomerInformationModal() {
                           value={tuckPoint}
                           onChange={(e) => setTuckPoint(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
@@ -662,7 +662,7 @@ function CustomerInformationModal() {
                           value={pointToPoint}
                           onChange={(e) => setPointToPoint(e.target.value)}
                           type="text"
-                          className="md:p-6 p-2 border w-full"
+                          className="md:p-6 lg:p-2 p-2 border w-full"
                         />
                       </td>
                     </tr>
