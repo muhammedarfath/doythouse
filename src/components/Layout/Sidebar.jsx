@@ -1,17 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Items from "./Items";
 import Header from "./Header";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.jpg";
 import { RiAppsLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 
 function Sidebar() {
+  const navigate = useNavigate()
   const [open, setOpen] = useState(true);
 
   const {isLoggedIn,role,username} = useSelector((state) => state.auth);
 
-  console.log(isLoggedIn,role,username);
+  useEffect(()=>{
+   if (!isLoggedIn){
+    navigate('/login')
+   }
+  },[])
 
   return (
     <div className="flex h-screen">
