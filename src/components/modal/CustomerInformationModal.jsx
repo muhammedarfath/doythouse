@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button } from "../../components/ui/button";
 import { FiPlus } from "react-icons/fi";
 import {
@@ -13,6 +13,8 @@ import {
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { IoMdArrowRoundForward } from "react-icons/io";
+import axios from "axios";
+import ReactToPrint from "react-to-print";
 
 function CustomerInformationModal() {
   const [loading, setLoading] = useState(false);
@@ -87,6 +89,7 @@ function CustomerInformationModal() {
   const [sgst, setSgst] = useState("");
   // Note
   const [note, setNote] = useState("");
+  const componentRef = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -165,9 +168,62 @@ function CustomerInformationModal() {
 
     try {
       const response = await axios.post(
-        "https://storeconvo.com/php/add_expensetype.php",
+        "https://storeconvo.com/php/add_customer.php",
         new URLSearchParams({
+          cust_name: customerName,
+          cust_phone: contactNumber,
+          cust_trialdate: trialDate,
+          cust_expecteddelivery: expectedDelivery,
+          cust_itemcategory: 1,
+          cust_designername: designerName,
+          cust_orderno: orderNumber,
+          cust_orderdate: orderDate,
+          cust_emergency: emergency,
+          status: "delivered",
 
+          yoke_length: yokeLength,
+          yoke_round: yokeRound,
+          full_length: fullLength,
+          shoulder: upperBust,
+          sleeve_length: bust,
+          mid_waist: underBust,
+          arm_hole: midWaist,
+          hip: hip,
+          upper_bust: shoulder,
+          bust: shoulderWidth,
+          under_bust: threeFourth,
+          slit_round: armHole,
+          shoulder_wide: sleeveType,
+          slit_length: collarRound,
+          tuck_point: collarRound,
+          point_to_point: collarRound,
+          collor_round: collarRound,
+
+          //      console.log("Yoke Length:", yokeLength);
+          // console.log("Yoke Round:", yokeRound);
+          // console.log("Full Length:", fullLength);
+          // console.log("Upper Bust:", upperBust);
+          // console.log("Bust:", bust);
+          // console.log("Under Bust:", underBust);
+          // console.log("Mid Waist:", midWaist);
+          // console.log("Hip:", hip);
+          // console.log("Shoulder:", shoulder);
+          // console.log("Shoulder Width:", shoulderWidth);
+          // console.log("Slit Length:", slitLength);
+          // console.log("Slit Round:", slitRound);
+          // console.log("Sleeve Type:", sleeveType);
+          // console.log("Sleeve Length:", sleeveLength);
+          // console.log("Wrist:", wrist);
+          // console.log("Three Fourth:", threeFourth);
+          // console.log("Elbow:", elbow);
+          // console.log("Arm Round:", armRound);
+          // console.log("Arm Hole:", armHole);
+          // console.log("Neck:", neck);
+          // console.log("Front Neck:", frontNeck);
+          // console.log("Back Neck:", backNeck);
+          // console.log("Collar Round:", collarRound);
+          // console.log("Tuck Point:", tuckPoint);
+          // console.log("Point to Point:", pointToPoint);
         }),
         {
           headers: {
@@ -175,80 +231,81 @@ function CustomerInformationModal() {
           },
         }
       );
+      console.log(response.data);
       if (response.data) {
         console.log(response.data);
         alert("successs");
       }
     } catch (error) {
-      console.error("Error adding expense type:", error);
-      alert("Failed to add expense type");
+      console.error("Error adding  type:", error);
+      alert("Failed to add ");
     } finally {
       setLoading(false);
     }
 
     // Clear form fields after submission
-    setCustomerName("");
-    setContactNumber("");
-    setTrialDate("");
-    setExpectedDelivery("");
-    setItemCategory("");
-    setDesignerName("");
-    setOrderNumber("");
-    setOrderDate("");
-    setEmergency("");
+    // setCustomerName("");
+    // setContactNumber("");
+    // setTrialDate("");
+    // setExpectedDelivery("");
+    // setItemCategory("");
+    // setDesignerName("");
+    // setOrderNumber("");
+    // setOrderDate("");
+    // setEmergency("");
 
-    setYokeLength("");
-    setYokeRound("");
-    setFullLength("");
-    setUpperBust("");
-    setBust("");
-    setUnderBust("");
-    setMidWaist("");
-    setHip("");
-    setShoulder("");
-    setShoulderWidth("");
-    setSlitLength("");
-    setSlitRound("");
-    setSleeveType("");
-    setSleeveLength("");
-    setWrist("");
-    setThreeFourth("");
-    setElbow("");
-    setArmRound("");
-    setNeck("");
-    setFrontNeck("");
-    setBackNeck("");
-    setCollarRound("");
-    setTuckPoint("");
-    setPointToPoint("");
+    // setYokeLength("");
+    // setYokeRound("");
+    // setFullLength("");
+    // setUpperBust("");
+    // setBust("");
+    // setUnderBust("");
+    // setMidWaist("");
+    // setHip("");
+    // setShoulder("");
+    // setShoulderWidth("");
+    // setSlitLength("");
+    // setSlitRound("");
+    // setSleeveType("");
+    // setSleeveLength("");
+    // setWrist("");
+    // setThreeFourth("");
+    // setElbow("");
+    // setArmRound("");
+    // setNeck("");
+    // setFrontNeck("");
+    // setBackNeck("");
+    // setCollarRound("");
+    // setTuckPoint("");
+    // setPointToPoint("");
 
-    setSkirtFullLength("");
-    setSeat("");
-    setThigh("");
-    setKnee("");
-    setCalf("");
-    setBottomRound("");
+    // setSkirtFullLength("");
+    // setSeat("");
+    // setThigh("");
+    // setKnee("");
+    // setCalf("");
+    // setBottomRound("");
 
-    setPad(false);
-    setZip(false);
-    setBackOpen(false);
-    setFrontOpen(false);
-    setImage("");
+    // setPad(false);
+    // setZip(false);
+    // setBackOpen(false);
+    // setFrontOpen(false);
+    // setImage("");
 
-    setCutting("");
-    setStitching("");
-    setHandWork("");
-    setMeasurer("");
-    setChecker("");
-    setTailor("");
-    setDateIn("");
-    setCompletedDate("");
+    // setCutting("");
+    // setStitching("");
+    // setHandWork("");
+    // setMeasurer("");
+    // setChecker("");
+    // setTailor("");
+    // setDateIn("");
+    // setCompletedDate("");
 
-    setTotalPrice("");
-    setAdvancedPrice("");
-    setBalancePrice("");
+    // setTotalPrice("");
+    // setAdvancedPrice("");
+    // setBalancePrice("");
 
-    setNote("");
+    // setNote("");
   };
 
   const handleCheckboxChange = (setter) => (e) => {
@@ -749,7 +806,7 @@ function CustomerInformationModal() {
                   </table>
                 </div>
 
-                <div class="min-w-full border-collapse">
+                <div className="min-w-full border-collapse">
                   <div className="flex flex-col gap-7 border p-1">
                     <div className="flex gap-7 items-center">
                       <div className="border p-2 px-8 text-left">Zip</div>
@@ -915,7 +972,10 @@ function CustomerInformationModal() {
                       placeholder="Enter total price"
                     />
 
-                    <Label htmlFor="advanced-price" className="text-md font-bold">
+                    <Label
+                      htmlFor="advanced-price"
+                      className="text-md font-bold"
+                    >
                       Advanced Price
                     </Label>
                     <Input
@@ -927,7 +987,10 @@ function CustomerInformationModal() {
                       placeholder="Enter advanced price"
                     />
 
-                    <Label htmlFor="balance-price" className="text-md font-bold">
+                    <Label
+                      htmlFor="balance-price"
+                      className="text-md font-bold"
+                    >
                       Balance Price
                     </Label>
                     <Input
@@ -964,7 +1027,10 @@ function CustomerInformationModal() {
                       />
                     </div>
 
-                    <Label htmlFor="discount-price" className="text-md font-bold">
+                    <Label
+                      htmlFor="discount-price"
+                      className="text-md font-bold"
+                    >
                       Discount Price
                     </Label>
                     <Input
