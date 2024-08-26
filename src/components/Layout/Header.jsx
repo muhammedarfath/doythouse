@@ -25,7 +25,6 @@ function Header({ open }) {
     setSidebarOpen(false);
   };
 
-
   return (
     <div>
       <Toaster position="top-right" />

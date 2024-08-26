@@ -39,7 +39,7 @@ function NewSubExpenseModal({
         >
           <option value="">Select expense type</option>
           {ExpenseType.map((type, index) => (
-            <option key={index} value={type.type}>
+            <option key={index} value={type.exp_id}>
               {type.exp_type}
             </option>
           ))}

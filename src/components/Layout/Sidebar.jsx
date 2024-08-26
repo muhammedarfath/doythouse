@@ -4,9 +4,14 @@ import Header from "./Header";
 import { Outlet } from "react-router-dom";
 import logo from "../../assets/logo.jpg";
 import { RiAppsLine } from "react-icons/ri";
+import { useSelector } from "react-redux";
 
 function Sidebar() {
   const [open, setOpen] = useState(true);
+
+  const {isLoggedIn,role,username} = useSelector((state) => state.auth);
+
+  console.log(isLoggedIn,role,username);
 
   return (
     <div className="flex h-screen">

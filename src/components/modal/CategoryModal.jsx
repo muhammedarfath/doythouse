@@ -13,15 +13,17 @@ import {
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
-function CategoryModal() {
+function CategoryModal({setCategory}) {
   const [categoryName, setCategoryName] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSave = async () => {
     if (!categoryName || !description) {
-      alert("Please fill out all fields");
+      toast.error("Please fill out all fields");
       return;
     }
 
@@ -40,12 +42,18 @@ function CategoryModal() {
           },
         }
       );
-      if (response){
-        console.log(response);
+
+      if (response.data) { 
+        setCategory((prevCate) => [...prevCate, response.data]);
+        toast.success("Category added successfully");
+        setCategoryName("");
+        setDescription("");
+        setIsOpen(false);
+      } else {
+        toast.error("Failed to add category");
       }
     } catch (error) {
-      console.error("Error adding category:", error);
-      alert("Failed to add category");
+      toast.error("Failed to add category");
     } finally {
       setLoading(false);
     }
@@ -53,7 +61,7 @@ function CategoryModal() {
 
   return (
     <div>
-      <Dialog>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button className="bg-[#308E87] hover:bg-[#308E87]">
             <FiPlus className="text-white text-xl" />

@@ -23,6 +23,7 @@ function ExpenseModal() {
   const [employees, setEmployees] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [selectedExpense, setSelectedExpense] = useState("");
+  const [selectedSubExpense, setSelecteSubdExpense] = useState("");
   const [note, setNote] = useState("");
   const [showNewTypeInput, setShowNewTypeInput] = useState(false);
   const [showNewSubTypeInput, setShowNewSubTypeInput] = useState(false);
@@ -93,7 +94,7 @@ function ExpenseModal() {
         "https://storeconvo.com/php/add_subexpensetype.php",
         new URLSearchParams({
           subexp_name: newSubExpenseType,
-          expenseId:expenseid,
+          exp_id:selectedExpense,
         }),
         {
           headers: {
@@ -118,14 +119,21 @@ function ExpenseModal() {
   const handleSave = async () => {
     setLoading(true);
 
-    console.log(selectedEmployee);
+
+    // console.log(date);
+    // console.log(selectedExpense);
+    // console.log(selectedSubExpense);
+    // console.log(amount);
+    // console.log(selectedEmployee);
+    // console.log(note);
 
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_expense.php",
         new URLSearchParams({
           exp_date: date,
-
+          exp_expense:selectedExpense,
+          exp_subexpense:selectedSubExpense,
           exp_amount: amount,
           exp_employee: selectedEmployee,
           exp_note: note,
@@ -179,7 +187,7 @@ function ExpenseModal() {
     setSelectedExpense(e.target.value);
   };
 
-
+  
   return (
     <div>
       <Dialog>
@@ -238,11 +246,14 @@ function ExpenseModal() {
               setAmount={setAmount}
               selectedEmployee={selectedEmployee}
               selectedExpense={selectedExpense}
+              setSelectedExpense={setSelectedExpense}
               employees={employees}
               handleEmployeeChange={handleEmployeeChange}
               setNote={setNote}
               note={note}
               handleSave={handleSave}
+              setSelecteSubdExpense={setSelecteSubdExpense}
+              selectedSubExpense={selectedSubExpense}
               loading={loading}
             />
           )}

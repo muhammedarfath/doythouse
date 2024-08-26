@@ -1,9 +1,14 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import logo from "../../assets/logo.jpg";
-import { useDispatch, useSelector } from 'react-redux';
-import { startLoading, loginSuccess, loginFailure } from '../../Redux/features/auth/authSlice';
+import { useDispatch, useSelector } from "react-redux";
+import {
+  startLoading,
+  loginSuccess,
+  loginFailure,
+} from "../../Redux/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
   const dispatch = useDispatch();
@@ -17,35 +22,57 @@ function Login() {
 
   const onSubmit = async (data) => {
     dispatch(startLoading());
+  
     try {
-      // Simulate API call
-      const user = await fakeApiLogin(data.username, data.password);
-
-      // If login is successful, dispatch loginSuccess with user data
-      dispatch(loginSuccess(user));
-      console.log("Login Successful:", user);
-      navigate('/')
-
+      const response = await axios.post(
+        "https://storeconvo.com/php/login.php",
+        {
+          username: data.username,
+          password: data.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+  
+      console.log("Raw Response:", response.data);
+  
+      let responseData;
+      try {
+        const cleanData = response.data.startsWith('1') 
+          ? response.data.substring(1) 
+          : response.data;
+  
+        responseData = JSON.parse(cleanData);
+      } catch (parseError) {
+        console.error("Error parsing JSON:", parseError);
+        throw new Error("Invalid JSON format received");
+      }
+  
+      console.log("Parsed Response:", responseData);
+  
+      if (responseData && responseData.uid) {
+        dispatch(
+          loginSuccess({
+            uid: responseData.uid,
+            username: responseData.username,
+            role: responseData.role,
+          })
+        );
+        navigate("/");
+      } else {
+        dispatch(loginFailure());
+        console.error("Login failed:", responseData.message || "Unknown error");
+      }
     } catch (error) {
-      // If login fails, dispatch loginFailure
       dispatch(loginFailure());
-      console.error("Login Failed:", error.message);
+      console.error("Error during login:", error.message || error);
     }
   };
-
-  // Simulated API call function
-  const fakeApiLogin = (username, password) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (username === "testuser" && password === "password") {
-          resolve({ username, name: "Test User" });
-        } else {
-          reject(new Error("Invalid username or password"));
-        }
-      }, 1000);
-    });
-  };
-
+  
+  
   return (
     <div
       className="flex items-center justify-center min-h-screen bg-cover bg-center flex-col"
@@ -56,7 +83,7 @@ function Login() {
         className="bg-white mb-32 bg-opacity-45 backdrop-blur-md p-10 rounded-lg shadow-md w-full max-w-lg"
       >
         <h2 className="text-2xl font-semibold text-center text-black mb-6">
-          Welcome Back! <br /> 
+          Welcome Back! <br />
           Sign in to continue to Skote.
         </h2>
 
