@@ -132,8 +132,8 @@ function ExpenseModal() {
         "https://storeconvo.com/php/add_expense.php",
         new URLSearchParams({
           exp_date: date,
-          exp_expense:selectedExpense,
-          exp_subexpense:selectedSubExpense,
+          exp_type:selectedExpense,
+          expsub_type:selectedSubExpense,
           exp_amount: amount,
           exp_employee: selectedEmployee,
           exp_note: note,
@@ -144,8 +144,8 @@ function ExpenseModal() {
           },
         }
       );
-      if (response.data.success) {
-        console.log(response.data.message);
+      if (response.data) {
+        console.log(response.data);
         alert("success");
         setDate("");
 

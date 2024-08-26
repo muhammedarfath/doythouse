@@ -31,9 +31,9 @@ function ProductPrices({
   }, [mrp, retailPrice, dealerPrice, openQty, purchasePrice, wholesalePrice, specialPrice]);
 
   return (
-    <div className="lg:col-span-2 border-l-2 border-l-[#ECF3F3] pl-5">
-      <div className="grid gap-4 gap-y-2 lg:w-[45rem] text-sm grid-cols-1 md:grid-cols-5">
-        <div className="md:col-span-3 flex flex-col gap-4">
+    <div className="lg:col-span-2 border-l-2 border-l-[#ECF3F3] pl-5 w-full">
+      <div className="grid gap-4 gap-y-4 text-sm grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full">
+        <div className="flex flex-col gap-4">
           <label htmlFor="mrp">MRP</label>
           <input
             type="text"
@@ -44,6 +44,8 @@ function ProductPrices({
             className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="MRP"
           />
+        </div>
+        <div className="flex flex-col gap-4">
           <label htmlFor="retailPrice">Retail Price</label>
           <input
             type="text"
@@ -54,6 +56,8 @@ function ProductPrices({
             className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Retail Price"
           />
+        </div>
+        <div className="flex flex-col gap-4">
           <label htmlFor="dealerPrice">Dealer Price</label>
           <input
             type="text"
@@ -64,6 +68,8 @@ function ProductPrices({
             className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Dealer Price"
           />
+        </div>
+        <div className="flex flex-col gap-4">
           <label htmlFor="openQty">Open Qty</label>
           <input
             type="text"
@@ -75,7 +81,7 @@ function ProductPrices({
             placeholder="Open Qty"
           />
         </div>
-        <div className="md:col-span-2 flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
           <label htmlFor="purchasePrice">Purchase Price</label>
           <input
             type="text"
@@ -86,6 +92,8 @@ function ProductPrices({
             className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Purchase Price"
           />
+        </div>
+        <div className="flex flex-col gap-4">
           <label htmlFor="wholesalePrice">Wholesale Price</label>
           <input
             type="text"
@@ -96,6 +104,8 @@ function ProductPrices({
             className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
             placeholder="Wholesale Price"
           />
+        </div>
+        <div className="flex flex-col gap-4">
           <label htmlFor="specialPrice">Special Price</label>
           <input
             type="text"

@@ -103,6 +103,7 @@ function AddProduct() {
       );
 
       if (response.data) {
+        console.log(response.data);
         toast.success("Product saved successfully!");
         console.log(response.data.message);
       } else {
@@ -115,6 +116,10 @@ function AddProduct() {
       setLoading(false);
     }
   };
+
+
+
+
 
   return (
     <div className="flex items-center justify-center">

@@ -44,6 +44,7 @@ function CategoryModal({setCategory}) {
       );
 
       if (response.data) { 
+        console.log(response.data);
         setCategory((prevCate) => [...prevCate, response.data]);
         toast.success("Category added successfully");
         setCategoryName("");

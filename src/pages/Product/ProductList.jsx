@@ -27,6 +27,7 @@ function ProductList() {
         const response = await axios.get(
           "https://storeconvo.com/php/fetch.php?typ=product"
         );
+        console.log(response.data);
         setProducts(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
