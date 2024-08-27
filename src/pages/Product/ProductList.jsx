@@ -87,6 +87,7 @@ function ProductList() {
       setProducts((prevProducts) =>
         prevProducts.filter((product) => product.productid !== productId)
       );
+      
       toast.success("Delete successful", { id: toastId });
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -144,11 +145,14 @@ function ProductList() {
                       </TableCell>
                       <TableCell className="font-medium">{index + 1}</TableCell>
                       <TableCell>
-                        <img
-                          src={product.image}
-                          alt={product.productname}
-                          className="w-10 h-15 object-cover rounded"
-                        />
+                        {product.image_url.split(',').map((url, idx) => (
+                          <img
+                            key={idx}
+                            src={`https://storeconvo.com/${url}`}
+                            alt={product.productname}
+                            className="w-10 h-15 object-cover rounded mb-2"
+                          />
+                        ))}
                       </TableCell>
                       <TableCell>{product.productname}</TableCell>
                       <TableCell className="text-right">
@@ -159,7 +163,7 @@ function ProductList() {
                       <TableCell>{product.sgst}</TableCell>
                       <TableCell className="text-center">
                         <div className="flex justify-center gap-4">
-                          <ProductDetailsModal />
+                          <ProductDetailsModal product={product}/>
                           <ProductEditModal product={product} />
                           <BiSolidTrashAlt
                             onClick={() => handleDelete(product.productid)}

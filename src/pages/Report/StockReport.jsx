@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import {
   Table,
@@ -12,6 +12,7 @@ import {
 import { AiFillEdit } from "react-icons/ai";
 import { MdOutlineDelete } from "react-icons/md";
 import { CiFilter } from "react-icons/ci";
+import axios from "axios";
 
 // Sample data for stock report
 const stockData = [
@@ -32,9 +33,33 @@ const stockData = [
 function StockReport() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
 
+  const [stockReport, setStockReport] = useState([]);
+
+  useEffect(() => {
+    const fetchStockReport = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=stock"
+        );
+        setStockReport(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchStockReport();
+  }, [])
+
+
+ console.log(stockReport);
+
+
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
+
+
+
+
 
   const totalItems = stockData.reduce((total, item) => total + item.items, 0);
   const totalStockValue = stockData.reduce(

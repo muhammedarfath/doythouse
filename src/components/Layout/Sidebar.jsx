@@ -25,7 +25,7 @@ function Sidebar() {
           open ? "w-60" : "w-20"
         } duration-500 bg-white fixed h-full shadow z-50 lg:flex md:flex flex-col hidden`}
       >
-        <div className="relative">
+        <div className="relative overflow-scroll">
           <div
             className={`absolute cursor-pointer border-2 rounded-full p-1 right-6 bg-[#D8E9E7] transform ${
               open ? "top-6 rotate-0" : "top-5 rotate-180"

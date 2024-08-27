@@ -70,42 +70,70 @@ function AddProduct() {
       return toast.error("Open quantity should be a valid number");
     setLoading(true);
 
+    const formData = new FormData();
+    formData.append("productName", productname);
+    formData.append("productDescription", ProductDescription);
+    formData.append("productUserCode", productUserCode);
+    formData.append("unitId", unitId);
+    formData.append("reorderLevel", reorderLevel);
+    formData.append("hsn", hsn);
+    formData.append("cgst", cgst);
+    formData.append("sgst", sgst);
+
+    if (Array.isArray(image)) {
+      image.forEach((file, index) => {
+        formData.append(`image_${index}`, file);
+      });
+    } else {
+      formData.append("image", image);
+    }
+
+    formData.append("salesUnit", salesUnit);
+    formData.append("packSize", packSize);
+    formData.append("categoryId", category);
+    formData.append("subCategoryId", subCategory);
+    formData.append("mrp", mrp);
+    formData.append("purchasePrice", purchasePrice);
+    formData.append("retailPrice", retailPrice);
+    formData.append("wholesalePrice", wholesalePrice);
+    formData.append("specialPrice", specialPrice);
+    formData.append("dealerPrice", dealerPrice);
+    formData.append("openQty", openQty);
+
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_product.php",
-        new URLSearchParams({
-          productName: productname,
-          productDescription: ProductDescription,
-          productUserCode: productUserCode,
-          unitId: unitId,
-          reorderLevel: reorderLevel,
-          hsn: hsn,
-          cgst: cgst,
-          sgst: sgst,
-          image_url: image,
-          salesUnit: salesUnit,
-          packSize: packSize,
-          categoryId: category,
-          subCategoryId: subCategory,
-          mrp: mrp,
-          purchasePrice: purchasePrice,
-          retailPrice: retailPrice,
-          wholesalePrice: wholesalePrice,
-          specialPrice: specialPrice,
-          dealerPrice: dealerPrice,
-          openQty: openQty,
-        }),
+        formData,
         {
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "multipart/form-data", 
           },
         }
       );
 
-      if (response.data) {
-        console.log(response.data);
+      console.log(response.data);
+      if (response.status === 200) {
         toast.success("Product saved successfully!");
-        console.log(response.data.message);
+        // setProductName("");
+        // setProductDescription("");
+        // setProductUserCode("");
+        // setUnitId("");
+        // setReorderLevel("");
+        // setHsn("");
+        // setCgst("");
+        // setSgst("");
+        // setImage("");
+        // setSalesUnit("");
+        // setPackSize("");
+        // setCategory("");
+        // setSubCategory("");
+        // setMrp("");
+        // setPurchasePrice("");
+        // setRetailPrice("");
+        // setWholesalePrice("");
+        // setSpecialPrice("");
+        // setDealerPrice("");
+        // setOpenQty("");
       } else {
         toast.error("Failed to save product");
       }
@@ -116,10 +144,6 @@ function AddProduct() {
       setLoading(false);
     }
   };
-
-
-
-
 
   return (
     <div className="flex items-center justify-center">

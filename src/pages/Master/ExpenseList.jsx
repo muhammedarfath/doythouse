@@ -30,19 +30,19 @@ function ExpenseList() {
   });
 
   useEffect(() => {
-    const fetchExpenseList = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=expense"
-        );
-        setExpenses(Array.isArray(response.data) ? response.data : []);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
     fetchExpenseList();
   }, []);
+
+  const fetchExpenseList = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=expense"
+      );
+      setExpenses(Array.isArray(response.data) ? response.data : []);
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchExpenseTypes = async () => {
@@ -171,7 +171,7 @@ function ExpenseList() {
                   <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
                 </div>
 
-                <ExpenseModal setExpenses={setExpenses}/>
+                <ExpenseModal setExpenses={setExpenses} />
               </div>
             </div>
 
@@ -280,17 +280,17 @@ function ExpenseList() {
                     {Array.isArray(expenses) &&
                       expenses.some((expense) => expense.expsub_type) && (
                         <TableCell className="text-right">
-                          {expense.expsub_type || "N/A"}
+                          {expense.expsub_type || ""}
                         </TableCell>
                       )}
                     <TableCell>{expense.exp_employee}</TableCell>
                     <TableCell>{expense.exp_note}</TableCell>
                     <TableCell className="flex justify-center gap-4">
-                      <EditExpenseModal expense={expense} />
+                      <EditExpenseModal expense={expense} onChange={fetchExpenseList}/>
                       <BiSolidTrashAlt
                         onClick={() => handleDelete(expense.exp_id)}
-                        className="cursor-pointer"
-                      />
+                        className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+                        />
                     </TableCell>
                   </TableRow>
                 ))}

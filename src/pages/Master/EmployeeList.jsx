@@ -17,6 +17,7 @@ import { toast } from "react-hot-toast";
 
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
   useEffect(() => {
     fetchEmployees();
@@ -83,20 +84,25 @@ function EmployeeList() {
     }
   };
 
-  console.log(employees);
+  const filteredEmployees = employees.filter(employee =>
+    employee.employee_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full lg:max-w-screen-xl md:max-w-[35rem] max-w-[22rem] mx-auto ">
         <div className="flex flex-col gap-6 mt-8">
           <h2 className="font-semibold text-xl text-black">Employee List</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
-          <div className="flex items-center justify-between mb-4 lg:flex-row gap-4 lg:gap-0  flex-col">
+            <div className="flex items-center justify-between mb-4 lg:flex-row gap-4 lg:gap-0 flex-col">
               <div className="flex gap-2">
                 <span>Search</span>
                 <input
                   type="text"
-                  placeholder="Search..."
-                  className="h-10 border rounded px-4 w-64 bg-white "
+                  placeholder="Search by name..."
+                  className="h-10 border rounded px-4 w-64 bg-white"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
               <EmployeeModal setEmployees={setEmployees} />
@@ -118,8 +124,8 @@ function EmployeeList() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {employees.length > 0 ? (
-                  employees.map((employee, index) => (
+                {filteredEmployees.length > 0 ? (
+                  filteredEmployees.map((employee, index) => (
                     <TableRow key={employee.id}>
                       <TableCell>
                         <input type="checkbox" />

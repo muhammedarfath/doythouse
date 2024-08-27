@@ -13,48 +13,51 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import axios from "axios";
 import { AiFillEdit } from "react-icons/ai";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
-function CategoryEditModal({ category,onSuccess }) {
-  const [catName, setCatName] = useState(category.cat_name || "");
-  const [catDescription, setCatDescription] = useState(
-    category.cat_description || ""
-  );
+function UnitEditModal({ unit, onSuccess }) {
+  const [unitName, setUnitName] = useState(unit.unitname || "");
+  const [unitCode, setUnitCode] = useState(unit.unitcode || "");
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false); 
-  const [searchTerm, setSearchTerm] = useState(""); 
-
-  
+  const [open, setOpen] = useState(false);
   const handleSave = async () => {
+    if (!unitName || !unitCode) {
+      toast.error("Please fill out all fields");
+      return;
+    }
+
     setLoading(true);
+    
     try {
       const response = await axios.post(
-        "https://storeconvo.com/php/edit.php/",
-        {
-          id:category.cat_id,
-          category_name: catName,
-          category_description: catDescription,
-          typ:"cat"
-        },
+        "https://storeconvo.com/php/edit.php", 
+        new URLSearchParams({
+          id: unit.unitid,
+          unit_name: unitName,
+          unit_code: unitCode,
+          typ:"unit"
+        }),
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
         }
       );
+      console.log(response);
       if (response.status === 200) {
-        toast.success("Category updated successfully");
-        setOpen(false); 
-        onSuccess()
+        toast.success("Unit updated successfully");
+        setOpen(false);
+        onSuccess(); 
+      } else {
+        toast.error("Failed to update unit");
       }
     } catch (error) {
-      toast.error("Error updating category");
-      console.error("Error updating category:", error);
+      toast.error("Error updating unit");
+      console.error("Error updating unit:", error);
     } finally {
       setLoading(false);
     }
   };
-  
 
   return (
     <div>
@@ -67,30 +70,30 @@ function CategoryEditModal({ category,onSuccess }) {
         </DialogTrigger>
         <DialogContent className="sm:max-w-[900px]">
           <DialogHeader>
-            <DialogTitle>Edit Category</DialogTitle>
-            <DialogDescription>Update your category details.</DialogDescription>
+            <DialogTitle>Edit Unit</DialogTitle>
+            <DialogDescription>Update your unit details.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="category" className="text-right">
-                Category Name
+              <Label htmlFor="unitName" className="text-right">
+                Unit Name
               </Label>
               <Input
-                id="category"
-                value={catName}
-                onChange={(e) => setCatName(e.target.value)}
+                id="unitName"
+                value={unitName}
+                onChange={(e) => setUnitName(e.target.value)}
                 className="col-span-3"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="description" className="text-right">
-                Description
+              <Label htmlFor="unitCode" className="text-right">
+                Unit Code
               </Label>
-              <textarea
-                id="description"
-                value={catDescription}
-                onChange={(e) => setCatDescription(e.target.value)}
-                className="col-span-3 p-2 border rounded"
+              <Input
+                id="unitCode"
+                value={unitCode}
+                onChange={(e) => setUnitCode(e.target.value)}
+                className="col-span-3"
               />
             </div>
           </div>
@@ -98,7 +101,7 @@ function CategoryEditModal({ category,onSuccess }) {
             <Button
               onClick={handleSave}
               disabled={loading}
-              className={`bg-[#308E87] hover:bg-[#308E87] ${
+              className={`bg-[#308E87] hover:bg-[#26756b] ${
                 loading ? "cursor-not-allowed" : ""
               }`}
             >
@@ -111,4 +114,4 @@ function CategoryEditModal({ category,onSuccess }) {
   );
 }
 
-export default CategoryEditModal;
+export default UnitEditModal;

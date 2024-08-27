@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../../components/ui/button";
 import { FiPlus } from "react-icons/fi";
 import {
@@ -15,9 +15,12 @@ import { Label } from "../../components/ui/label";
 import { IoMdArrowRoundForward } from "react-icons/io";
 import axios from "axios";
 import ReactToPrint from "react-to-print";
+import { toast } from "react-hot-toast";
 
 function CustomerInformationModal() {
   const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState("");
+
   // Basic Information
   const [customerName, setCustomerName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
@@ -28,7 +31,8 @@ function CustomerInformationModal() {
   const [orderNumber, setOrderNumber] = useState("");
   const [orderDate, setOrderDate] = useState("");
   const [emergency, setEmergency] = useState("");
-
+  const [status, setStatus] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(category);
   // Measurements
   const [yokeLength, setYokeLength] = useState("");
   const [yokeRound, setYokeRound] = useState("");
@@ -93,6 +97,29 @@ function CustomerInformationModal() {
   // Note
   const [note, setNote] = useState("");
   const componentRef = useRef();
+  const [categories, setCategories] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=category"
+        );
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const handleCategoryChange = (e) => {
+    const newCategory = e.target.value;
+    setSelectedCategory(newCategory);
+    setCategory(newCategory);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -105,12 +132,12 @@ function CustomerInformationModal() {
           cust_phone: contactNumber,
           cust_trialdate: trialDate,
           cust_expecteddelivery: expectedDelivery,
-          cust_itemcategory: 1,
+          cust_itemcategory: category,
           cust_designername: designerName,
           cust_orderno: orderNumber,
           cust_orderdate: orderDate,
           cust_emergency: emergency,
-          status: "delivered",
+          status: status,
 
           yoke_length: yokeLength,
           yoke_round: yokeRound,
@@ -130,36 +157,35 @@ function CustomerInformationModal() {
           point_to_point: collarRound,
           collor_round: collarRound,
 
-          skirt_full_length:skirtFullLength ,
+          skirt_full_length: skirtFullLength,
           skirt_seat: seat,
           skirt_knee: knee,
           skirt_thigh: thigh,
           skirt_calf: calf,
           skirt_bottom_round: bottomRound,
-          pad:pad,
-          zip:zip,
-          back_open:backOpen,
-          front_open:frontOpen,
+          pad: pad,
+          zip: zip,
+          back_open: backOpen,
+          front_open: frontOpen,
 
-          cutting:cutting,
-          stiching:stitching,
-          handwork:handWork,
-          measurer:measurer,
-          checker:checker,
-          tailor:tailor,
-          date_in:dateIn,
-          completed_date:completedDate,
+          cutting: cutting,
+          stiching: stitching,
+          handwork: handWork,
+          measurer: measurer,
+          checker: checker,
+          tailor: tailor,
+          date_in: dateIn,
+          completed_date: completedDate,
 
-          totalprice:totalPrice,
-          advanceprice:advancedPrice,
-          balanceprice:balancePrice,
-          note:note,
-          cgst:cgst,
-          sgst:sgst,
-          discount:discount,
-          credit:credit,
-          profit:profit,
-
+          totalprice: totalPrice,
+          advanceprice: advancedPrice,
+          balanceprice: balancePrice,
+          note: note,
+          cgst: cgst,
+          sgst: sgst,
+          discount: discount,
+          credit: credit,
+          profit: profit,
         }),
         {
           headers: {
@@ -167,10 +193,72 @@ function CustomerInformationModal() {
           },
         }
       );
-      console.log(response);
       if (response.status === 200) {
-        console.log(response.data);
-        alert("successs");
+        toast.success("Customer added successfully");
+        // setEmployees((prevEmployees) => [...prevEmployees, response.data]);
+        setIsOpen(false);
+        setCustomerName("");
+        setContactNumber("");
+        setTrialDate("");
+        setExpectedDelivery("");
+        setItemCategory("");
+        setDesignerName("");
+        setOrderNumber("");
+        setOrderDate("");
+        setEmergency("");
+
+        setYokeLength("");
+        setYokeRound("");
+        setFullLength("");
+        setUpperBust("");
+        setBust("");
+        setUnderBust("");
+        setMidWaist("");
+        setHip("");
+        setShoulder("");
+        setShoulderWidth("");
+        setSlitLength("");
+        setSlitRound("");
+        setSleeveType("");
+        setSleeveLength("");
+        setWrist("");
+        setThreeFourth("");
+        setElbow("");
+        setArmRound("");
+        setNeck("");
+        setFrontNeck("");
+        setBackNeck("");
+        setCollarRound("");
+        setTuckPoint("");
+        setPointToPoint("");
+
+        setSkirtFullLength("");
+        setSeat("");
+        setThigh("");
+        setKnee("");
+        setCalf("");
+        setBottomRound("");
+
+        setPad(false);
+        setZip(false);
+        setBackOpen(false);
+        setFrontOpen(false);
+        setImage("");
+
+        setCutting("");
+        setStitching("");
+        setHandWork("");
+        setMeasurer("");
+        setChecker("");
+        setTailor("");
+        setDateIn("");
+        setCompletedDate("");
+
+        setTotalPrice("");
+        setAdvancedPrice("");
+        setBalancePrice("");
+
+        setNote("");
       }
     } catch (error) {
       console.error("Error adding  type:", error);
@@ -178,70 +266,6 @@ function CustomerInformationModal() {
     } finally {
       setLoading(false);
     }
-
-    // Clear form fields after submission
-    // setCustomerName("");
-    // setContactNumber("");
-    // setTrialDate("");
-    // setExpectedDelivery("");
-    // setItemCategory("");
-    // setDesignerName("");
-    // setOrderNumber("");
-    // setOrderDate("");
-    // setEmergency("");
-
-    // setYokeLength("");
-    // setYokeRound("");
-    // setFullLength("");
-    // setUpperBust("");
-    // setBust("");
-    // setUnderBust("");
-    // setMidWaist("");
-    // setHip("");
-    // setShoulder("");
-    // setShoulderWidth("");
-    // setSlitLength("");
-    // setSlitRound("");
-    // setSleeveType("");
-    // setSleeveLength("");
-    // setWrist("");
-    // setThreeFourth("");
-    // setElbow("");
-    // setArmRound("");
-    // setNeck("");
-    // setFrontNeck("");
-    // setBackNeck("");
-    // setCollarRound("");
-    // setTuckPoint("");
-    // setPointToPoint("");
-
-    // setSkirtFullLength("");
-    // setSeat("");
-    // setThigh("");
-    // setKnee("");
-    // setCalf("");
-    // setBottomRound("");
-
-    // setPad(false);
-    // setZip(false);
-    // setBackOpen(false);
-    // setFrontOpen(false);
-    // setImage("");
-
-    // setCutting("");
-    // setStitching("");
-    // setHandWork("");
-    // setMeasurer("");
-    // setChecker("");
-    // setTailor("");
-    // setDateIn("");
-    // setCompletedDate("");
-
-    // setTotalPrice("");
-    // setAdvancedPrice("");
-    // setBalancePrice("");
-
-    // setNote("");
   };
 
   const handleCheckboxChange = (setter) => (e) => {
@@ -254,7 +278,7 @@ function CustomerInformationModal() {
 
   return (
     <div>
-      <Dialog>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button className="bg-[#308E87] hover:bg-[#308E87]">
             <FiPlus className="text-white text-xl" />
@@ -322,17 +346,18 @@ function CustomerInformationModal() {
                     Item Category
                   </Label>
                   <select
-                    id="item-category"
-                    value={itemCategory}
-                    onChange={(e) => setItemCategory(e.target.value)}
-                    className="w-full p-2 border rounded"
+                    name="Category"
+                    id="Category"
+                    className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+                    value={selectedCategory}
+                    onChange={handleCategoryChange}
                   >
-                    <option value="">Select Category</option>
-                    <option value="Kurthi">Kurthi</option>
-                    <option value="Salwar">Salwar</option>
-                    <option value="Palazzo">Palazzo</option>
-                    <option value="Dupatta">Dupatta</option>
-                    {/* Add more options as needed */}
+                    <option value="">Choose Category</option>
+                    {categories.map((cat) => (
+                      <option key={cat.cat_id} value={cat.cat_id}>
+                        {cat.cat_name}
+                      </option>
+                    ))}
                   </select>
 
                   <Label htmlFor="designer-name" className="text-md font-bold">
@@ -375,6 +400,20 @@ function CustomerInformationModal() {
                     onChange={(e) => setEmergency(e.target.value)}
                     className="w-full"
                   />
+                  <Label htmlFor="status" className="text-md font-bold">
+                    Status
+                  </Label>
+                  <select
+                    id="status"
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                    className="w-full p-2 border rounded"
+                  >
+                    <option value="">Select Status</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -976,7 +1015,7 @@ function CustomerInformationModal() {
                         placeholder="Profit"
                       />
                       <Label htmlFor="credit" className="text-md font-bold">
-                      Credit
+                        Credit
                       </Label>
                       <Input
                         id="credit"

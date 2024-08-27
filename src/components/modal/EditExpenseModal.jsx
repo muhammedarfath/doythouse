@@ -13,24 +13,23 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Button } from "../ui/button";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
-function EditExpenseModal({ expense }) {
+function EditExpenseModal({ expense,onChange }) {
   const [open, setOpen] = useState(false);
   const [type, setType] = useState(expense.type || "");
   const [subType, setSubType] = useState(expense.subType || "");
   const [amount, setAmount] = useState(expense.exp_amount || "");
   const [selectedEmployee, setSelectedEmployee] = useState(
-    expense.employee || ""
+    expense.exp_employee || ""
   );
   const [employees, setEmployees] = useState([]);
-  const [expenseTypes, setExpenseTypes] = useState([]); 
-  const [subTypes, setSubTypes] = useState([]); 
+  const [expenseTypes, setExpenseTypes] = useState([]);
+  const [subTypes, setSubTypes] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [note, setNote] = useState(expense.note || "");
+  const [note, setNote] = useState(expense.exp_note || "");
 
-
-
-
+  
   useEffect(() => {
     const fetchEmployeesAndExpenseTypes = async () => {
       try {
@@ -61,14 +60,12 @@ function EditExpenseModal({ expense }) {
           console.error("Error fetching sub-types:", error);
         }
       } else {
-        setSubTypes([]); 
+        setSubTypes([]);
       }
     };
 
     fetchSubTypes();
   }, [type]);
-
-
 
   const handleSave = async () => {
     setLoading(true);
@@ -77,14 +74,14 @@ function EditExpenseModal({ expense }) {
       const response = await axios.post(
         "https://storeconvo.com/php/edit.php",
         new URLSearchParams({
-          id:expense.exp_id,
-          exp_date:expense.exp_date,
-          exp_type:"expenseTypes",
-          expsub_type:"hi",
-          exp_amount:amount,
-          exp_employee:selectedEmployee,
-          exp_note:note,
-          typ:"exp"
+          id: expense.exp_id,
+          exp_date: expense.exp_date,
+          exp_type: "expenseTypes",
+          expsub_type: "hi",
+          exp_amount: amount,
+          exp_employee: selectedEmployee,
+          exp_note: note,
+          typ: "exp",
         }),
         {
           headers: {
@@ -92,8 +89,11 @@ function EditExpenseModal({ expense }) {
           },
         }
       );
-      if (response.data) {
-        console.log(response.data);
+      if (response.status === 200) {
+        toast.success("Expense Edit successfully")
+        setOpen(false);
+        onChange()
+
       }
     } catch (error) {
       console.error("Error saving expense:", error);
@@ -102,8 +102,6 @@ function EditExpenseModal({ expense }) {
       setLoading(false);
     }
   };
-
-
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -138,7 +136,6 @@ function EditExpenseModal({ expense }) {
               </select>
             </div>
 
-            {/* Conditionally render Sub Expense field */}
             {subTypes.length > 0 && (
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="subType" className="text-right">
@@ -185,7 +182,7 @@ function EditExpenseModal({ expense }) {
               >
                 <option value="">Select employee</option>
                 {employees.map((employee, index) => (
-                  <option key={index} value={employee.employee_name}>
+                  <option key={index} value={employee.employee_id}>
                     {employee.employee_name}
                   </option>
                 ))}
@@ -197,7 +194,7 @@ function EditExpenseModal({ expense }) {
               </Label>
               <Input
                 id="note"
-                value={expense.exp_note}
+                value={note}
                 onChange={(e) => setNote(e.target.value)}
                 placeholder="Enter note (optional)"
                 className="col-span-3"

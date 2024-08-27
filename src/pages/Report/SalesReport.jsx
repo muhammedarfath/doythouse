@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import {
   Table,
@@ -13,6 +13,7 @@ import { AiFillEdit } from "react-icons/ai";
 import { MdOutlineDelete } from "react-icons/md";
 import { CiFilter } from "react-icons/ci";
 import * as XLSX from "xlsx";
+import axios from "axios";
 
 const salesData = [
   {
@@ -41,6 +42,22 @@ const salesData = [
 
 function SalesReport() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [salesReport, setSalesReport] = useState([]);
+
+  useEffect(() => {
+    const fetchSalesReport = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=sales"
+        );
+        setSalesReport(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchSalesReport();
+  }, []);
+
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
@@ -59,7 +76,7 @@ function SalesReport() {
         <div className="flex flex-col gap-6 mt-8">
           <h2 className="font-semibold text-xl text-black">Sales Report</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
-          <div className="flex items-center justify-between mb-4 lg:flex-row gap-4 lg:gap-0  flex-col">
+            <div className="flex items-center justify-between mb-4 lg:flex-row gap-4 lg:gap-0  flex-col">
               <div className="flex gap-2">
                 <span>Search</span>
                 <input

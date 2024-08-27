@@ -2,8 +2,15 @@ import { LayoutGridDemo } from "@/components/ImgGrid/LayoutGridDemo";
 import Footer from "@/components/Layout/Footer";
 import ShopInformationModal from "@/components/modal/ShopInformationModal";
 import React from "react";
+import LoadingSpinner from '../../components/Loading/LoadingSpinner'
 
-function ShopForm({shopInformation}) {
+function ShopForm({ shopInformation }) {
+  if (!shopInformation || shopInformation.length === 0) {
+    return <LoadingSpinner />;
+  }
+
+  const shop = shopInformation[0];
+
   return (
     <section className="relative py-16 bg-blueGray-200">
       <div className="container mx-auto px-4">
@@ -16,43 +23,43 @@ function ShopForm({shopInformation}) {
             </div>
             <div className="text-center mt-12">
               <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700">
-                Doyt House - Boutique & Salon
+                {shop.shop_name} - Boutique & Salon
               </h3>
-              <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold ">
+              <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
                 <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
-                doythouse@gmail.com
+                {shop.shop_email}
               </div>
               <div className="mb-2 text-blueGray-600 mt-10">
                 <i className="fas fa-phone mr-2 text-lg text-blueGray-400"></i>
-                +91 9876543210
+                {shop.shop_phone}
               </div>
               <div className="mb-2 text-blueGray-600">
                 <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
-                Manager - Mangername
+                Manager - {shop.shop_manager}
               </div>
               <div className="mb-2 text-blueGray-600">
                 <i className="fas fa-id-card mr-2 text-lg text-blueGray-400"></i>
-                GST Number: 29AAACZ1234A1Z5
+                GST Number: {shop.shop_gstno}
               </div>
               <div className="mb-2 text-blueGray-600">
                 <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
-                State: Kerala (KL)
+                State: {shop.shop_state}
               </div>
               <div className="mb-2 text-blueGray-600">
                 <i className="fas fa-building mr-2 text-lg text-blueGray-400"></i>
-                Bank: State Bank of India
+                Bank: {shop.shop_bank}
               </div>
               <div className="mb-2 text-blueGray-600">
                 <i className="fas fa-branch mr-2 text-lg text-blueGray-400"></i>
-                Branch: Thiruvalla
+                Branch: {shop.shop_branch}
               </div>
               <div className="mb-2 text-blueGray-600">
                 <i className="fas fa-credit-card mr-2 text-lg text-blueGray-400"></i>
-                Account Number: 123456789012
+                Account Number: {shop.shop_bankacno}
               </div>
               <div className="mb-2 text-blueGray-600">
                 <i className="fas fa-code mr-2 text-lg text-blueGray-400"></i>
-                IFSC Code: SBIN0001234
+                IFSC Code: {shop.shop_bankifsc}
               </div>
             </div>
             <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
@@ -60,10 +67,10 @@ function ShopForm({shopInformation}) {
                 <div className="w-full lg:w-9/12 px-4">
                   <h3 className="font-bold text-2xl">Caption</h3>
                   <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                    Discover a world where fashion and beauty intertwine. At
-                    Doyt House, we offer a curated selection of chic clothing
+                    Discover a world where fashion and beauty intertwine. At{" "}
+                    {shop.shop_name}, we offer a curated selection of chic clothing
                     and expert salon services to enhance your personal style.
-                    Located in the heart of Thiruvalla, we provide a luxurious
+                    Located in the heart of {shop.shop_branch}, we provide a luxurious
                     experience tailored to your unique needs. Elevate your look
                     and embrace elegance with us.
                   </p>
@@ -71,8 +78,8 @@ function ShopForm({shopInformation}) {
                 <div className="w-full lg:w-9/12 px-4">
                   <h3 className="font-bold text-2xl">Address Line</h3>
                   <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                    Opposite G- Mart, Muthoor, Thiruvalla - Changanassery Rd,
-                    Thiruvalla, Kerala 689107
+                    Opposite G- Mart, Muthoor, {shop.shop_branch} - Changanassery Rd,
+                    Thiruvalla, {shop.shop_state} 689107
                   </p>
                 </div>
               </div>

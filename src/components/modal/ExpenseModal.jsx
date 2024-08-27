@@ -74,15 +74,14 @@ function ExpenseModal({setExpenses}) {
           },
         }
       );
-      if (response.data) {
-        console.log(response.data);
-        alert("successs");
+      console.log(response);
+      if (response.status === 200) {
+        toast.success("Expense Added")
         setNewExpenseType("");
         setShowNewTypeInput(false);
       }
     } catch (error) {
-      console.error("Error adding expense type:", error);
-      alert("Failed to add expense type");
+      toast.error("Failed to add expense type");
     } finally {
       setLoading(false);
     }
@@ -104,15 +103,14 @@ function ExpenseModal({setExpenses}) {
           },
         }
       );
-      if (response.data) {
-        console.log(response.data);
-        alert("successs");
+      if (response.status === 200) {
+        toast.success("Sub Expense Added");
         setNewSubExpenseType("");
-        setShowNewTypeInput(false);
+        setSelectedExpense("")
+        setShowNewSubTypeInput(false);
       }
     } catch (error) {
-      console.error("Error adding expense type:", error);
-      alert("Failed to add expense type");
+      toast.error("Failed to add expense type");
     } finally {
       setLoading(false);
     }

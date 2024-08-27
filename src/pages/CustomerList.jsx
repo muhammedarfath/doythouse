@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 
@@ -11,42 +11,35 @@ import {
   TableHeader,
   TableRow,
 } from "../components/ui/table";
-import { AiFillEdit } from "react-icons/ai";
-import ProductDetailsModal from "@/components/modal/ProductDetailsModal";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import CustomerInformationModal from "@/components/modal/CustomerInformationModal";
 import { CiFilter } from "react-icons/ci";
 import EditCustomerDetailsModal from "@/components/modal/EditCustomerDetailsModal";
+import axios from "axios";
 
-const orders = [
-  {
-    id: 1,
-    orderNo: "ORD123",
-    customerName: "John Doe",
-    expectedDelivery: "2023-12-20",
-    itemCategory: "Kurthi",
-    totalPrice: "$150.00",
-    balancedPrice: "$50.00",
-    status: "Pending",
-  },
-  {
-    id: 2,
-    orderNo: "ORD124",
-    customerName: "Jane Smith",
-    expectedDelivery: "2023-12-22",
-    itemCategory: "Palazzo",
-    totalPrice: "$120.00",
-    balancedPrice: "$20.00",
-    status: "Completed",
-  },
-];
 
 function CustomerList() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [customer, setCustomer] = useState("");
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
+
+  useEffect(() => {
+    const fetchCustomer = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=customer"
+        );
+        setCustomer(response.data);
+      } catch (error) {
+        console.error("Error fetching Customers:", error);
+      }
+    };
+    fetchCustomer();
+  }, []);
+
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -54,7 +47,7 @@ function CustomerList() {
         <div className="flex flex-col gap-6 mt-8">
           <h2 className="font-semibold text-xl text-black">Order List</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
-            <div className="flex items-center justify-between mb-4 lg:flex-row gap-4 lg:gap-0  flex-col">
+            <div className="flex items-center justify-between mb-4 lg:flex-row gap-4 lg:gap-0 flex-col">
               <div className="flex gap-2">
                 <span>Search</span>
                 <input
@@ -144,14 +137,14 @@ function CustomerList() {
                   <TableHead>Item Category</TableHead>
                   <TableHead>Total Price</TableHead>
                   <TableHead>Balanced Price</TableHead>
-                  <TableHead>Status</TableHead> {/* New header */}
+                  <TableHead>Status</TableHead>
                   <TableHead className="text-center w-[150px]">
                     Actions
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {orders.map((order, index) => (
+                {customer.map((order, index) => (
                   <TableRow key={order.id}>
                     <TableCell>
                       <input type="checkbox" />
@@ -176,7 +169,7 @@ function CustomerList() {
                     </TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-3">
-                        <ProductDetailsModal />
+                        {/* <ProductDetailsModal /> */}
                         <EditCustomerDetailsModal />
                         <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                       </div>

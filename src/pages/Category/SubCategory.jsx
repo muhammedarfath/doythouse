@@ -13,9 +13,11 @@ import { BiSolidTrashAlt } from "react-icons/bi";
 import SubModal from "@/components/modal/SubModal";
 import SubCategoryEditModal from "@/components/modal/SubCategoryEditModal";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 function SubCategory() {
   const [subCategory, setSubCategory] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchSubCategories = async () => {
@@ -33,13 +35,58 @@ function SubCategory() {
     fetchSubCategories();
   }, []);
 
-  const handleDelete = async (categoryId) => {
+  const handleDelete = (subcategoryId) => {
+    toast(
+      (t) => (
+        <div>
+          <p>Are you sure you want to delete this Sub Category?</p>
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={() => confirmDelete(subcategoryId, t.id)}
+              className="bg-red-500 text-white px-4 py-1 rounded"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-gray-300 text-black px-4 py-1 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: 4000 }
+    );
+  };
+
+  const confirmDelete = async (subcategoryId, toastId) => {
     try {
-      await axios.delete(`your-backend-url/categories/${categoryId}`);
+      await axios.post(
+        `https://storeconvo.com/php/delete.php/`,
+        {
+          id: subcategoryId,
+          typ: "subcategory",
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      setSubCategory((prevSubCategory) =>
+        prevSubCategory.filter((subcategory) => subcategory.subcat_id !== subcategoryId)
+      );
+      toast.success("Delete successful", { id: toastId });
     } catch (error) {
       console.error("Error deleting category:", error);
     }
   };
+
+  // Filter subcategories based on search term
+  const filteredSubCategories = subCategory.filter((subcategory) =>
+    subcategory.subcat_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -56,9 +103,11 @@ function SubCategory() {
                   type="text"
                   placeholder="Search..."
                   className="h-10 border rounded px-4 w-64 bg-white"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
-              <SubModal />
+              <SubModal setSubCategory={setSubCategory} />
             </div>
 
             <Table className="w-full">
@@ -73,13 +122,11 @@ function SubCategory() {
                   <TableHead className="w-[100px]">HSN</TableHead>
                   <TableHead className="w-[100px]">CGST</TableHead>
                   <TableHead className="w-[100px]">SGST</TableHead>
-                  <TableHead className="text-center w-[120px]">
-                    Actions
-                  </TableHead>
+                  <TableHead className="text-center w-[120px]">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {subCategory.map((subcategory, index) => (
+                {filteredSubCategories.map((subcategory, index) => (
                   <TableRow key={index}>
                     <TableCell>
                       <input type="checkbox" />
@@ -94,7 +141,10 @@ function SubCategory() {
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
                         <SubCategoryEditModal subcategory={subcategory} />
-                        <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
+                        <BiSolidTrashAlt
+                          className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+                          onClick={() => handleDelete(subcategory.subcat_id)}
+                        />
                       </div>
                     </TableCell>
                   </TableRow>

@@ -13,6 +13,7 @@ import {
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 function ProductEditModal({ product }) {
   const [open, setOpen] = useState(false);
@@ -64,6 +65,7 @@ function ProductEditModal({ product }) {
 
   const handleSave = async () => {
     setLoading(true);
+    
     try {
       const response = await axios.post("https://storeconvo.com/php/edit.php", {
         id:product.productid,
@@ -88,12 +90,17 @@ function ProductEditModal({ product }) {
         openqty: openQty,
         typ:"product"
       });
-      console.log(response.data);
-      alert("succss")
+      if (response.status === 200) {
+        toast.success("Product Edit Successful")
+        setOpen(false);
+      }
     } catch (error) {
+      console.error("Error updating Product:", error);
+      toast.error("Failed to update Product");
     } finally {
       setLoading(false);
       setOpen(false);
+
     }
   };
 

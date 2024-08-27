@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -7,41 +7,82 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../components/ui/table"; 
+} from "../../components/ui/table";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-import { Button } from "../../components/ui/button"; 
-import { useState } from "react";
+import { Button } from "../../components/ui/button";
 import UnitModal from "@/components/modal/UnitModal";
-import EditUnitModal from "@/components/modal/EditUnitModal";
-
-const units = [
-  {
-    id: 1,
-    unitName: "Kilogram",
-    unitCode: "KG",
-  },
-  {
-    id: 2,
-    unitName: "Gram",
-    unitCode: "G",
-  },
-  {
-    id: 3,
-    unitName: "Liter",
-    unitCode: "L",
-  },
-  {
-    id: 4,
-    unitName: "Milliliter",
-    unitCode: "ML",
-  },
-];
+import axios from "axios";
+import UnitEditModal from "@/components/modal/UnitEditModal";
+import { toast } from "react-hot-toast";
 
 function Units() {
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [units, setUnits] = useState([]);
 
-  const handleAddNewUnit = () => {
-    setModalOpen(true);
+  useEffect(() => {
+    fetchUnits();
+  }, []);
+
+  const fetchUnits = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=unit"
+      );
+      setUnits(response.data);
+    } catch (error) {
+      console.error("Error fetching units:", error);
+    }
+  };
+
+  const handleDelete = (unitId) => {
+    toast(
+      (t) => (
+        <div>
+          <p>Are you sure you want to delete this unit?</p>
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={() => confirmDelete(unitId, t.id)}
+              className="bg-red-500 text-white px-4 py-1 rounded"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-gray-300 text-black px-4 py-1 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: 4000 }
+    );
+  };
+
+  const confirmDelete = async (unitId, toastId) => {
+    try {
+      await axios.post(
+        `https://storeconvo.com/php/delete.php`, // Update with your actual endpoint if needed
+        new URLSearchParams({
+          id: unitId,
+          typ: "unit",
+        }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+
+      // Filter out the deleted unit from the state
+      setUnits((prevUnits) =>
+        prevUnits.filter((unit) => unit.id !== unitId)
+      );
+
+      toast.success("Delete successful", { id: toastId });
+    } catch (error) {
+      toast.error("Error deleting unit");
+      console.error("Error deleting unit:", error);
+    }
   };
 
   return (
@@ -51,7 +92,7 @@ function Units() {
           <h2 className="font-semibold text-xl text-black">Units List</h2>
           <div className="bg-white flex flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
             <div className="flex justify-between mb-4">
-             <UnitModal/>
+              <UnitModal setUnits={setUnits} />
             </div>
             <Table className="w-full">
               <TableCaption>A list of all units available.</TableCaption>
@@ -66,13 +107,16 @@ function Units() {
               <TableBody>
                 {units.map((unit, index) => (
                   <TableRow key={unit.id}>
-                    <TableCell>{index + 1}</TableCell> 
-                    <TableCell className="font-medium">{unit.unitName}</TableCell>
-                    <TableCell>{unit.unitCode}</TableCell>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell className="font-medium">{unit.unitname}</TableCell>
+                    <TableCell>{unit.unitcode}</TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <EditUnitModal/>
-                        <AiFillDelete className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
+                        <UnitEditModal unit={unit} onSuccess={fetchUnits} />
+                        <AiFillDelete
+                          className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+                          onClick={() => handleDelete(unit.id)}
+                        />
                       </div>
                     </TableCell>
                   </TableRow>
@@ -82,7 +126,6 @@ function Units() {
           </div>
         </div>
       </div>
-      {isModalOpen && <UnitModal onClose={() => setModalOpen(false)} />}
     </div>
   );
 }

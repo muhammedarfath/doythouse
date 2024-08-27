@@ -64,7 +64,7 @@ function Items({ open }) {
 
   return (
     <ul
-      className={`pt-6 ${open ? "pl-4" : "pl-1"} transition-all duration-300`}
+      className={`pt-6 ${open ? "pl-4" : "pl-1"} transition-all duration-300 `}
     >
       <Link to="/">
         <MenuItem icon={BiHomeSmile} label="Dashboard" open={open} />
