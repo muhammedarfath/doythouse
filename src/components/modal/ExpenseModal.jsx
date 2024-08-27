@@ -13,11 +13,12 @@ import { FiPlus } from "react-icons/fi";
 import NewExpenseModal from "./Expenses/NewExpenseModal";
 import NewSubExpenseModal from "./Expenses/NewSubExpenseModal";
 import ExpenseAddModal from "./Expenses/ExpenseAddModal";
+import { toast } from "react-hot-toast";
 
-function ExpenseModal() {
+function ExpenseModal({setExpenses}) {
   const [newExpenseType, setNewExpenseType] = useState([]);
   const [newSubExpenseType, setNewSubExpenseType] = useState([]);
-  const [ExpenseType,setExpenseType] = useState([])
+  const [ExpenseType, setExpenseType] = useState([]);
   const [date, setDate] = useState("");
   const [amount, setAmount] = useState("");
   const [employees, setEmployees] = useState([]);
@@ -28,6 +29,7 @@ function ExpenseModal() {
   const [showNewTypeInput, setShowNewTypeInput] = useState(false);
   const [showNewSubTypeInput, setShowNewSubTypeInput] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchExpenseTypes = async () => {
@@ -94,7 +96,7 @@ function ExpenseModal() {
         "https://storeconvo.com/php/add_subexpensetype.php",
         new URLSearchParams({
           subexp_name: newSubExpenseType,
-          exp_id:selectedExpense,
+          exp_id: selectedExpense,
         }),
         {
           headers: {
@@ -119,21 +121,13 @@ function ExpenseModal() {
   const handleSave = async () => {
     setLoading(true);
 
-
-    // console.log(date);
-    // console.log(selectedExpense);
-    // console.log(selectedSubExpense);
-    // console.log(amount);
-    // console.log(selectedEmployee);
-    // console.log(note);
-
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_expense.php",
         new URLSearchParams({
           exp_date: date,
-          exp_type:selectedExpense,
-          expsub_type:selectedSubExpense,
+          exp_type: selectedExpense,
+          expsub_type: selectedSubExpense,
           exp_amount: amount,
           exp_employee: selectedEmployee,
           exp_note: note,
@@ -144,9 +138,10 @@ function ExpenseModal() {
           },
         }
       );
-      if (response.data) {
-        console.log(response.data);
-        alert("success");
+      if (response.status === 200) {
+        toast.success("Expense added successfully");
+        setExpenses((setExpenses) => [...setExpenses, response.data]);
+        setIsOpen(false);
         setDate("");
 
         setAmount("");
@@ -177,20 +172,17 @@ function ExpenseModal() {
     setShowNewSubTypeInput(false);
   };
 
-
   const handleEmployeeChange = (e) => {
     setSelectedEmployee(e.target.value);
   };
-
 
   const handleExpenseChange = (e) => {
     setSelectedExpense(e.target.value);
   };
 
-  
   return (
     <div>
-      <Dialog>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button className="bg-[#308E87] hover:bg-[#308E87]">
             <FiPlus className="text-white text-xl" />

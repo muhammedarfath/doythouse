@@ -19,6 +19,15 @@ import { toast } from "react-hot-toast";
 function ExpenseList() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [expenses, setExpenses] = useState([]);
+  const [ExpenseType, setExpenseType] = useState([]);
+  const [employees, setEmployees] = useState([]);
+
+  const [filters, setFilters] = useState({
+    fromDate: "",
+    toDate: "",
+    expenseType: "",
+    employee: "",
+  });
 
   useEffect(() => {
     const fetchExpenseList = async () => {
@@ -33,6 +42,35 @@ function ExpenseList() {
     };
 
     fetchExpenseList();
+  }, []);
+
+  useEffect(() => {
+    const fetchExpenseTypes = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=expense_type"
+        );
+        setExpenseType(response.data);
+      } catch (error) {
+        console.error("Error fetching expense types:", error);
+      }
+    };
+    fetchExpenseTypes();
+  }, []);
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=employee"
+        );
+        console.log(response.data, "this is employee");
+        setEmployees(response.data);
+      } catch (error) {
+        console.error("Error fetching employees:", error);
+      }
+    };
+    fetchEmployees();
   }, []);
 
   const handleDelete = (expensesId) => {
@@ -88,6 +126,28 @@ function ExpenseList() {
     setIsFilterVisible(!isFilterVisible);
   };
 
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
+  };
+
+  const filteredExpenses = expenses.filter((expense) => {
+    const { fromDate, toDate, expenseType, employee } = filters;
+
+    const isWithinDateRange =
+      (!fromDate || new Date(expense.exp_date) >= new Date(fromDate)) &&
+      (!toDate || new Date(expense.exp_date) <= new Date(toDate));
+
+    const isMatchingType = !expenseType || expense.exp_type === expenseType;
+
+    const isMatchingEmployee = !employee || expense.exp_employee === employee;
+
+    return isWithinDateRange && isMatchingType && isMatchingEmployee;
+  });
+
   return (
     <div className="flex items-center justify-center w-full ">
       <div className="w-full lg:max-w-screen-xl md:max-w-[35rem] max-w-[22rem] mx-auto ">
@@ -111,7 +171,7 @@ function ExpenseList() {
                   <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
                 </div>
 
-                <ExpenseModal />
+                <ExpenseModal setExpenses={setExpenses}/>
               </div>
             </div>
 
@@ -124,6 +184,9 @@ function ExpenseList() {
                   <input
                     type="date"
                     id="from-date"
+                    name="fromDate"
+                    value={filters.fromDate}
+                    onChange={handleFilterChange}
                     className="h-10 border rounded px-4 bg-gray-50"
                   />
                 </div>
@@ -134,6 +197,9 @@ function ExpenseList() {
                   <input
                     type="date"
                     id="to-date"
+                    name="toDate"
+                    value={filters.toDate}
+                    onChange={handleFilterChange}
                     className="h-10 border rounded px-4 bg-gray-50"
                   />
                 </div>
@@ -143,13 +209,17 @@ function ExpenseList() {
                   </label>
                   <select
                     id="sort-by-type"
+                    name="expenseType"
+                    value={filters.expenseType}
+                    onChange={handleFilterChange}
                     className="h-10 border rounded px-4 bg-gray-50"
                   >
                     <option value="">Select Type</option>
-                    <option value="Travel">Travel</option>
-                    <option value="Office Supplies">Office Supplies</option>
-                    <option value="Meals">Meals</option>
-                    <option value="Accommodation">Accommodation</option>
+                    {ExpenseType.map((type) => (
+                      <option key={type} value={type.exp_type}>
+                        {type.exp_type}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="flex flex-col">
@@ -161,17 +231,23 @@ function ExpenseList() {
                   </label>
                   <select
                     id="sort-by-employee"
+                    name="employee"
+                    value={filters.employee}
+                    onChange={handleFilterChange}
                     className="h-10 border rounded px-4 bg-gray-50"
                   >
                     <option value="">Select Employee</option>
-                    <option value="John Doe">John Doe</option>
-                    <option value="Jane Smith">Jane Smith</option>
+                    {employees.map((emp) => (
+                      <option key={emp} value={emp.employee_name}>
+                        {emp.employee_name}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
             )}
 
-            <Table >
+            <Table>
               <TableCaption>A list of your expenses.</TableCaption>
               <TableHeader>
                 <TableRow>
@@ -180,41 +256,44 @@ function ExpenseList() {
                   <TableHead>Date</TableHead>
                   <TableHead>Expense Type</TableHead>
                   <TableHead className="text-right">Amount</TableHead>
-                  {Array.isArray(expenses) && expenses.some((expense) => expense.expsub_type) && (
-                    <TableHead className="text-right">Sub Expense</TableHead>
-                  )}
+                  {Array.isArray(expenses) &&
+                    expenses.some((expense) => expense.expsub_type) && (
+                      <TableHead className="text-right">Sub Expense</TableHead>
+                    )}
                   <TableHead>Employee</TableHead>
                   <TableHead>Note</TableHead>
                   <TableHead className="text-center">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {Array.isArray(expenses) &&
-                  expenses.map((expense, index) => (
-                    <TableRow key={expense.exp_id}>
-                      <TableCell>
-                        <input type="checkbox" />
-                      </TableCell>
-                      <TableCell className="font-medium">{index + 1}</TableCell>
-                      <TableCell>{expense.exp_date}</TableCell>
-                      <TableCell>{expense.exp_type}</TableCell>
-                      <TableCell className="text-right">{expense.exp_amount}</TableCell>
-                      {expense.expsub_type && (
-                        <TableCell className="text-right">{expense.expsub_type}</TableCell>
+                {filteredExpenses.map((expense, index) => (
+                  <TableRow key={expense.exp_id}>
+                    <TableCell>
+                      <input type="checkbox" />
+                    </TableCell>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{expense.exp_date}</TableCell>
+                    <TableCell>{expense.exp_type}</TableCell>
+                    <TableCell className="text-right">
+                      {expense.exp_amount}
+                    </TableCell>
+                    {Array.isArray(expenses) &&
+                      expenses.some((expense) => expense.expsub_type) && (
+                        <TableCell className="text-right">
+                          {expense.expsub_type || "N/A"}
+                        </TableCell>
                       )}
-                      <TableCell>{expense.exp_employee}</TableCell>
-                      <TableCell>{expense.exp_note}</TableCell>
-                      <TableCell className="text-center">
-                        <div className="flex justify-center gap-4">
-                          <EditExpenseModal expense={expense} />
-                          <BiSolidTrashAlt
-                            className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
-                            onClick={() => handleDelete(expense.exp_id)}
-                          />
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                    <TableCell>{expense.exp_employee}</TableCell>
+                    <TableCell>{expense.exp_note}</TableCell>
+                    <TableCell className="flex justify-center gap-4">
+                      <EditExpenseModal expense={expense} />
+                      <BiSolidTrashAlt
+                        onClick={() => handleDelete(expense.exp_id)}
+                        className="cursor-pointer"
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </div>

@@ -87,84 +87,15 @@ function CustomerInformationModal() {
   const [balancePrice, setBalancePrice] = useState("");
   const [cgst, setCgst] = useState("");
   const [sgst, setSgst] = useState("");
+  const [discount, setDiscount] = useState("");
+  const [credit, setCredit] = useState("");
+  const [profit, setProfit] = useState("");
   // Note
   const [note, setNote] = useState("");
   const componentRef = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log("Customer Name:", customerName);
-    console.log("Contact Number:", contactNumber);
-    console.log("Trial Date:", trialDate);
-    console.log("Expected Delivery:", expectedDelivery);
-    console.log("Item Category:", itemCategory);
-    console.log("Designer Name:", designerName);
-    console.log("Order Number:", orderNumber);
-    console.log("Order Date:", orderDate);
-    console.log("Emergency:", emergency);
-
-    // Measurements
-    console.log("Yoke Length:", yokeLength);
-    console.log("Yoke Round:", yokeRound);
-    console.log("Full Length:", fullLength);
-    console.log("Upper Bust:", upperBust);
-    console.log("Bust:", bust);
-    console.log("Under Bust:", underBust);
-    console.log("Mid Waist:", midWaist);
-    console.log("Hip:", hip);
-    console.log("Shoulder:", shoulder);
-    console.log("Shoulder Width:", shoulderWidth);
-    console.log("Slit Length:", slitLength);
-    console.log("Slit Round:", slitRound);
-    console.log("Sleeve Type:", sleeveType);
-    console.log("Sleeve Length:", sleeveLength);
-    console.log("Wrist:", wrist);
-    console.log("Three Fourth:", threeFourth);
-    console.log("Elbow:", elbow);
-    console.log("Arm Round:", armRound);
-    console.log("Arm Hole:", armHole);
-    console.log("Neck:", neck);
-    console.log("Front Neck:", frontNeck);
-    console.log("Back Neck:", backNeck);
-    console.log("Collar Round:", collarRound);
-    console.log("Tuck Point:", tuckPoint);
-    console.log("Point to Point:", pointToPoint);
-
-    // Skirt & Pant Measurements
-    console.log("Skirt Full Length:", skirtFullLength);
-    console.log("Seat:", seat);
-    console.log("Thigh:", thigh);
-    console.log("Knee:", knee);
-    console.log("Calf:", calf);
-    console.log("Bottom Round:", bottomRound);
-
-    // Options
-    console.log("Pad:", pad);
-    console.log("Zip:", zip);
-    console.log("Back Open:", backOpen);
-    console.log("Front Open:", frontOpen);
-    console.log("Image:", image);
-
-    // Additional Information
-    console.log("Cutting:", cutting);
-    console.log("Stitching:", stitching);
-    console.log("Hand Work:", handWork);
-    console.log("Measurer:", measurer);
-    console.log("Checker:", checker);
-    console.log("Tailor:", tailor);
-    console.log("Date In:", dateIn);
-    console.log("Completed Date:", completedDate);
-
-    // Payment Information
-    console.log("Total Price:", totalPrice);
-    console.log("Advanced Price:", advancedPrice);
-    console.log("Balance Price:", balancePrice);
-    console.log("CGST:", cgst);
-    console.log("SGST:", sgst);
-
-    // Note
-    console.log("Note:", note);
 
     try {
       const response = await axios.post(
@@ -199,31 +130,36 @@ function CustomerInformationModal() {
           point_to_point: collarRound,
           collor_round: collarRound,
 
-          //      console.log("Yoke Length:", yokeLength);
-          // console.log("Yoke Round:", yokeRound);
-          // console.log("Full Length:", fullLength);
-          // console.log("Upper Bust:", upperBust);
-          // console.log("Bust:", bust);
-          // console.log("Under Bust:", underBust);
-          // console.log("Mid Waist:", midWaist);
-          // console.log("Hip:", hip);
-          // console.log("Shoulder:", shoulder);
-          // console.log("Shoulder Width:", shoulderWidth);
-          // console.log("Slit Length:", slitLength);
-          // console.log("Slit Round:", slitRound);
-          // console.log("Sleeve Type:", sleeveType);
-          // console.log("Sleeve Length:", sleeveLength);
-          // console.log("Wrist:", wrist);
-          // console.log("Three Fourth:", threeFourth);
-          // console.log("Elbow:", elbow);
-          // console.log("Arm Round:", armRound);
-          // console.log("Arm Hole:", armHole);
-          // console.log("Neck:", neck);
-          // console.log("Front Neck:", frontNeck);
-          // console.log("Back Neck:", backNeck);
-          // console.log("Collar Round:", collarRound);
-          // console.log("Tuck Point:", tuckPoint);
-          // console.log("Point to Point:", pointToPoint);
+          skirt_full_length:skirtFullLength ,
+          skirt_seat: seat,
+          skirt_knee: knee,
+          skirt_thigh: thigh,
+          skirt_calf: calf,
+          skirt_bottom_round: bottomRound,
+          pad:pad,
+          zip:zip,
+          back_open:backOpen,
+          front_open:frontOpen,
+
+          cutting:cutting,
+          stiching:stitching,
+          handwork:handWork,
+          measurer:measurer,
+          checker:checker,
+          tailor:tailor,
+          date_in:dateIn,
+          completed_date:completedDate,
+
+          totalprice:totalPrice,
+          advanceprice:advancedPrice,
+          balanceprice:balancePrice,
+          note:note,
+          cgst:cgst,
+          sgst:sgst,
+          discount:discount,
+          credit:credit,
+          profit:profit,
+
         }),
         {
           headers: {
@@ -231,8 +167,8 @@ function CustomerInformationModal() {
           },
         }
       );
-      console.log(response.data);
-      if (response.data) {
+      console.log(response);
+      if (response.status === 200) {
         console.log(response.data);
         alert("successs");
       }
@@ -1027,6 +963,31 @@ function CustomerInformationModal() {
                       />
                     </div>
 
+                    <div className="flex gap-3">
+                      <Label htmlFor="profit" className="text-md font-bold">
+                        Profit
+                      </Label>
+                      <Input
+                        id="profit"
+                        type="text"
+                        value={profit}
+                        onChange={(e) => setProfit(e.target.value)}
+                        className="w-full"
+                        placeholder="Profit"
+                      />
+                      <Label htmlFor="credit" className="text-md font-bold">
+                      Credit
+                      </Label>
+                      <Input
+                        id="credit"
+                        type="text"
+                        value={sgst}
+                        onChange={(e) => setCredit(e.target.value)}
+                        className="w-full"
+                        placeholder="Credit"
+                      />
+                    </div>
+
                     <Label
                       htmlFor="discount-price"
                       className="text-md font-bold"
@@ -1036,8 +997,8 @@ function CustomerInformationModal() {
                     <Input
                       id="discount-price"
                       type="text"
-                      value={balancePrice}
-                      onChange={(e) => setBalancePrice(e.target.value)}
+                      value={discount}
+                      onChange={(e) => setDiscount(e.target.value)}
                       className="w-full"
                       placeholder="Discount Price"
                     />
