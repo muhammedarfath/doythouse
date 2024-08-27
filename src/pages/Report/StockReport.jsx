@@ -9,30 +9,11 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import { AiFillEdit } from "react-icons/ai";
-import { MdOutlineDelete } from "react-icons/md";
 import { CiFilter } from "react-icons/ci";
 import axios from "axios";
 
-// Sample data for stock report
-const stockData = [
-  {
-    id: 1,
-    category: "normal kurthi",
-    items: 150,
-    stockValue: "₹300,000",
-  },
-  {
-    id: 2,
-    category: "model kurthi",
-    items: 80,
-    stockValue: "₹120,000",
-  },
-];
-
 function StockReport() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
-
   const [stockReport, setStockReport] = useState([]);
 
   useEffect(() => {
@@ -43,29 +24,26 @@ function StockReport() {
         );
         setStockReport(response.data);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching stock report:", error);
       }
     };
     fetchStockReport();
-  }, [])
-
-
- console.log(stockReport);
-
+  }, []);
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
 
-
-
-
-
-  const totalItems = stockData.reduce((total, item) => total + item.items, 0);
-  const totalStockValue = stockData.reduce(
-    (total, item) => total + parseInt(item.stockValue.replace(/[^0-9]/g, "")),
-    0
-  );
+  const totalItems = stockReport.reduce((total, item) => {
+    const itemCount = item.count ? parseInt(item.count) : 0;
+    return total + itemCount;
+  }, 0);
+  const totalStockValue = stockReport.reduce((total, item) => {
+    const stockValue = item.total_purchase_price
+      ? parseInt(item.total_purchase_price.replace(/[^0-9]/g, ""))
+      : 0;
+    return total + stockValue;
+  }, 0);
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -73,7 +51,7 @@ function StockReport() {
         <div className="flex flex-col gap-6 mt-8">
           <h2 className="font-semibold text-xl text-black">Stock Report</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
-            <div className="flex items-center justify-between mb-4 lg:flex-row gap-4 lg:gap-0  flex-col">
+            <div className="flex items-center justify-between mb-4 lg:flex-row gap-4 lg:gap-0 flex-col">
               <div className="flex gap-2">
                 <span>Search</span>
                 <input
@@ -84,7 +62,7 @@ function StockReport() {
               </div>
               <div className="flex items-center gap-5">
                 <div
-                  className="border rounded-md p-2 bg-[#D8E9E7] text-[#308E87] "
+                  className="border rounded-md p-2 bg-[#D8E9E7] text-[#308E87]"
                   onClick={toggleFilter}
                 >
                   <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
@@ -131,13 +109,13 @@ function StockReport() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {stockData.map((stock, index) => (
+                {stockReport.map((stock, index) => (
                   <TableRow key={stock.id}>
                     <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>{stock.category}</TableCell>
-                    <TableCell>{stock.items}</TableCell>
+                    <TableCell>{stock.subcat_name}</TableCell>
+                    <TableCell>{stock.count}</TableCell>
                     <TableCell className="text-right">
-                      {stock.stockValue}
+                      {stock.total_purchase_price || "N/A"}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -151,7 +129,6 @@ function StockReport() {
                   <TableCell className="text-right font-semibold">
                     ₹{totalStockValue.toLocaleString()}
                   </TableCell>
-                  <TableCell></TableCell>
                 </TableRow>
               </tfoot>
             </Table>

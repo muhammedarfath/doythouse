@@ -17,7 +17,6 @@ import { CiFilter } from "react-icons/ci";
 import EditCustomerDetailsModal from "@/components/modal/EditCustomerDetailsModal";
 import axios from "axios";
 
-
 function CustomerList() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [customer, setCustomer] = useState("");
@@ -39,7 +38,6 @@ function CustomerList() {
     };
     fetchCustomer();
   }, []);
-
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -136,7 +134,6 @@ function CustomerList() {
                   <TableHead>Expected Delivery</TableHead>
                   <TableHead>Item Category</TableHead>
                   <TableHead>Total Price</TableHead>
-                  <TableHead>Balanced Price</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-center w-[150px]">
                     Actions
@@ -144,38 +141,45 @@ function CustomerList() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {customer.map((order, index) => (
-                  <TableRow key={order.id}>
-                    <TableCell>
-                      <input type="checkbox" />
-                    </TableCell>
-                    <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>{order.orderNo}</TableCell>
-                    <TableCell>{order.customerName}</TableCell>
-                    <TableCell>{order.expectedDelivery}</TableCell>
-                    <TableCell>{order.itemCategory}</TableCell>
-                    <TableCell>{order.totalPrice}</TableCell>
-                    <TableCell>{order.balancedPrice}</TableCell>
-                    <TableCell>
-                      {order.status === "Pending" ? (
-                        <Badge variant="secondary" className="bg-yellow-400">
-                          {order.status}
-                        </Badge>
-                      ) : (
-                        <Badge variant="secondary" className="bg-green-400">
-                          {order.status}
-                        </Badge>
-                      )}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <div className="flex justify-center gap-3">
-                        {/* <ProductDetailsModal /> */}
-                        <EditCustomerDetailsModal />
-                        <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
-                      </div>
+                {customer.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={9} className="text-center">
+                      No Data Available
                     </TableCell>
                   </TableRow>
-                ))}
+                ) : (
+                  customer.map((order, index) => (
+                    <TableRow key={order.id}>
+                      <TableCell>
+                        <input type="checkbox" />
+                      </TableCell>
+                      <TableCell className="font-medium">{index + 1}</TableCell>
+                      <TableCell>{order.orderNo}</TableCell>
+                      <TableCell>{order.customerName}</TableCell>
+                      <TableCell>{order.expectedDelivery}</TableCell>
+                      <TableCell>{order.itemCategory}</TableCell>
+                      <TableCell>{order.totalPrice}</TableCell>
+                      <TableCell>{order.balancedPrice}</TableCell>
+                      <TableCell>
+                        {order.status === "Pending" ? (
+                          <Badge variant="secondary" className="bg-yellow-400">
+                            {order.status}
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary" className="bg-green-400">
+                            {order.status}
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className="flex justify-center gap-3">
+                          <EditCustomerDetailsModal />
+                          <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </div>

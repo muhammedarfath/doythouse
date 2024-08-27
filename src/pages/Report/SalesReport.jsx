@@ -9,36 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import { AiFillEdit } from "react-icons/ai";
-import { MdOutlineDelete } from "react-icons/md";
 import { CiFilter } from "react-icons/ci";
 import * as XLSX from "xlsx";
 import axios from "axios";
-
-const salesData = [
-  {
-    id: 1,
-    date: "2024-08-01",
-    invoiceNumber: "INV001",
-    customer: "John Doe",
-    gstAmount: "₹180",
-    discount: "₹200",
-    netTotal: "₹2000",
-    credit: "₹0",
-    profit: "₹500",
-  },
-  {
-    id: 2,
-    date: "2024-08-10",
-    invoiceNumber: "INV002",
-    customer: "Jane Smith",
-    gstAmount: "₹90",
-    discount: "₹50",
-    netTotal: "₹1500",
-    credit: "₹200",
-    profit: "₹300",
-  },
-];
 
 function SalesReport() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -52,23 +25,25 @@ function SalesReport() {
         );
         setSalesReport(response.data);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching sales report:", error);
       }
     };
     fetchSalesReport();
   }, []);
-
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
 
   const downloadExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(salesData);
+    const worksheet = XLSX.utils.json_to_sheet(salesReport);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sales Report");
     XLSX.writeFile(workbook, "sales_report.xlsx");
   };
+
+
+  console.log(salesReport);
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -76,7 +51,7 @@ function SalesReport() {
         <div className="flex flex-col gap-6 mt-8">
           <h2 className="font-semibold text-xl text-black">Sales Report</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
-            <div className="flex items-center justify-between mb-4 lg:flex-row gap-4 lg:gap-0  flex-col">
+            <div className="flex items-center justify-between mb-4 lg:flex-row gap-4 lg:gap-0 flex-col">
               <div className="flex gap-2">
                 <span>Search</span>
                 <input
@@ -87,7 +62,7 @@ function SalesReport() {
               </div>
               <div className="flex items-center gap-5">
                 <div
-                  className="border rounded-md p-2 bg-[#D8E9E7] text-[#308E87] "
+                  className="border rounded-md p-2 bg-[#D8E9E7] text-[#308E87]"
                   onClick={toggleFilter}
                 >
                   <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
@@ -159,23 +134,23 @@ function SalesReport() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {salesData.map((sale, index) => (
+                {salesReport.map((sale, index) => (
                   <TableRow key={sale.id}>
                     <TableCell>
                       <input type="checkbox" />
                     </TableCell>
                     <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>{sale.date}</TableCell>
-                    <TableCell>{sale.invoiceNumber}</TableCell>
-                    <TableCell>{sale.customer}</TableCell>
+                    <TableCell>{sale.cust_expecteddelivery}</TableCell>
+                    <TableCell>{sale.invoice_no}</TableCell>
+                    <TableCell>{sale.cust_name}</TableCell>
                     <TableCell className="text-right">
-                      {sale.gstAmount}
+                      {sale.gstamount}
                     </TableCell>
                     <TableCell className="text-right">
                       {sale.discount}
                     </TableCell>
                     <TableCell className="text-right">
-                      {sale.netTotal}
+                      {sale.nettotal}
                     </TableCell>
                     <TableCell className="text-right">{sale.credit}</TableCell>
                     <TableCell className="text-right">{sale.profit}</TableCell>

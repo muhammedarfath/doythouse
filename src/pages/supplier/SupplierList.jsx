@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -14,41 +14,76 @@ import SupplierModal from "@/components/modal/SupplierModal";
 import { Button } from "../../components/ui/button";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import EditSupplierModal from "@/components/modal/EditSupplierModal";
-
-const suppliers = [
-  {
-    name: "ABC Traders",
-    contactPerson: "John Doe",
-    mobile: "9876543210",
-    balanceAmount: "₹1,500",
-  },
-  {
-    name: "XYZ Supplies",
-    contactPerson: "Jane Smith",
-    mobile: "9123456789",
-    balanceAmount: "₹3,200",
-  },
-  {
-    name: "Global Industries",
-    contactPerson: "Alice Johnson",
-    mobile: "9988776655",
-    balanceAmount: "₹2,750",
-  },
-  {
-    name: "Sunrise Enterprises",
-    contactPerson: "Michael Brown",
-    mobile: "9876541230",
-    balanceAmount: "₹5,100",
-  },
-  {
-    name: "Quality Goods Co.",
-    contactPerson: "Emily Davis",
-    mobile: "9765432100",
-    balanceAmount: "₹4,400",
-  },
-];
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 function SupplierList() {
+  const [suppliers, setSupplier] = useState([]);
+
+  useEffect(() => {
+    fetchSuppliers();
+  }, []);
+
+  const fetchSuppliers = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=supplier"
+      );
+      setSupplier(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const handleDelete = (supplierId) => {
+    toast(
+      (t) => (
+        <div>
+          <p>Are you sure you want to delete this supplier?</p>
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={() => confirmDelete(supplierId, t.id)}
+              className="bg-red-500 text-white px-4 py-1 rounded"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-gray-300 text-black px-4 py-1 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: 4000 }
+    );
+  };
+
+  const confirmDelete = async (supplierId, toastId) => {
+    try {
+      await axios.post(
+        `https://storeconvo.com/php/delete.php/`,
+        {
+          id: supplierId,
+          typ: "supplier",
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      setSupplier((prevSupplier) =>
+      prevSupplier.filter((supplier) => supplier.supplier_id !== supplierId)
+      );
+      toast.success("Delete successful", { id: toastId });
+    } catch (error) {
+      console.error("Error deleting supplier:", error);
+    }
+  };
+
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full lg:max-w-screen-xl md:max-w-[35rem] max-w-[22rem] mx-auto ">
@@ -64,7 +99,7 @@ function SupplierList() {
                   className="h-10 border rounded px-4 w-64 bg-[#fff] border-gray-300 text-gray-900 text-sm focus:ring-black focus:border-black block pl-5 pr-3 py-4"
                 />
               </div>
-              <SupplierModal />
+              <SupplierModal setSupplier={setSupplier}/>
             </div>
 
             <Table className="w-full">
@@ -86,17 +121,20 @@ function SupplierList() {
                   <TableRow key={index}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell className="font-medium">
-                      {supplier.name}
+                      {supplier.supplier_name}
                     </TableCell>
-                    <TableCell>{supplier.contactPerson}</TableCell>
-                    <TableCell>{supplier.mobile}</TableCell>
+                    <TableCell>{supplier.supplier_contactperson}</TableCell>
+                    <TableCell>{supplier.supplier_phone}</TableCell>
                     <TableCell className="text-right">
-                      {supplier.balanceAmount}
+                      {supplier.supplier_balancedmoney}
                     </TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <EditSupplierModal />
-                        <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
+                        <EditSupplierModal supplier={supplier} />
+                        <BiSolidTrashAlt
+                          className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+                          onClick={() => handleDelete(supplier.supplier_id)}
+                        />
                       </div>
                     </TableCell>
                   </TableRow>

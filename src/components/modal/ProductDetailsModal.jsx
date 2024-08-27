@@ -4,19 +4,16 @@ import { FiPlus } from "react-icons/fi";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog";
-import { Input } from "../../components/ui/input";
-import { Label } from "../../components/ui/label";
+
 import { AiFillEye } from "react-icons/ai";
-import { LayoutGridDemo } from "../ImgGrid/LayoutGridDemo";
 
 function ProductDetailsModal({ product }) {
-  console.log(product);
+  const imageUrls = product.image_url ? product.image_url.split(",") : [];
+
   return (
     <div>
       <Dialog>
@@ -31,34 +28,31 @@ function ProductDetailsModal({ product }) {
             <div class="pt-6">
               <div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
                 <div class="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-                  <img
-                    src="https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg"
-                    alt="Two each of gray, white, and black shirts laying flat."
-                    class="h-full w-full object-cover object-center"
-                  />
+                  {imageUrls[0] && (
+                    <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
+                      <img
+                        src={`https://storeconvo.com/php/uploads/${imageUrls[0]}`}
+                        alt="Featured Product"
+                        className="h-full w-full object-cover object-center"
+                      />
+                    </div>
+                  )}
                 </div>
                 <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-                  <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-                    <img
-                      src="https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg"
-                      alt="Model wearing plain black basic tee."
-                      class="h-full w-full object-cover object-center"
-                    />
+                  <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
+                    {imageUrls.slice(1).map((url, index) => (
+                      <div
+                        key={index}
+                        className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg"
+                      >
+                        <img
+                          src={`https://storeconvo.com/php/uploads/${url}`}
+                          alt={`Product Image ${index + 1}`}
+                          className="h-full w-full object-cover object-center"
+                        />
+                      </div>
+                    ))}
                   </div>
-                  <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-                    <img
-                      src="https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg"
-                      alt="Model wearing plain gray basic tee."
-                      class="h-full w-full object-cover object-center"
-                    />
-                  </div>
-                </div>
-                <div class="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-                  <img
-                    src="https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg"
-                    alt="Model wearing plain white basic tee."
-                    class="h-full w-full object-cover object-center"
-                  />
                 </div>
               </div>
 
@@ -75,31 +69,31 @@ function ProductDetailsModal({ product }) {
                   <div className="flex gap-3">
                     <span>Dealerprice:</span>
                     <p class="text-3xl tracking-tight text-gray-900">
-                    ₹{product.dealerprice}
+                      ₹{product.dealerprice}
                     </p>
                   </div>
                   <div className="flex gap-3">
                     <span>Purchaseprice:</span>
                     <p class="text-3xl tracking-tight text-gray-900">
-                    ₹{product.purchaseprice}
+                      ₹{product.purchaseprice}
                     </p>
                   </div>
                   <div className="flex gap-3">
                     <span>Retailprice:</span>
                     <p class="text-3xl tracking-tight text-gray-900">
-                    ₹{product.retailprice}
+                      ₹{product.retailprice}
                     </p>
                   </div>
                   <div className="flex gap-3">
                     <span>Specialprice:</span>
                     <p class="text-3xl tracking-tight text-gray-900">
-                    ₹{product.specialprice}
+                      ₹{product.specialprice}
                     </p>
                   </div>
                   <div className="flex gap-3">
                     <span>Wholesaleprice:</span>
                     <p class="text-3xl tracking-tight text-gray-900">
-                    ₹{product.wholesaleprice}
+                      ₹{product.wholesaleprice}
                     </p>
                   </div>
                 </div>
