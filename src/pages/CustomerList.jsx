@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "../components/ui/button";
-import { Badge } from "../components/ui/badge"
+import { Badge } from "../components/ui/badge";
 
 import {
   Table,
@@ -50,11 +50,11 @@ function CustomerList() {
 
   return (
     <div className="flex items-center justify-center w-full">
-      <div className="w-full max-w-screen-xl mx-auto">
+      <div className="w-full lg:max-w-screen-xl md:max-w-[35rem] max-w-[22rem] mx-auto ">
         <div className="flex flex-col gap-6 mt-8">
           <h2 className="font-semibold text-xl text-black">Order List</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 lg:flex-row gap-4 lg:gap-0  flex-col">
               <div className="flex gap-2">
                 <span>Search</span>
                 <input
@@ -164,13 +164,21 @@ function CustomerList() {
                     <TableCell>{order.totalPrice}</TableCell>
                     <TableCell>{order.balancedPrice}</TableCell>
                     <TableCell>
-                    {order.status === "Pending" ? (<Badge variant="secondary"  className="bg-yellow-400">{order.status}</Badge>):(<Badge variant="secondary" className="bg-green-400">{order.status}</Badge>)}
+                      {order.status === "Pending" ? (
+                        <Badge variant="secondary" className="bg-yellow-400">
+                          {order.status}
+                        </Badge>
+                      ) : (
+                        <Badge variant="secondary" className="bg-green-400">
+                          {order.status}
+                        </Badge>
+                      )}
                     </TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-3">
                         <ProductDetailsModal />
-                        <EditCustomerDetailsModal/>
-                          <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
+                        <EditCustomerDetailsModal />
+                        <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                       </div>
                     </TableCell>
                   </TableRow>
