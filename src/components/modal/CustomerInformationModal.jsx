@@ -14,7 +14,7 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { IoMdArrowRoundForward } from "react-icons/io";
 import axios from "axios";
-import ReactToPrint from "react-to-print";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { toast } from "react-hot-toast";
 
 function CustomerInformationModal() {
@@ -96,7 +96,6 @@ function CustomerInformationModal() {
   const [profit, setProfit] = useState("");
   // Note
   const [note, setNote] = useState("");
-  const componentRef = useRef();
   const [categories, setCategories] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -142,16 +141,16 @@ function CustomerInformationModal() {
           yoke_length: yokeLength,
           yoke_round: yokeRound,
           full_length: fullLength,
-          upper_bust:upperBust,
-          bust:bust,
-          under_bust:underBust,
-          mid_waist:midWaist,
-          hip:hip,
-          shoulder:shoulder,
-          shoulder_wide:shoulderWidth,
+          upper_bust: upperBust,
+          bust: bust,
+          under_bust: underBust,
+          mid_waist: midWaist,
+          hip: hip,
+          shoulder: shoulder,
+          shoulder_wide: shoulderWidth,
           slit_length: slitLength,
           slit_round: slitRound,
-          sleeve_type:sleeveType,
+          sleeve_type: sleeveType,
           arm_hole: armHole,
           collor_round: collarRound,
           tuck_point: tuckPoint,
@@ -202,6 +201,7 @@ function CustomerInformationModal() {
           },
         }
       );
+      console.log(response);
       if (response.status === 200) {
         toast.success("Customer added successfully");
         // setEmployees((prevEmployees) => [...prevEmployees, response.data]);
@@ -285,6 +285,28 @@ function CustomerInformationModal() {
     setImage(e.target.files[0]);
   };
 
+  const section1Ref = useRef();
+  const section2Ref = useRef();
+  const section3Ref = useRef();
+
+  const printSection1 = useReactToPrint({
+    content: () => section1Ref.current,
+    documentTitle: "Customer Information - Part 1",
+    // onAfterPrint: () => toast.success("Part 1 printed successfully!"),
+  });
+
+  const printSection2 = useReactToPrint({
+    content: () => section2Ref.current,
+    documentTitle: "Customer Information - Part 2",
+    // onAfterPrint: () => toast.success("Part 2 printed successfully!"),
+  });
+
+  const printSection3 = useReactToPrint({
+    content: () => section3Ref.current,
+    documentTitle: "Customer Information - Part 3",
+    // onAfterPrint: () => toast.success("Part 2 printed successfully!"),
+  });
+
   return (
     <div>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -301,7 +323,10 @@ function CustomerInformationModal() {
           </DialogHeader>
           <form onSubmit={handleSubmit}>
             <div className="p-4 sm:p-6 lg:p-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div
+                className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+                ref={section1Ref}
+              >
                 <div className="flex flex-col gap-4">
                   <Label htmlFor="customerName" className="text-md font-bold">
                     Customer Name
@@ -427,10 +452,13 @@ function CustomerInformationModal() {
               </div>
             </div>
 
-            <div className="border-t  border-gray-300 my-6 pt-4 lg:flex md:flex gap-8">
-              <div className="lg:w-1/3 md:w-1/3">
+            <div
+              className="border-t  border-gray-300 my-6 pt-4 lg:flex md:flex gap-8"
+              
+            >
+              <div className="lg:w-1/3 md:w-1/3" ref={section2Ref}>
                 <div className="text-lg font-semibold mb-4">Measurements:</div>
-                <table className="min-w-full border-collapse">
+                <table className="min-w-full border-collapse" >
                   <tbody>
                     <tr>
                       <th className="border p-2 text-left">Yoke Length</th>
@@ -711,7 +739,10 @@ function CustomerInformationModal() {
                 </table>
               </div>
 
-              <div className="lg:w-1/3 md:w-1/3 mt-10 flex flex-col gap-8">
+              <div
+                className="lg:w-1/3 md:w-1/3 mt-10 flex flex-col gap-8"
+                ref={section3Ref}
+              >
                 <div>
                   <div className="flex border p-3 justify-center">
                     <h1 className="text-lg font-semibold mb-4">
@@ -1066,12 +1097,38 @@ function CustomerInformationModal() {
                 </div>
               </div>
             </div>
+
             <DialogFooter>
               <Button type="submit" className="bg-[#308E87] hover:bg-[#308E87]">
                 Save Changes
               </Button>
             </DialogFooter>
+
           </form>
+          
+          <DialogFooter>
+            <Button
+              type="submit"
+              className="bg-[#308E87] hover:bg-[#308E87]"
+              onClick={printSection1}
+            >
+              Information Print
+            </Button>
+            <Button
+              type="submit"
+              className="bg-[#308E87] hover:bg-[#308E87]"
+              onClick={printSection2}
+            >
+              Measurements Print
+            </Button>
+            <Button
+              type="submit"
+              className="bg-[#308E87] hover:bg-[#308E87]"
+              onClick={printSection3}
+            >
+             Skirt & Pant Print
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

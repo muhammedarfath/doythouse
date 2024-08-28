@@ -35,19 +35,30 @@ import {
 import { Separator } from "../components/ui/separator"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
+import { useEffect, useState } from "react"
+import axios from "axios"
 
 
 
 export function Dashboard() {
-  const authState = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const [report,setReport] = useState([])
 
-  // useEffect(()=>{
-  //   if (!authState.isAuthenticated){
-  //    navigate('/login') 
-  //   }
-  // },[])
+  useEffect(() => {
+    fetchReport();
+  }, []);
 
+  const fetchReport = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/report.php"
+      );
+      console.log(response.data);
+      setReport(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
 
 

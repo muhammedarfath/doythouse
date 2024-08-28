@@ -14,6 +14,7 @@ import { TbTruck } from "react-icons/tb";
 import { TbReportAnalytics } from "react-icons/tb";
 import { GiThermometerScale } from "react-icons/gi";
 import { RiShoppingCart2Line } from "react-icons/ri";
+import { TbFileInvoice } from "react-icons/tb";
 
 function Items({ open }) {
   const masterSubItems = [
@@ -55,10 +56,10 @@ function Items({ open }) {
     },
   ];
 
-  const PurchaseItems = [
+  const InvoiceItems = [
     {
-      label: "New Purchase Entry",
-      path: "/purchaseentry",
+      label: "Invoice List",
+      path: "/invoice",
     },
   ];
 
@@ -97,10 +98,10 @@ function Items({ open }) {
       </Link>
       <Link>
         <MenuItem
-          icon={RiShoppingCart2Line}
-          label="Purchase Entry"
+          icon={TbFileInvoice}
+          label="Invoice"
           open={open}
-          subItems={PurchaseItems}
+          subItems={InvoiceItems}
         />
       </Link>
       <Link to="/salesreport">

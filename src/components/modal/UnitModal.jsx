@@ -28,7 +28,7 @@ function UnitModal({setUnits}) {
     }
 
     setLoading(true);
-
+    
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_unit.php",
@@ -42,7 +42,6 @@ function UnitModal({setUnits}) {
           },
         }
       );
-      console.log(response.data);
       if (response.status === 200) {
         toast.success("Unit added successfully");
         setUnits((prevUnit) => [...prevUnit, response.data]);
@@ -59,6 +58,8 @@ function UnitModal({setUnits}) {
       setLoading(false);
     }
   };
+
+
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

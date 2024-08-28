@@ -39,6 +39,7 @@ function CustomerList() {
     fetchCustomer();
   }, []);
 
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full lg:max-w-screen-xl md:max-w-[35rem] max-w-[22rem] mx-auto ">
@@ -173,7 +174,7 @@ function CustomerList() {
                       </TableCell>
                       <TableCell className="text-center">
                         <div className="flex justify-center gap-3">
-                          <EditCustomerDetailsModal />
+                          <EditCustomerDetailsModal customer={customer}/>
                           <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                         </div>
                       </TableCell>

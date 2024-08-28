@@ -11,10 +11,13 @@ import {
 } from "../../components/ui/table";
 import { CiFilter } from "react-icons/ci";
 import axios from "axios";
+import * as XLSX from "xlsx";
 
 function StockReport() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [stockReport, setStockReport] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
 
   useEffect(() => {
     const fetchStockReport = async () => {
@@ -34,20 +37,48 @@ function StockReport() {
     setIsFilterVisible(!isFilterVisible);
   };
 
-  const totalItems = stockReport.reduce((total, item) => {
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSubcategoryFilterChange = (e) => {
+    setSelectedSubcategory(e.target.value);
+  };
+
+  const filteredStockReport = stockReport.filter((item) => {
+    const matchesSearchTerm = item.subcat_name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesSubcategory =
+      selectedSubcategory === "" || item.subcat_name === selectedSubcategory;
+    return matchesSearchTerm && matchesSubcategory;
+  });
+
+  const totalItems = filteredStockReport.reduce((total, item) => {
     const itemCount = item.count ? parseInt(item.count) : 0;
     return total + itemCount;
   }, 0);
-  const totalStockValue = stockReport.reduce((total, item) => {
+
+  const totalStockValue = filteredStockReport.reduce((total, item) => {
     const stockValue = item.total_purchase_price
       ? parseInt(item.total_purchase_price.replace(/[^0-9]/g, ""))
       : 0;
     return total + stockValue;
   }, 0);
 
+
+  const downloadExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(stockReport);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Stock Report");
+    XLSX.writeFile(workbook, "stock_report.xlsx");
+  };
+
+
+
   return (
     <div className="flex items-center justify-center w-full">
-      <div className="w-full lg:max-w-screen-xl md:max-w-[35rem] max-w-[22rem] mx-auto ">
+      <div className="w-full lg:max-w-screen-xl md:max-w-[35rem] max-w-[22rem] mx-auto">
         <div className="flex flex-col gap-6 mt-8">
           <h2 className="font-semibold text-xl text-black">Stock Report</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
@@ -56,8 +87,10 @@ function StockReport() {
                 <span>Search</span>
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder="Search by category..."
                   className="h-10 border rounded px-4 w-64 bg-gray-50"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
                 />
               </div>
               <div className="flex items-center gap-5">
@@ -67,7 +100,10 @@ function StockReport() {
                 >
                   <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
                 </div>
-                <Button className="bg-[#308E87] hover:bg-[#308E87]">
+                <Button
+                  className="bg-[#308E87] hover:bg-[#308E87]"
+                  onClick={downloadExcel}
+                >
                   Download XLS
                 </Button>
               </div>
@@ -76,24 +112,27 @@ function StockReport() {
             {isFilterVisible && (
               <div className="flex flex-wrap gap-4 mb-4">
                 <div className="flex flex-col">
-                  <label htmlFor="from-date" className="text-sm font-medium">
-                    From Date
+                  <label
+                    htmlFor="subcategory-filter"
+                    className="text-sm font-medium"
+                  >
+                    Filter by Subcategory
                   </label>
-                  <input
-                    type="date"
-                    id="from-date"
+                  <select
+                    id="subcategory-filter"
                     className="h-10 border rounded px-4 bg-gray-50"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="to-date" className="text-sm font-medium">
-                    To Date
-                  </label>
-                  <input
-                    type="date"
-                    id="to-date"
-                    className="h-10 border rounded px-4 bg-gray-50"
-                  />
+                    value={selectedSubcategory}
+                    onChange={handleSubcategoryFilterChange}
+                  >
+                    <option value="">All</option>
+                    {[
+                      ...new Set(stockReport.map((item) => item.subcat_name)),
+                    ].map((subcategory) => (
+                      <option key={subcategory} value={subcategory}>
+                        {subcategory}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             )}
@@ -109,7 +148,7 @@ function StockReport() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {stockReport.map((stock, index) => (
+                {filteredStockReport.map((stock, index) => (
                   <TableRow key={stock.id}>
                     <TableCell className="font-medium">{index + 1}</TableCell>
                     <TableCell>{stock.subcat_name}</TableCell>

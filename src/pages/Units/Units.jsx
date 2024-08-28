@@ -8,8 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-import { Button } from "../../components/ui/button";
+import { AiFillDelete } from "react-icons/ai";
 import UnitModal from "@/components/modal/UnitModal";
 import axios from "axios";
 import UnitEditModal from "@/components/modal/UnitEditModal";
@@ -32,6 +31,10 @@ function Units() {
       console.error("Error fetching units:", error);
     }
   };
+
+
+console.log(units);
+
 
   const handleDelete = (unitId) => {
     toast(
@@ -61,7 +64,7 @@ function Units() {
   const confirmDelete = async (unitId, toastId) => {
     try {
       await axios.post(
-        `https://storeconvo.com/php/delete.php`, // Update with your actual endpoint if needed
+        `https://storeconvo.com/php/delete.php`,
         new URLSearchParams({
           id: unitId,
           typ: "unit",
@@ -73,17 +76,17 @@ function Units() {
         }
       );
 
-      // Filter out the deleted unit from the state
       setUnits((prevUnits) =>
-        prevUnits.filter((unit) => unit.id !== unitId)
+        prevUnits.filter((unit) => unit.unitid !== unitId)
       );
-
       toast.success("Delete successful", { id: toastId });
     } catch (error) {
       toast.error("Error deleting unit");
       console.error("Error deleting unit:", error);
     }
   };
+
+
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -106,7 +109,7 @@ function Units() {
               </TableHeader>
               <TableBody>
                 {units.map((unit, index) => (
-                  <TableRow key={unit.id}>
+                  <TableRow key={unit.unitid}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell className="font-medium">{unit.unitname}</TableCell>
                     <TableCell>{unit.unitcode}</TableCell>
@@ -115,7 +118,7 @@ function Units() {
                         <UnitEditModal unit={unit} onSuccess={fetchUnits} />
                         <AiFillDelete
                           className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
-                          onClick={() => handleDelete(unit.id)}
+                          onClick={() => handleDelete(unit.unitid)}
                         />
                       </div>
                     </TableCell>

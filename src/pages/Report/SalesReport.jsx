@@ -38,12 +38,11 @@ function SalesReport() {
   const downloadExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(salesReport);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sales Report");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sal Report");
     XLSX.writeFile(workbook, "sales_report.xlsx");
   };
 
 
-  console.log(salesReport);
 
   return (
     <div className="flex items-center justify-center w-full">

@@ -17,6 +17,7 @@ import StockReport from './pages/Report/StockReport';
 import TaxReport from './pages/Report/TaxReport';
 import Units from './pages/Units/Units';
 import PurchaseEntryList from './pages/Purchase/PurchaseEntryList';
+import Invoice from './pages/Invoice/Invoice';
 function App() {
 
   return (
@@ -39,6 +40,7 @@ function App() {
             <Route path="/taxreport" element={<TaxReport/>} />
             <Route path="/units" element={<Units/>} />
             <Route path="/purchaseentry" element={<PurchaseEntryList/>} />
+            <Route path="/invoice" element={<Invoice/>} />
           </Route>
           <Route path="/login" element={<Login />} />
         </Routes>

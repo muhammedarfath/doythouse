@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { CreditCard, LogOut, Settings, User } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { logout } from "../../Redux/features/auth/authSlice";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,15 +16,23 @@ import { ModeToggle } from "../darkmode/mode-toggle";
 import { Toaster } from "react-hot-toast";
 import { RiMenu2Fill } from "react-icons/ri";
 import MobileSidebar from "./MobileSidebar";
+import { Link } from "react-router-dom";
 
 function Header({ open }) {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
   const closeSidebar = () => {
     setSidebarOpen(false);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
   };
 
   return (
@@ -76,13 +86,15 @@ function Header({ open }) {
                       <Settings className="mr-2 h-4 w-4" />
                       <span>Settings</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <CreditCard className="mr-2 h-4 w-4" />
-                      <span>Billing</span>
-                    </DropdownMenuItem>
+                    <Link to='/customerlist'>
+                      <DropdownMenuItem>
+                        <CreditCard className="mr-2 h-4 w-4" />
+                        <span>Order List</span>
+                      </DropdownMenuItem>
+                    </Link>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                   </DropdownMenuItem>
