@@ -28,7 +28,8 @@ function UnitModal({setUnits}) {
     }
 
     setLoading(true);
-    
+    console.log(unitName);
+    console.log(unitCode);
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_unit.php",

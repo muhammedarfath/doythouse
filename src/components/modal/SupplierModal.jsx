@@ -14,7 +14,7 @@ import { Label } from "../../components/ui/label";
 import { Button } from "../../components/ui/button";
 import { FiPlus } from "react-icons/fi";
 
-function SupplierModal({setSupplier}) {
+function SupplierModal({ setSupplier }) {
   const [supplierName, setSupplierName] = useState("");
   const [email, setEmail] = useState("");
   const [contactPerson, setContactPerson] = useState("");
@@ -33,7 +33,7 @@ function SupplierModal({setSupplier}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
 
     console.log(supplierName);
     console.log(email);
@@ -51,7 +51,7 @@ function SupplierModal({setSupplier}) {
 
     try {
       const response = await axios.post(
-        "https://storeconvo.com/php/add_supplier",
+        "https://storeconvo.com/php/add_supplier.php",
         {
           supplier_name: supplierName,
           supplier_email: email,
@@ -66,9 +66,15 @@ function SupplierModal({setSupplier}) {
           supplier_creditedmoney: creditedMoney,
           supplier_paidmoney: paidMoney,
           supplier_balancedmoney: balancedMoney,
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
         }
       );
-      if (response.data) { 
+      console.log(response);
+      if (response.data) {
         console.log(response.data);
         setSupplier((prevSupplier) => [...prevSupplier, response.data]);
         toast.success("Supplier added successfully");

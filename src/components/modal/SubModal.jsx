@@ -43,6 +43,7 @@ function SubModal({setSubCategory}) {
           },
         }
       );
+      console.log(response);
       if (response.status === 200) {
         toast.success("Subcategory added successfully!");
         setSubCategory((prevSubCate) => [...prevSubCate, response.data])

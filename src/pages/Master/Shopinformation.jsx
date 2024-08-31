@@ -62,7 +62,7 @@ function Shopinformation() {
                   </svg>
                 </div>
               </section>
-              <ShopForm shopInformation={shopInformation}/>
+              <ShopForm shopInformation={shopInformation} setShopInformation={setShopInformation}/>
             </div>
           </div>
         </div>

@@ -148,6 +148,8 @@ function ExpenseList() {
     return isWithinDateRange && isMatchingType && isMatchingEmployee;
   });
 
+  console.log(expenses);
+
   return (
     <div className="flex items-center justify-center w-full ">
       <div className="w-full lg:max-w-screen-xl md:max-w-[35rem] max-w-[22rem] mx-auto ">
@@ -280,10 +282,10 @@ function ExpenseList() {
                     {Array.isArray(expenses) &&
                       expenses.some((expense) => expense.expsub_type) && (
                         <TableCell className="text-right">
-                          {expense.expsub_type || ""}
+                          {expense.subexp_name || ""}
                         </TableCell>
                       )}
-                    <TableCell>{expense.exp_employee}</TableCell>
+                    <TableCell>{expense.employee_name}</TableCell>
                     <TableCell>{expense.exp_note}</TableCell>
                     <TableCell className="flex justify-center gap-4">
                       <EditExpenseModal expense={expense} onChange={fetchExpenseList}/>

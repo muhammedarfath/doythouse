@@ -65,33 +65,43 @@ function ProductEditModal({ product }) {
 
   const handleSave = async () => {
     setLoading(true);
-    
+
     try {
-      const response = await axios.post("https://storeconvo.com/php/edit.php", {
-        id:product.productid,
-        productname: productName,
-        productdescription: description,
-        productusercode: userCode,
-        unitid: unitId,
-        reorderlevel: reorderLevel,
-        hsn: hsnAcs,
-        cgst: cgst,
-        sgst: sgst,
-        salesunit: salesUnit,
-        packsize: packSize,
-        cateoryid: category,
-        subcategoryid: subCategory,
-        mrp: mrp,
-        purchaseprice: purchasePrice,
-        retailprice: retailPrice,
-        wholesaleprice: wholesalePrice,
-        specialprice: specialPrice,
-        dealerprice: dealerPrice,
-        openqty: openQty,
-        typ:"product"
-      });
+      const response = await axios.post(
+        "https://storeconvo.com/php/edit.php",
+        {
+          id: product.productid,
+          productname: productName,
+          productdescription: description,
+          productusercode: userCode,
+          unitid: unitId,
+          reorderlevel: reorderLevel,
+          hsn: hsnAcs,
+          cgst: cgst,
+          sgst: sgst,
+          salesunit: salesUnit,
+          packsize: packSize,
+          cateoryid: category,
+          subcategoryid: subCategory,
+          mrp: mrp,
+          purchaseprice: purchasePrice,
+          retailprice: retailPrice,
+          wholesaleprice: wholesalePrice,
+          specialprice: specialPrice,
+          dealerprice: dealerPrice,
+          openqty: openQty,
+          typ: "productt",
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+
+      console.log(response);
       if (response.status === 200) {
-        toast.success("Product Edit Successful")
+        toast.success("Product Edit Successful");
         setOpen(false);
       }
     } catch (error) {
@@ -100,7 +110,6 @@ function ProductEditModal({ product }) {
     } finally {
       setLoading(false);
       setOpen(false);
-
     }
   };
 
@@ -116,29 +125,112 @@ function ProductEditModal({ product }) {
         <DialogContent className="sm:max-w-[900px] mt-3 overflow-scroll h-full">
           <DialogHeader>
             <DialogTitle>Edit Product</DialogTitle>
-            <DialogDescription>Update your product details below.</DialogDescription>
+            <DialogDescription>
+              Update your product details below.
+            </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             {[
-              { label: "Product Name", id: "productName", value: productName, setter: setProductName },
-              { label: "Description", id: "description", value: description, setter: setDescription, textarea: true },
-              { label: "Product User Code", id: "userCode", value: userCode, setter: setUserCode },
-              { label: "Unit ID", id: "unitId", value: unitId, setter: setUnitId },
-              { label: "Reorder Level", id: "reorderLevel", value: reorderLevel, setter: setReorderLevel },
-              { label: "HSN ACS", id: "hsnAcs", value: hsnAcs, setter: setHsnAcs },
+              {
+                label: "Product Name",
+                id: "productName",
+                value: productName,
+                setter: setProductName,
+              },
+              {
+                label: "Description",
+                id: "description",
+                value: description,
+                setter: setDescription,
+                textarea: true,
+              },
+              {
+                label: "Product User Code",
+                id: "userCode",
+                value: userCode,
+                setter: setUserCode,
+              },
+              {
+                label: "Unit ID",
+                id: "unitId",
+                value: unitId,
+                setter: setUnitId,
+              },
+              {
+                label: "Reorder Level",
+                id: "reorderLevel",
+                value: reorderLevel,
+                setter: setReorderLevel,
+              },
+              {
+                label: "HSN ACS",
+                id: "hsnAcs",
+                value: hsnAcs,
+                setter: setHsnAcs,
+              },
               { label: "CGST", id: "cgst", value: cgst, setter: setCgst },
               { label: "SGST", id: "sgst", value: sgst, setter: setSgst },
-              { label: "Sales Unit", id: "salesUnit", value: salesUnit, setter: setSalesUnit },
-              { label: "Pack Size", id: "packSize", value: packSize, setter: setPackSize },
-              { label: "Category", id: "category", value: category, setter: setCategory },
-              { label: "Subcategory", id: "subCategory", value: subCategory, setter: setSubCategory },
+              {
+                label: "Sales Unit",
+                id: "salesUnit",
+                value: salesUnit,
+                setter: setSalesUnit,
+              },
+              {
+                label: "Pack Size",
+                id: "packSize",
+                value: packSize,
+                setter: setPackSize,
+              },
+              {
+                label: "Category",
+                id: "category",
+                value: category,
+                setter: setCategory,
+              },
+              {
+                label: "Subcategory",
+                id: "subCategory",
+                value: subCategory,
+                setter: setSubCategory,
+              },
               { label: "MRP", id: "mrp", value: mrp, setter: setMrp },
-              { label: "Purchase Price", id: "purchasePrice", value: purchasePrice, setter: setPurchasePrice },
-              { label: "Retail Price", id: "retailPrice", value: retailPrice, setter: setRetailPrice },
-              { label: "Wholesale Price", id: "wholesalePrice", value: wholesalePrice, setter: setWholesalePrice },
-              { label: "Special Price", id: "specialPrice", value: specialPrice, setter: setSpecialPrice },
-              { label: "Dealer Price", id: "dealerPrice", value: dealerPrice, setter: setDealerPrice },
-              { label: "Opening Quantity", id: "openQty", value: openQty, setter: setOpenQty },
+              {
+                label: "Purchase Price",
+                id: "purchasePrice",
+                value: purchasePrice,
+                setter: setPurchasePrice,
+              },
+              {
+                label: "Retail Price",
+                id: "retailPrice",
+                value: retailPrice,
+                setter: setRetailPrice,
+              },
+              {
+                label: "Wholesale Price",
+                id: "wholesalePrice",
+                value: wholesalePrice,
+                setter: setWholesalePrice,
+              },
+              {
+                label: "Special Price",
+                id: "specialPrice",
+                value: specialPrice,
+                setter: setSpecialPrice,
+              },
+              {
+                label: "Dealer Price",
+                id: "dealerPrice",
+                value: dealerPrice,
+                setter: setDealerPrice,
+              },
+              {
+                label: "Opening Quantity",
+                id: "openQty",
+                value: openQty,
+                setter: setOpenQty,
+              },
             ].map(({ label, id, value, setter, textarea }) => (
               <div key={id} className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor={id} className="text-right">

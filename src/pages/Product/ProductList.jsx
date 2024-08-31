@@ -95,6 +95,7 @@ function ProductList() {
     }
   };
 
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full lg:max-w-screen-xl md:max-w-[35rem] max-w-[22rem] mx-auto ">

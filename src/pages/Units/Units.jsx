@@ -33,7 +33,7 @@ function Units() {
   };
 
 
-console.log(units);
+console.log(units,"this is units");
 
 
   const handleDelete = (unitId) => {

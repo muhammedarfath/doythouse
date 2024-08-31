@@ -97,7 +97,6 @@ function CustomerInformationModal() {
   // Note
   const [note, setNote] = useState("");
   const [categories, setCategories] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -156,15 +155,6 @@ function CustomerInformationModal() {
           tuck_point: tuckPoint,
           point_to_point: pointToPoint,
 
-          // sleeve_length: bust,
-          // mid_waist: underBust,
-          // hip: hip,
-          // shoulder:shoulder,
-          // upper_bust: shoulder,
-          // shoulder_wide: shoulderWidth,
-          // bust: bust,
-          // under_bust: threeFourth,
-
           skirt_full_length: skirtFullLength,
           skirt_seat: seat,
           skirt_knee: knee,
@@ -205,7 +195,7 @@ function CustomerInformationModal() {
       if (response.status === 200) {
         toast.success("Customer added successfully");
         // setEmployees((prevEmployees) => [...prevEmployees, response.data]);
-        setIsOpen(false);
+        setOpen(false);
         setCustomerName("");
         setContactNumber("");
         setTrialDate("");
@@ -307,11 +297,17 @@ function CustomerInformationModal() {
     // onAfterPrint: () => toast.success("Part 2 printed successfully!"),
   });
 
+  const [open, setOpen] = useState(false);
+
+
   return (
     <div>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="bg-[#308E87] hover:bg-[#308E87]">
+          <Button
+            className="bg-[#308E87] hover:bg-[#308E87]"
+            onClick={() => setOpen(true)}
+          >
             <FiPlus className="text-white text-xl" />
             Create New Customer
           </Button>
@@ -452,13 +448,10 @@ function CustomerInformationModal() {
               </div>
             </div>
 
-            <div
-              className="border-t  border-gray-300 my-6 pt-4 lg:flex md:flex gap-8"
-              
-            >
+            <div className="border-t  border-gray-300 my-6 pt-4 lg:flex md:flex gap-8">
               <div className="lg:w-1/3 md:w-1/3" ref={section2Ref}>
                 <div className="text-lg font-semibold mb-4">Measurements:</div>
-                <table className="min-w-full border-collapse" >
+                <table className="min-w-full border-collapse">
                   <tbody>
                     <tr>
                       <th className="border p-2 text-left">Yoke Length</th>
@@ -1103,9 +1096,8 @@ function CustomerInformationModal() {
                 Save Changes
               </Button>
             </DialogFooter>
-
           </form>
-          
+
           <DialogFooter>
             <Button
               type="submit"
@@ -1126,7 +1118,7 @@ function CustomerInformationModal() {
               className="bg-[#308E87] hover:bg-[#308E87]"
               onClick={printSection3}
             >
-             Skirt & Pant Print
+              Skirt & Pant Print
             </Button>
           </DialogFooter>
         </DialogContent>

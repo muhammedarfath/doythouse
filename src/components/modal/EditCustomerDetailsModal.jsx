@@ -18,19 +18,20 @@ import axios from 'axios';
 import { toast } from "react-hot-toast";
 
 function EditCustomerDetailsModal({ customer, onSuccess }) {
-  const [customerName, setCustomerName] = useState(customer.customerName || "");
-  const [contactNumber, setContactNumber] = useState(customer.contactNumber || "");
-  const [trialDate, setTrialDate] = useState(customer.trialDate || "");
-  const [expectedDelivery, setExpectedDelivery] = useState(customer.expectedDelivery || "");
-  const [itemCategory, setItemCategory] = useState(customer.itemCategory || "");
-  const [designerName, setDesignerName] = useState(customer.designerName || "");
-  const [orderNumber, setOrderNumber] = useState(customer.orderNumber || "");
-  const [orderDate, setOrderDate] = useState(customer.orderDate || "");
-  const [emergency, setEmergency] = useState(customer.emergency || "");
-  const [status, setStatus] = useState(customer.status || "Pending");
+  
+  const [customerName, setCustomerName] = useState(customer.cust_name || "");
+  const [contactNumber, setContactNumber] = useState(customer.cust_phone || "");
+  const [trialDate, setTrialDate] = useState(customer.cust_trialdate || "");
+  const [expectedDelivery, setExpectedDelivery] = useState(customer.cust_expecteddelivery || "");
+  const [itemCategory, setItemCategory] = useState(customer.cust_itemcategory || "");
+  const [designerName, setDesignerName] = useState(customer.cust_designername || "");
+  const [orderNumber, setOrderNumber] = useState(customer.cust_orderno || "");
+  const [orderDate, setOrderDate] = useState(customer.cust_orderdate || "");
+  const [emergency, setEmergency] = useState(customer.cust_emergency || "");
+  const [status, setStatus] = useState(customer.status || "pending");
 
   // Measurements
-  const [yokeLength, setYokeLength] = useState(customer.yokeLength || "");
+  const [yokeLength, setYokeLength] = useState(customer.yoke_length || "");
   const [yokeRound, setYokeRound] = useState(customer.yokeRound || "");
   const [fullLength, setFullLength] = useState(customer.fullLength || "");
   const [upperBust, setUpperBust] = useState(customer.upperBust || "");
@@ -296,6 +297,7 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
     setNote("");
   };
 
+  const [open, setOpen] = useState(false);
 
   return (
     <div>

@@ -19,6 +19,7 @@ function ExpenseModal({setExpenses}) {
   const [newExpenseType, setNewExpenseType] = useState([]);
   const [newSubExpenseType, setNewSubExpenseType] = useState([]);
   const [ExpenseType, setExpenseType] = useState([]);
+  const [subExpenseType, setSubExpenseType] = useState([]);
   const [date, setDate] = useState("");
   const [amount, setAmount] = useState("");
   const [employees, setEmployees] = useState([]);
@@ -44,6 +45,21 @@ function ExpenseModal({setExpenses}) {
     };
     fetchExpenseTypes();
   }, []);
+
+  useEffect(() => {
+    const fetchSubExpenseTypes = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=subexpense_type"
+        );
+        setSubExpenseType(response.data);
+      } catch (error) {
+        console.error("Error fetching sub expense types:", error);
+      }
+    };
+    fetchSubExpenseTypes();
+  }, []);
+
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -125,7 +141,7 @@ function ExpenseModal({setExpenses}) {
         new URLSearchParams({
           exp_date: date,
           exp_type: selectedExpense,
-          expsub_type: selectedSubExpense,
+          expsub_type: 16,
           exp_amount: amount,
           exp_employee: selectedEmployee,
           exp_note: note,
@@ -136,6 +152,7 @@ function ExpenseModal({setExpenses}) {
           },
         }
       );
+      console.log(response,"new addedddddddd");
       if (response.status === 200) {
         toast.success("Expense added successfully");
         setExpenses((setExpenses) => [...setExpenses, response.data]);
@@ -244,6 +261,8 @@ function ExpenseModal({setExpenses}) {
               handleSave={handleSave}
               setSelecteSubdExpense={setSelecteSubdExpense}
               selectedSubExpense={selectedSubExpense}
+              subExpenseType={subExpenseType}
+              setSubExpenseType={setSubExpenseType}
               loading={loading}
             />
           )}

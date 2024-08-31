@@ -26,19 +26,21 @@ function CustomerList() {
   };
 
   useEffect(() => {
-    const fetchCustomer = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=customer"
-        );
-        setCustomer(response.data);
-      } catch (error) {
-        console.error("Error fetching Customers:", error);
-      }
-    };
+
     fetchCustomer();
   }, []);
 
+  const fetchCustomer = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=customer"
+      );
+      setCustomer(response.data);
+    } catch (error) {
+      console.error("Error fetching Customers:", error);
+    }
+  };
+ console.log(customer);
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -149,32 +151,31 @@ function CustomerList() {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  customer.map((order, index) => (
-                    <TableRow key={order.id}>
+                  customer.map((customer, index) => (
+                    <TableRow key={customer.id}>
                       <TableCell>
                         <input type="checkbox" />
                       </TableCell>
                       <TableCell className="font-medium">{index + 1}</TableCell>
-                      <TableCell>{order.orderNo}</TableCell>
-                      <TableCell>{order.customerName}</TableCell>
-                      <TableCell>{order.expectedDelivery}</TableCell>
-                      <TableCell>{order.itemCategory}</TableCell>
-                      <TableCell>{order.totalPrice}</TableCell>
-                      <TableCell>{order.balancedPrice}</TableCell>
+                      <TableCell>{customer.cust_orderno}</TableCell>
+                      <TableCell>{customer.cust_name}</TableCell>
+                      <TableCell>{customer.cust_expecteddelivery}</TableCell>
+                      <TableCell>{customer.cust_itemcategory}</TableCell>
+                      <TableCell>{customer.totalprice}</TableCell>
                       <TableCell>
-                        {order.status === "Pending" ? (
+                        {customer.status === "pending" ? (
                           <Badge variant="secondary" className="bg-yellow-400">
-                            {order.status}
+                            {customer.status}
                           </Badge>
                         ) : (
                           <Badge variant="secondary" className="bg-green-400">
-                            {order.status}
+                            {customer.status}
                           </Badge>
                         )}
                       </TableCell>
                       <TableCell className="text-center">
                         <div className="flex justify-center gap-3">
-                          <EditCustomerDetailsModal customer={customer}/>
+                          <EditCustomerDetailsModal customer={customer} onSuccess={fetchCustomer}/>
                           <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                         </div>
                       </TableCell>

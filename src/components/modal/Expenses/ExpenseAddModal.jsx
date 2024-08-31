@@ -23,51 +23,19 @@ function ExpenseAddModal({
   setSelectedExpense,
   ExpenseType,
   setSelecteSubdExpense,
-  selectedSubExpense
+  selectedSubExpense,
+  subExpenseType,
+  setSubExpenseType,
 }) {
-  const [subExpenses, setSubExpenses] = useState([]);
-
-  const handleExpenseChange = async (e) => {
-    const selectedType = e.target.value;
-    setSelectedExpense(selectedType)
-    if (selectedType) {
-      try {
-        const response = await axios.post(
-          `https://storeconvo.com/php/fetch_subexp.php?id=${selectedType}`,
-          new URLSearchParams({
-            exp_date: date,
-
-            exp_amount: amount,
-            exp_employee: selectedEmployee,
-            exp_note: note,
-          }),
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-          }
-        );
-        const jsonObjects = response.data.match(/{[^{}]*}/g);
-        if (jsonObjects) {
-          const data = jsonObjects.map(jsonStr => JSON.parse(jsonStr));
-          setSubExpenses(data);
-        } else {
-          setSubExpenses([]);
-        }
-      } catch (error) {
-        console.error("Error sending request:", error);
-        setSubExpenses([]);
-      }
-    } else {
-      setSubExpenses([]);
-    }
+  const handleExpenseChange = (e) => {
+    const newExpense = e.target.value;
+    setSelectedExpense(newExpense);
   };
-
+  
   const handleSubExpenseChange = (e) => {
-    const selectedSubExpense = e.target.value;
-    setSelecteSubdExpense(selectedSubExpense); 
+    const newSubExpense = e.target.value;
+    setSelecteSubdExpense(newSubExpense);
   };
-
 
   return (
     <div className="-mb-20 lg:mb-0 md:mb-0 h-full overflow-scroll">
@@ -122,7 +90,7 @@ function ExpenseAddModal({
             ))}
           </select>
         </div>
-        {subExpenses.length > 0 && (
+        {subExpenseType.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-4">
             <Label
               htmlFor="subtype"
@@ -134,14 +102,16 @@ function ExpenseAddModal({
               id="subtype"
               className="col-span-3 sm:col-span-3 p-2 border rounded"
               value={selectedSubExpense}
-              onChange={handleSubExpenseChange} 
+              onChange={handleSubExpenseChange}
             >
-              <option value="">Select sub expense type</option>
-              {subExpenses.map((sub, index) => (
-                <option key={index} value={sub.subexp_id}>
-                  {sub.subexp_name}
-                </option>
-              ))}
+              <option value="">Select Sub Category</option>
+              {subExpenseType
+                .filter((subexp) => subexp.exp_id === selectedExpense)
+                .map((subexp) => (
+                  <option key={subexp.subexp_id} value={subexp.subexp_id}>
+                    {subexp.subexp_name}
+                  </option>
+                ))}
             </select>
           </div>
         )}

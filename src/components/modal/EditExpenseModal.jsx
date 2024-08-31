@@ -76,8 +76,8 @@ function EditExpenseModal({ expense,onChange }) {
         new URLSearchParams({
           id: expense.exp_id,
           exp_date: expense.exp_date,
-          exp_type: "expenseTypes",
-          expsub_type: "hi",
+          exp_type:32,
+          expsub_type:16,
           exp_amount: amount,
           exp_employee: selectedEmployee,
           exp_note: note,
@@ -89,6 +89,7 @@ function EditExpenseModal({ expense,onChange }) {
           },
         }
       );
+      console.log(response,"this is updateeeeeeee");
       if (response.status === 200) {
         toast.success("Expense Edit successfully")
         setOpen(false);

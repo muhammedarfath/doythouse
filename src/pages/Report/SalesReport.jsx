@@ -31,6 +31,8 @@ function SalesReport() {
     fetchSalesReport();
   }, []);
 
+
+
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };

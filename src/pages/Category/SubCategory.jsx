@@ -25,13 +25,12 @@ function SubCategory() {
         const response = await axios.get(
           "https://storeconvo.com/php/fetch.php?typ=subcategory"
         );
-        console.log(response);
         setSubCategory(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
     };
-
+  
     fetchSubCategories();
   }, []);
 
@@ -75,7 +74,9 @@ function SubCategory() {
         }
       );
       setSubCategory((prevSubCategory) =>
-        prevSubCategory.filter((subcategory) => subcategory.subcat_id !== subcategoryId)
+        prevSubCategory.filter(
+          (subcategory) => subcategory.subcat_id !== subcategoryId
+        )
       );
       toast.success("Delete successful", { id: toastId });
     } catch (error) {
@@ -83,9 +84,8 @@ function SubCategory() {
     }
   };
 
-  // Filter subcategories based on search term
   const filteredSubCategories = subCategory.filter((subcategory) =>
-    subcategory.subcat_name.toLowerCase().includes(searchTerm.toLowerCase())
+    subcategory.subcat_name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -122,7 +122,9 @@ function SubCategory() {
                   <TableHead className="w-[100px]">HSN</TableHead>
                   <TableHead className="w-[100px]">CGST</TableHead>
                   <TableHead className="w-[100px]">SGST</TableHead>
-                  <TableHead className="text-center w-[120px]">Actions</TableHead>
+                  <TableHead className="text-center w-[120px]">
+                    Actions
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

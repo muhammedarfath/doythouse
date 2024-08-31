@@ -17,7 +17,7 @@ import { toast } from "react-hot-toast";
 
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [searchQuery, setSearchQuery] = useState(""); 
 
   useEffect(() => {
     fetchEmployees();
@@ -28,7 +28,6 @@ function EmployeeList() {
       const response = await axios.get(
         "https://storeconvo.com/php/fetch.php?typ=employee"
       );
-      console.log(response.data, "this is employee");
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -84,8 +83,8 @@ function EmployeeList() {
     }
   };
 
-  const filteredEmployees = employees.filter(employee =>
-    employee.employee_name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredEmployees = employees.filter((employee) =>
+    employee.employee_name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (

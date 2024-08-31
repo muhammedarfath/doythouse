@@ -14,10 +14,10 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { toast } from "react-hot-toast";
 
-function ShopInformationModal({ shopInformation }) {
+function ShopInformationModal({ shopInformation,setShopInformation }) {
+  console.log(shopInformation);
   const [loading, setLoading] = useState(false);
 
-  // Separate state variables
   const [shopName, setShopName] = useState("");
   const [shopEmail, setShopEmail] = useState("");
   const [shopPhone, setShopPhone] = useState("");
@@ -91,6 +91,7 @@ function ShopInformationModal({ shopInformation }) {
       const response = await axios.post(
         "https://storeconvo.com/php/edit.php",
         new URLSearchParams({
+          id:2,
           shop_name: shopName,
           shop_email: shopEmail,
           shop_phone: shopPhone,
@@ -101,6 +102,7 @@ function ShopInformationModal({ shopInformation }) {
           shop_branch: shopBranch,
           shop_bankacno: shopBankacno,
           shop_bankifsc: shopBankifsc,
+          typ:'shop'
         }),
         {
           headers: {
@@ -108,7 +110,11 @@ function ShopInformationModal({ shopInformation }) {
           },
         }
       );
+      console.log(response);
       if (response.status === 200) {
+      //   setShopInformation((prevInform) =>
+      //   prevInform.filter((shop) => 2 !== prevInform)
+      // );
         toast.success("Shop information updated successfully!");
         setIsOpen(false);
 
