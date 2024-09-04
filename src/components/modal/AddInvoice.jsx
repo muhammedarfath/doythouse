@@ -12,6 +12,8 @@ import {
 } from "../../components/ui/dialog";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 function AddInvoice() {
   const [customerName, setCustomerName] = useState("");
@@ -24,9 +26,41 @@ function AddInvoice() {
   const [cashMode, setCashMode] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
+
+    const response = await axios.post(
+      "https://storeconvo.com/php/add_invoice.php",
+      new URLSearchParams({
+        date: "2024-08-02",
+        cust_id: 1,
+        phone: mobileNumber,
+        gst: 312,
+        address: address,
+        balance: balance,
+        product_id:1,
+        part_number: "PN123",
+        mrp: 123,
+        qty:qty, 
+        rate: 134,
+        discount: 32,
+        cgst: 32,
+        sgst: 42,
+        total: 432,
+        cash_option: cashMode,
+        paid_amount: 4121,
+        notes:"note",
+      }),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+      console.log(response,"new addedddddddd");
+      if (response.status === 200) {
+        toast.success("invoice added successfully");
+      }
   };
 
   return (
@@ -56,7 +90,6 @@ function AddInvoice() {
                   className="col-span-3"
                 />
               </div>
-              {/* Mobile Number */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="mobileNumber" className="text-right">
                   Mobile Number
@@ -139,7 +172,6 @@ function AddInvoice() {
                 >
                   <option value="">Select cash mode</option>
                   <option value="cash">Cash</option>
-                  <option value="credit">Credit</option>
                   <option value="online">Online</option>
                 </select>
               </div>

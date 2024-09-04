@@ -12,6 +12,8 @@ import {
 import { CiFilter } from "react-icons/ci";
 import axios from "axios";
 import * as XLSX from "xlsx";
+import UnitModal from "@/components/modal/UnitModal";
+import AddStock from "@/components/modal/AddStock";
 
 function StockReport() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -100,6 +102,7 @@ function StockReport() {
                 >
                   <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
                 </div>
+                <AddStock />
                 <Button
                   className="bg-[#308E87] hover:bg-[#308E87]"
                   onClick={downloadExcel}
@@ -142,7 +145,7 @@ function StockReport() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[50px]">SINO</TableHead>
-                  <TableHead>Sub Category</TableHead>
+                  <TableHead>Stock Item</TableHead>
                   <TableHead>Items</TableHead>
                   <TableHead className="text-right">Stock Value</TableHead>
                 </TableRow>

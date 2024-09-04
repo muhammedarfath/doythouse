@@ -7,6 +7,7 @@ import { TbTruck, TbReportAnalytics } from "react-icons/tb";
 import { GiThermometerScale } from "react-icons/gi";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
+import { TbFileInvoice } from "react-icons/tb";
 
 function MobileSidebar({ onClose }) {
   const [openSubMenu, setOpenSubMenu] = useState({});
@@ -57,9 +58,9 @@ function MobileSidebar({ onClose }) {
     },
     { icon: <TbTruck />, label: "Supplier", subItems: [{ label: "Supplier List", path: "/supplier" }] },
     {
-      icon: <RiShoppingCart2Line />,
-      label: "Purchase Entry",
-      subItems: [{ label: "New Purchase Entry", path: "/purchaseentry" }],
+      icon: <TbFileInvoice />,
+      label: "Invoice",
+      subItems: [{ label: "Invoice List", path: "/invoice" }],
     },
     {
       icon: <TbReportAnalytics />,

@@ -69,7 +69,6 @@ function EmployeeModal({ setEmployees }) {
           },
         }
       );
-       console.log(response,"add employee");
       if (response.status === 200) {
         toast.success("Employee added successfully");
         setEmployees((prevEmployees) => [...prevEmployees, response.data]);

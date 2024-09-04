@@ -90,9 +90,9 @@ function ExpenseModal({setExpenses}) {
           },
         }
       );
-      console.log(response);
       if (response.status === 200) {
         toast.success("Expense Added")
+        setExpenseType((prevExpense)=>[...prevExpense,response.data])
         setNewExpenseType("");
         setShowNewTypeInput(false);
       }
@@ -119,6 +119,7 @@ function ExpenseModal({setExpenses}) {
           },
         }
       );
+      console.log(response);
       if (response.status === 200) {
         toast.success("Sub Expense Added");
         setNewSubExpenseType("");
@@ -134,10 +135,12 @@ function ExpenseModal({setExpenses}) {
 
 
 
-
-
   const handleSave = async () => {
     setLoading(true);
+
+
+    console.log(selectedExpense);
+    console.log(selectedSubExpense);
 
     try {
       const response = await axios.post(

@@ -15,6 +15,9 @@ import EditPurchaseEntryModal from "@/components/modal/EditPurchaseEntryModal";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import AddInvoice from "@/components/modal/AddInvoice";
+import axios from "axios";
+import EditInvoice from "@/components/modal/EditInvoice";
+import { toast } from "react-hot-toast";
 
 function Invoice() {
   const [invoice, setInvoice] = useState([]);
@@ -34,41 +37,57 @@ function Invoice() {
     }
   };
 
-  const generateInvoice = (entry) => {
-    const doc = new jsPDF();
-    const headers = [
-      "Customer Name",
-      "Mobile Number",
-      "Address",
-      "Balance",
-      "Product Name",
-      "Total",
-      "Qty",
-      "Cash Mode",
-    ];
-    const rows = [
-      [
-        entry.customer_name,
-        entry.mobile_number,
-        entry.address,
-        entry.balance,
-        entry.product_name,
-        entry.total,
-        entry.qty,
-        entry.cash_option,
-      ],
-    ];
+  console.log(invoice);
 
-    doc.text("Invoice", 14, 20);
-    doc.autoTable({
-      head: [headers],
-      body: rows,
-      startY: 30,
-    });
-
-    doc.save(`invoice_${entry.id}.pdf`);
+  const handleDelete = (InvoiceId) => {
+    toast(
+      (t) => (
+        <div>
+          <p>Are you sure you want to delete this product?</p>
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={() => confirmDelete(InvoiceId, t.id)}
+              className="bg-red-500 text-white px-4 py-1 rounded"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-gray-300 text-black px-4 py-1 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: 4000 }
+    );
   };
 
+  const confirmDelete = async (InvoiceId, toastId) => {
+    try {
+      await axios.post(
+        `https://storeconvo.com/php/delete.php/`,
+        {
+          id: InvoiceId,
+          typ: "invoice",
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      setInvoice((prevInvoice) =>
+      prevInvoice.filter((invoice) => invoice.invoice_id !== InvoiceId)
+      );
+
+      toast.success("Delete successful", { id: toastId });
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      toast.error("Failed to delete product", { id: toastId });
+    }
+  };
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full lg:max-w-screen-xl md:max-w-[35rem] max-w-[22rem] mx-auto ">
@@ -110,9 +129,9 @@ function Invoice() {
                   <TableRow key={index}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell className="font-medium">
-                      {entry.customer_name}
+                      {entry.cust_id}
                     </TableCell>
-                    <TableCell>{entry.mobile_number}</TableCell>
+                    <TableCell>{entry.phone}</TableCell>
                     <TableCell>{entry.address}</TableCell>
                     <TableCell>{entry.balance}</TableCell>
                     <TableCell>{entry.product_name}</TableCell>
@@ -121,14 +140,11 @@ function Invoice() {
                     <TableCell>{entry.cash_option}</TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <EditPurchaseEntryModal />
-                        <button
-                          onClick={() => generateInvoice(entry)}
-                          className="text-blue-500 text-xl transition-transform transform hover:scale-110 cursor-pointer"
-                        >
-                          Generate
-                        </button>
-                        <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
+                        <EditInvoice />
+                        <BiSolidTrashAlt
+                          onClick={() => handleDelete(entry.invoice_id)}
+                          className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+                        />
                       </div>
                     </TableCell>
                   </TableRow>
