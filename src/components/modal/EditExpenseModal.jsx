@@ -16,9 +16,12 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 
 function EditExpenseModal({ expense,onChange }) {
+
+
+
   const [open, setOpen] = useState(false);
   const [type, setType] = useState(expense.type || "");
-  const [subType, setSubType] = useState(expense.subType || "");
+  const [subType, setSubType] = useState(expense.subtypexpid || "");
   const [amount, setAmount] = useState(expense.exp_amount || "");
   const [selectedEmployee, setSelectedEmployee] = useState(
     expense.exp_employee || ""
@@ -29,7 +32,6 @@ function EditExpenseModal({ expense,onChange }) {
   const [loading, setLoading] = useState(false);
   const [note, setNote] = useState(expense.exp_note || "");
 
-  
   useEffect(() => {
     const fetchEmployeesAndExpenseTypes = async () => {
       try {
@@ -49,35 +51,42 @@ function EditExpenseModal({ expense,onChange }) {
   }, []);
 
   useEffect(() => {
-    const fetchSubTypes = async () => {
-      if (type) {
-        try {
-          const response = await axios.get(
-            `https://storeconvo.com/php/fetch.php?typ=subType&parent=${type}`
-          );
-          setSubTypes(response.data);
-        } catch (error) {
-          console.error("Error fetching sub-types:", error);
-        }
-      } else {
-        setSubTypes([]);
+    const fetchSubExpenseTypes = async () => {
+      try {
+        const response = await axios.get(
+          "https://storeconvo.com/php/fetch.php?typ=subexpense_type"
+        );
+        setSubTypes(response.data);
+      } catch (error) {
+        console.error("Error fetching sub expense types:", error);
       }
     };
+    fetchSubExpenseTypes();
+  }, []);
 
-    fetchSubTypes();
-  }, [type]);
+
+console.log(subTypes);
 
   const handleSave = async () => {
     setLoading(true);
 
+    console.log(expense.exp_id);
+    console.log(expense.exp_date);
+    console.log(type);
+    console.log(subType);
+    console.log(amount);
+    console.log(selectedEmployee);
+    console.log(note);
+    
+    
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/edit.php",
         new URLSearchParams({
           id: expense.exp_id,
           exp_date: expense.exp_date,
-          exp_type:32,
-          expsub_type:16,
+          exp_type:type,
+          expsub_type:subType,
           exp_amount: amount,
           exp_employee: selectedEmployee,
           exp_note: note,
@@ -89,7 +98,7 @@ function EditExpenseModal({ expense,onChange }) {
           },
         }
       );
-      console.log(response,"this is updateeeeeeee");
+      console.log(response);
       if (response.status === 200) {
         toast.success("Expense Edit successfully")
         setOpen(false);
@@ -130,14 +139,14 @@ function EditExpenseModal({ expense,onChange }) {
               >
                 <option value="">Select expense type</option>
                 {expenseTypes.map((expenseType, index) => (
-                  <option key={index} value={expenseType.type_name}>
+                  <option key={index} value={expenseType.exp_id}>
                     {expenseType.exp_type}
                   </option>
                 ))}
               </select>
             </div>
 
-            {subTypes.length > 0 && (
+
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="subType" className="text-right">
                   Sub Expense
@@ -150,13 +159,12 @@ function EditExpenseModal({ expense,onChange }) {
                 >
                   <option value="">Select sub expense</option>
                   {subTypes.map((subTypeOption, index) => (
-                    <option key={index} value={subTypeOption.subType_name}>
-                      {subTypeOption.subType_name}
+                    <option key={index} value={subTypeOption.subexp_id}>
+                      {subTypeOption.subexp_name}
                     </option>
                   ))}
                 </select>
               </div>
-            )}
 
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="amount" className="text-right">

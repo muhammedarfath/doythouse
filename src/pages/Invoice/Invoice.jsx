@@ -13,7 +13,8 @@ import { BiSolidTrashAlt } from "react-icons/bi";
 import NewPurchaseEntryModal from "@/components/modal/NewPurchaseEntryModal";
 import EditPurchaseEntryModal from "@/components/modal/EditPurchaseEntryModal";
 import jsPDF from "jspdf";
-import 'jspdf-autotable'; // Import the jsPDF autotable plugin
+import "jspdf-autotable";
+import AddInvoice from "@/components/modal/AddInvoice";
 
 function Invoice() {
   const [invoice, setInvoice] = useState([]);
@@ -35,7 +36,16 @@ function Invoice() {
 
   const generateInvoice = (entry) => {
     const doc = new jsPDF();
-    const headers = ["Customer Name", "Mobile Number", "Address", "Balance", "Product Name", "Total", "Qty", "Cash Mode"];
+    const headers = [
+      "Customer Name",
+      "Mobile Number",
+      "Address",
+      "Balance",
+      "Product Name",
+      "Total",
+      "Qty",
+      "Cash Mode",
+    ];
     const rows = [
       [
         entry.customer_name,
@@ -46,7 +56,7 @@ function Invoice() {
         entry.total,
         entry.qty,
         entry.cash_option,
-      ]
+      ],
     ];
 
     doc.text("Invoice", 14, 20);
@@ -74,6 +84,7 @@ function Invoice() {
                   className="h-10 border rounded px-4 w-64 bg-[#fff] border-gray-300 text-gray-900 text-sm focus:ring-black focus:border-black block pl-5 pr-3 py-4"
                 />
               </div>
+              <AddInvoice />
             </div>
 
             <Table className="w-full">
@@ -89,14 +100,18 @@ function Invoice() {
                   <TableHead>Total</TableHead>
                   <TableHead>Qty</TableHead>
                   <TableHead>Cash Mode</TableHead>
-                  <TableHead className="text-center w-[120px]">Actions</TableHead>
+                  <TableHead className="text-center w-[120px]">
+                    Actions
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {invoice.map((entry, index) => (
                   <TableRow key={index}>
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell className="font-medium">{entry.customer_name}</TableCell>
+                    <TableCell className="font-medium">
+                      {entry.customer_name}
+                    </TableCell>
                     <TableCell>{entry.mobile_number}</TableCell>
                     <TableCell>{entry.address}</TableCell>
                     <TableCell>{entry.balance}</TableCell>

@@ -132,6 +132,10 @@ function ExpenseModal({setExpenses}) {
     }
   };
 
+
+
+
+
   const handleSave = async () => {
     setLoading(true);
 
@@ -141,7 +145,7 @@ function ExpenseModal({setExpenses}) {
         new URLSearchParams({
           exp_date: date,
           exp_type: selectedExpense,
-          expsub_type: 16,
+          expsub_type: selectedSubExpense,
           exp_amount: amount,
           exp_employee: selectedEmployee,
           exp_note: note,

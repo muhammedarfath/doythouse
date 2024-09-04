@@ -26,7 +26,6 @@ function CustomerList() {
   };
 
   useEffect(() => {
-
     fetchCustomer();
   }, []);
 
@@ -40,7 +39,31 @@ function CustomerList() {
       console.error("Error fetching Customers:", error);
     }
   };
- console.log(customer);
+
+  const handleChangeStatus = async (e, customerId) => {
+    console.log(customerId);
+    const newStatus = e.target.value;
+    try {
+    const response =   await axios.post(
+        `https://storeconvo.com/php/edit.php/`,
+        {
+          id: customerId,
+          typ: "status",
+          status:newStatus
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error deleting expense:", error);
+      toast.error("Failed to delete expense", { id: toastId });
+    }
+  };
+
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -125,7 +148,6 @@ function CustomerList() {
                 </div>
               </div>
             )}
-
             <Table className="w-full">
               <TableCaption>A list of your orders.</TableCaption>
               <TableHeader>
@@ -163,19 +185,22 @@ function CustomerList() {
                       <TableCell>{customer.cust_itemcategory}</TableCell>
                       <TableCell>{customer.totalprice}</TableCell>
                       <TableCell>
-                        {customer.status === "pending" ? (
-                          <Badge variant="secondary" className="bg-yellow-400">
-                            {customer.status}
-                          </Badge>
-                        ) : (
-                          <Badge variant="secondary" className="bg-green-400">
-                            {customer.status}
-                          </Badge>
-                        )}
+                        <select
+                          value={customer.status}
+                          onChange={(e) => handleChangeStatus(e, customer.cust_id)}
+                          className="bg-gray-200 p-1 rounded"
+                        >
+                          <option value="pending">Pending</option>
+                          <option value="completed">Completed</option>
+                          <option value="delivered">Delivered</option>
+                        </select>
                       </TableCell>
                       <TableCell className="text-center">
                         <div className="flex justify-center gap-3">
-                          <EditCustomerDetailsModal customer={customer} onSuccess={fetchCustomer}/>
+                          <EditCustomerDetailsModal
+                            customer={customer}
+                            onSuccess={fetchCustomer}
+                          />
                           <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
                         </div>
                       </TableCell>

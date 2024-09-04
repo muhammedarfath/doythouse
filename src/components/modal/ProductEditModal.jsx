@@ -39,6 +39,11 @@ function ProductEditModal({ product }) {
   const [dealerPrice, setDealerPrice] = useState("");
   const [openQty, setOpenQty] = useState("");
 
+
+
+  console.log(product);
+
+
   useEffect(() => {
     if (product) {
       setProductName(product.productname || "");
@@ -51,8 +56,8 @@ function ProductEditModal({ product }) {
       setSgst(product.sgst || "");
       setSalesUnit(product.salesunit || "");
       setPackSize(product.packsize || "");
-      setCategory(product.cateoryid || "");
-      setSubCategory(product.subcategoryid || "");
+      setCategory(product.cat_name || "");
+      setSubCategory(product.subcat_name || "");
       setMrp(product.mrp || "");
       setPurchasePrice(product.purchaseprice || "");
       setRetailPrice(product.retailprice || "");

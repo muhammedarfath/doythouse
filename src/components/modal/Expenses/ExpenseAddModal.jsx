@@ -146,7 +146,7 @@ function ExpenseAddModal({
           >
             <option value="">Select employee</option>
             {employees.map((employee, index) => (
-              <option key={index} value={employee.employee_name}>
+              <option key={index} value={employee.employee_id}>
                 {employee.employee_name}
               </option>
             ))}

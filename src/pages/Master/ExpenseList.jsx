@@ -21,7 +21,7 @@ function ExpenseList() {
   const [expenses, setExpenses] = useState([]);
   const [ExpenseType, setExpenseType] = useState([]);
   const [employees, setEmployees] = useState([]);
-
+  const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     fromDate: "",
     toDate: "",
@@ -145,10 +145,13 @@ function ExpenseList() {
 
     const isMatchingEmployee = !employee || expense.exp_employee === employee;
 
-    return isWithinDateRange && isMatchingType && isMatchingEmployee;
-  });
+    const isMatchingSearchQuery =
+      expense.exp_type?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      expense.employee_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      expense.exp_note?.toLowerCase().includes(searchQuery.toLowerCase());
 
-  console.log(expenses);
+    return isWithinDateRange && isMatchingType && isMatchingEmployee && isMatchingSearchQuery;
+  });
 
   return (
     <div className="flex items-center justify-center w-full ">
@@ -161,8 +164,10 @@ function ExpenseList() {
                 <span>Search</span>
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder="Search by name..."
                   className="h-10 border rounded px-4 w-64 bg-white"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
               <div className="flex items-center gap-5">
@@ -288,11 +293,14 @@ function ExpenseList() {
                     <TableCell>{expense.employee_name}</TableCell>
                     <TableCell>{expense.exp_note}</TableCell>
                     <TableCell className="flex justify-center gap-4">
-                      <EditExpenseModal expense={expense} onChange={fetchExpenseList}/>
+                      <EditExpenseModal
+                        expense={expense}
+                        onChange={fetchExpenseList}
+                      />
                       <BiSolidTrashAlt
                         onClick={() => handleDelete(expense.exp_id)}
                         className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
-                        />
+                      />
                     </TableCell>
                   </TableRow>
                 ))}
