@@ -35,7 +35,6 @@ function StockReport() {
     fetchStockReport();
   }, []);
 
-  console.log(stockReport);
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
