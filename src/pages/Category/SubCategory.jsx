@@ -19,20 +19,22 @@ function SubCategory() {
   const [subCategory, setSubCategory] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    const fetchSubCategories = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=subcategory"
-        );
-        setSubCategory(response.data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-  
+  useEffect(() => {  
     fetchSubCategories();
   }, []);
+  const fetchSubCategories = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=subcategory"
+      );
+      setSubCategory(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+
+
 
   const handleDelete = (subcategoryId) => {
     toast(
@@ -101,13 +103,13 @@ function SubCategory() {
                 <span className="">Search</span>
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder="Search by sub category name..."
                   className="h-10 border rounded px-4 w-64 bg-white"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
-              <SubModal setSubCategory={setSubCategory} />
+              <SubModal setSubCategory={setSubCategory} onChange={fetchSubCategories}/>
             </div>
 
             <Table className="w-full">

@@ -107,7 +107,7 @@ function ProductList() {
                 <span>Search</span>
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder="Search by product name..."
                   value={searchQuery}
                   onChange={handleSearchChange}
                   className="h-10 border rounded px-4 w-64 bg-white"

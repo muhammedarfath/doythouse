@@ -4,7 +4,7 @@ import ShopInformationModal from "@/components/modal/ShopInformationModal";
 import React from "react";
 import LoadingSpinner from '../../components/Loading/LoadingSpinner'
 
-function ShopForm({ shopInformation,setShopInformation }) {
+function ShopForm({ shopInformation,onChange }) {
   if (!shopInformation || shopInformation.length === 0) {
     return <LoadingSpinner />;
   }
@@ -18,7 +18,7 @@ function ShopForm({ shopInformation,setShopInformation }) {
           <div className="px-6">
             <div className="flex flex-wrap justify-end">
               <div className="w-full lg:w-4/12 p-4 lg:order-3 lg:text-right lg:self-center">
-                <ShopInformationModal shopInformation={shopInformation} setShopInformation={setShopInformation}/>
+                <ShopInformationModal shopInformation={shopInformation} onChange={onChange}/>
               </div>
             </div>
             <div className="text-center mt-12">

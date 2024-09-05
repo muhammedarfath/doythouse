@@ -164,7 +164,7 @@ function ExpenseList() {
                 <span>Search</span>
                 <input
                   type="text"
-                  placeholder="Search by name..."
+                  placeholder="Search by expense..."
                   className="h-10 border rounded px-4 w-64 bg-white"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -178,7 +178,7 @@ function ExpenseList() {
                   <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
                 </div>
 
-                <ExpenseModal setExpenses={setExpenses} />
+                <ExpenseModal setExpenses={setExpenses} onChange={fetchExpenseList}/>
               </div>
             </div>
 

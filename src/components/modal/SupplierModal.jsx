@@ -13,6 +13,7 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Button } from "../../components/ui/button";
 import { FiPlus } from "react-icons/fi";
+import { toast } from "react-hot-toast";
 
 function SupplierModal({ setSupplier }) {
   const [supplierName, setSupplierName] = useState("");
@@ -34,21 +35,6 @@ function SupplierModal({ setSupplier }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-    console.log(supplierName);
-    console.log(email);
-    console.log(contactPerson);
-    console.log(address);
-    console.log(mobile1);
-    console.log(mobile2);
-    console.log(phone);
-    console.log(pincode);
-    console.log(gstNumber);
-    console.log(state);
-    console.log(creditedMoney);
-    console.log(paidMoney);
-    console.log(balancedMoney);
-
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_supplier.php",
@@ -73,12 +59,10 @@ function SupplierModal({ setSupplier }) {
           },
         }
       );
-      console.log(response);
       if (response.data) {
-        console.log(response.data);
-        setSupplier((prevSupplier) => [...prevSupplier, response.data]);
         toast.success("Supplier added successfully");
         setIsOpen(false);
+        setSupplier((prevSupplier) => [...prevSupplier, response.data]);
       } else {
         toast.error("Failed to add supplier");
       }

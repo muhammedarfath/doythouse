@@ -15,7 +15,7 @@ import NewSubExpenseModal from "./Expenses/NewSubExpenseModal";
 import ExpenseAddModal from "./Expenses/ExpenseAddModal";
 import { toast } from "react-hot-toast";
 
-function ExpenseModal({setExpenses}) {
+function ExpenseModal({setExpenses,onChange}) {
   const [newExpenseType, setNewExpenseType] = useState([]);
   const [newSubExpenseType, setNewSubExpenseType] = useState([]);
   const [ExpenseType, setExpenseType] = useState([]);
@@ -33,33 +33,32 @@ function ExpenseModal({setExpenses}) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const fetchExpenseTypes = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=expense_type"
-        );
-        setExpenseType(response.data);
-      } catch (error) {
-        console.error("Error fetching expense types:", error);
-      }
-    };
     fetchExpenseTypes();
   }, []);
+  const fetchExpenseTypes = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=expense_type"
+      );
+      setExpenseType(response.data);
+    } catch (error) {
+      console.error("Error fetching expense types:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchSubExpenseTypes = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=subexpense_type"
-        );
-        setSubExpenseType(response.data);
-      } catch (error) {
-        console.error("Error fetching sub expense types:", error);
-      }
-    };
     fetchSubExpenseTypes();
   }, []);
-
+  const fetchSubExpenseTypes = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=subexpense_type"
+      );
+      setSubExpenseType(response.data);
+    } catch (error) {
+      console.error("Error fetching sub expense types:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -92,9 +91,9 @@ function ExpenseModal({setExpenses}) {
       );
       if (response.status === 200) {
         toast.success("Expense Added")
-        setExpenseType((prevExpense)=>[...prevExpense,response.data])
         setNewExpenseType("");
         setShowNewTypeInput(false);
+        fetchExpenseTypes();
       }
     } catch (error) {
       toast.error("Failed to add expense type");
@@ -119,12 +118,12 @@ function ExpenseModal({setExpenses}) {
           },
         }
       );
-      console.log(response);
       if (response.status === 200) {
         toast.success("Sub Expense Added");
         setNewSubExpenseType("");
         setSelectedExpense("")
         setShowNewSubTypeInput(false);
+        fetchSubExpenseTypes();
       }
     } catch (error) {
       toast.error("Failed to add expense type");
@@ -137,10 +136,6 @@ function ExpenseModal({setExpenses}) {
 
   const handleSave = async () => {
     setLoading(true);
-
-
-    console.log(selectedExpense);
-    console.log(selectedSubExpense);
 
     try {
       const response = await axios.post(
@@ -162,9 +157,9 @@ function ExpenseModal({setExpenses}) {
       console.log(response,"new addedddddddd");
       if (response.status === 200) {
         toast.success("Expense added successfully");
-        setExpenses((setExpenses) => [...setExpenses, response.data]);
         setIsOpen(false);
         setDate("");
+        onChange()
 
         setAmount("");
         setSelectedEmployee("");
@@ -247,6 +242,7 @@ function ExpenseModal({setExpenses}) {
               handleHideSubNewTypeInput={handleHideSubNewTypeInput}
               selectedExpense={selectedExpense}
               handleExpenseChange={handleExpenseChange}
+              onChange={fetchSubExpenseTypes}
             />
           ) : (
             <ExpenseAddModal

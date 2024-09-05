@@ -14,8 +14,7 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { toast } from "react-hot-toast";
 
-function ShopInformationModal({ shopInformation,setShopInformation }) {
-  console.log(shopInformation);
+function ShopInformationModal({ shopInformation,onChange}) {
   const [loading, setLoading] = useState(false);
 
   const [shopName, setShopName] = useState("");
@@ -112,11 +111,9 @@ function ShopInformationModal({ shopInformation,setShopInformation }) {
       );
       console.log(response);
       if (response.status === 200) {
-      //   setShopInformation((prevInform) =>
-      //   prevInform.filter((shop) => 2 !== prevInform)
-      // );
         toast.success("Shop information updated successfully!");
         setIsOpen(false);
+        onChange()
 
       } else {
         toast.error("Something went wrong. Please try again.");

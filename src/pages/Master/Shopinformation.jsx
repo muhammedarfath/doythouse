@@ -7,19 +7,20 @@ function Shopinformation() {
   const [shopInformation, setShopInformation] = useState(null);
 
   useEffect(() => {
-    const fetchShopInformation = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=shop"
-        );
-        console.log(response.data);
-        setShopInformation(response.data);
-      } catch (error) {
-        console.error("Error fetching shop details:", error);
-      }
-    };
     fetchShopInformation();
   }, []);
+
+  const fetchShopInformation = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=shop"
+      );
+      console.log(response.data);
+      setShopInformation(response.data);
+    } catch (error) {
+      console.error("Error fetching shop details:", error);
+    }
+  };
 
   return (
     <>
@@ -62,7 +63,7 @@ function Shopinformation() {
                   </svg>
                 </div>
               </section>
-              <ShopForm shopInformation={shopInformation} setShopInformation={setShopInformation}/>
+              <ShopForm shopInformation={shopInformation} onChange={fetchShopInformation}/>
             </div>
           </div>
         </div>

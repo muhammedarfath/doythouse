@@ -35,6 +35,8 @@ function StockReport() {
     fetchStockReport();
   }, []);
 
+  console.log(stockReport);
+
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
@@ -47,26 +49,26 @@ function StockReport() {
     setSelectedSubcategory(e.target.value);
   };
 
-  const filteredStockReport = stockReport.filter((item) => {
-    const matchesSearchTerm = item.subcat_name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    const matchesSubcategory =
-      selectedSubcategory === "" || item.subcat_name === selectedSubcategory;
-    return matchesSearchTerm && matchesSubcategory;
-  });
+  // const filteredStockReport = stockReport.filter((item) => {
+  //   const matchesSearchTerm = item.subcat_name
+  //     .toLowerCase()
+  //     .includes(searchTerm.toLowerCase());
+  //   const matchesSubcategory =
+  //     selectedSubcategory === "" || item.subcat_name === selectedSubcategory;
+  //   return matchesSearchTerm && matchesSubcategory;
+  // });
 
-  const totalItems = filteredStockReport.reduce((total, item) => {
-    const itemCount = item.count ? parseInt(item.count) : 0;
-    return total + itemCount;
-  }, 0);
+  // const totalItems = filteredStockReport.reduce((total, item) => {
+  //   const itemCount = item.count ? parseInt(item.count) : 0;
+  //   return total + itemCount;
+  // }, 0);
 
-  const totalStockValue = filteredStockReport.reduce((total, item) => {
-    const stockValue = item.total_purchase_price
-      ? parseInt(item.total_purchase_price.replace(/[^0-9]/g, ""))
-      : 0;
-    return total + stockValue;
-  }, 0);
+  // const totalStockValue = filteredStockReport.reduce((total, item) => {
+  //   const stockValue = item.total_purchase_price
+  //     ? parseInt(item.total_purchase_price.replace(/[^0-9]/g, ""))
+  //     : 0;
+  //   return total + stockValue;
+  // }, 0);
 
 
   const downloadExcel = () => {
@@ -151,7 +153,7 @@ function StockReport() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredStockReport.map((stock, index) => (
+                {stockReport.map((stock, index) => (
                   <TableRow key={stock.id}>
                     <TableCell className="font-medium">{index + 1}</TableCell>
                     <TableCell>{stock.subcat_name}</TableCell>
@@ -163,7 +165,7 @@ function StockReport() {
                 ))}
               </TableBody>
               <tfoot>
-                <TableRow>
+                {/* <TableRow>
                   <TableCell colSpan={2} className="font-semibold text-right">
                     Total:
                   </TableCell>
@@ -171,7 +173,7 @@ function StockReport() {
                   <TableCell className="text-right font-semibold">
                     ₹{totalStockValue.toLocaleString()}
                   </TableCell>
-                </TableRow>
+                </TableRow> */}
               </tfoot>
             </Table>
           </div>

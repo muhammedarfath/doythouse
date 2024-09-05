@@ -8,10 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import { AiFillEdit } from "react-icons/ai";
-import { MdOutlineDelete } from "react-icons/md";
 import SupplierModal from "@/components/modal/SupplierModal";
-import { Button } from "../../components/ui/button";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import EditSupplierModal from "@/components/modal/EditSupplierModal";
 import axios from "axios";

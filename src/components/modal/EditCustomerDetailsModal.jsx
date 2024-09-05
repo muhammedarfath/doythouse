@@ -308,7 +308,7 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
             onClick={() => setOpen(true)}
           />
         </DialogTrigger>
-        <DialogContent className="lg:max-w-[90%] overflow-scroll lg:max-h-[90%] sm:max-w-[90px] mt-3 h-full">
+        <DialogContent className="lg:max-w-[90%] overflow-auto lg:max-h-[90%] h-full  mt-3 sm:max-w-[900px]">
           <DialogHeader>
             <DialogTitle>Edit Customer Information</DialogTitle>
             <DialogDescription>Edit Customer Information</DialogDescription>

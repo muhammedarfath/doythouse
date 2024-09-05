@@ -65,8 +65,6 @@ function EditExpenseModal({ expense,onChange }) {
   }, []);
 
 
-console.log(subTypes);
-
   const handleSave = async () => {
     setLoading(true);
 

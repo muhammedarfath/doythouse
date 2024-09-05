@@ -15,7 +15,7 @@ import { FiPlus } from "react-icons/fi";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-function UnitModal({setUnits}) {
+function UnitModal({onChange}) {
   const [unitName, setUnitName] = useState("");
   const [unitCode, setUnitCode] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,8 +28,7 @@ function UnitModal({setUnits}) {
     }
 
     setLoading(true);
-    console.log(unitName);
-    console.log(unitCode);
+
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_unit.php",
@@ -45,10 +44,10 @@ function UnitModal({setUnits}) {
       );
       if (response.status === 200) {
         toast.success("Unit added successfully");
-        setUnits((prevUnit) => [...prevUnit, response.data]);
         setUnitName("");
         setUnitCode("");
         setIsOpen(false);
+        onChange()
 
       } else {
         toast.error("Failed to add unit");

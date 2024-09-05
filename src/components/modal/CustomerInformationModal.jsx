@@ -200,7 +200,6 @@ function CustomerInformationModal() {
       console.log(response);
       if (response.status === 200) {
         toast.success("Customer added successfully");
-        // setEmployees((prevEmployees) => [...prevEmployees, response.data]);
         setOpen(false);
         setCustomerName("");
         setContactNumber("");

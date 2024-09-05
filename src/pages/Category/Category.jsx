@@ -97,10 +97,10 @@ function Category() {
                 <span className="">Search</span>
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder="Search by category name..."
                   className="h-10 border rounded px-4 w-64 bg-[#fff] border-gray-300 text-gray-900 text-sm  focus:ring-black focus:border-black block pl-5 pr-3 py-4"
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)} // Update search term
+                  onChange={(e) => setSearchTerm(e.target.value)} 
                 />
               </div>
               <CategoryModal setCategory={setCategory} />

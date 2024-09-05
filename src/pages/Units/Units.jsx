@@ -33,9 +33,6 @@ function Units() {
   };
 
 
-console.log(units,"this is units");
-
-
   const handleDelete = (unitId) => {
     toast(
       (t) => (
@@ -87,7 +84,6 @@ console.log(units,"this is units");
   };
 
 
-
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-screen-xl mx-auto">
@@ -95,7 +91,7 @@ console.log(units,"this is units");
           <h2 className="font-semibold text-xl text-black">Units List</h2>
           <div className="bg-white flex flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
             <div className="flex justify-between mb-4">
-              <UnitModal setUnits={setUnits} />
+              <UnitModal onChange={fetchUnits} />
             </div>
             <Table className="w-full">
               <TableCaption>A list of all units available.</TableCaption>

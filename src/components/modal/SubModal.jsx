@@ -15,7 +15,7 @@ import { Button } from "../../components/ui/button";
 import { FiPlus } from "react-icons/fi";
 import toast from "react-hot-toast";
 
-function SubModal({setSubCategory}) {
+function SubModal({setSubCategory,onChange}) {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [subCategoryName, setSubCategoryName] = useState("");
@@ -46,8 +46,8 @@ function SubModal({setSubCategory}) {
       console.log(response);
       if (response.status === 200) {
         toast.success("Subcategory added successfully!");
-        setSubCategory((prevSubCate) => [...prevSubCate, response.data])
         setOpen(false);
+        onChange()
       }
     } catch (error) {
       toast.error("Failed to add subcategory.");
