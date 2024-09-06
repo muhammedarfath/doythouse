@@ -77,12 +77,7 @@ function CustomerInformationModal() {
   const [image, setImage] = useState("");
 
   // Additional Information
-  const [cutting, setCutting] = useState("");
-  const [stitching, setStitching] = useState("");
-  const [handWork, setHandWork] = useState("");
-  const [measurer, setMeasurer] = useState("");
-  const [checker, setChecker] = useState("");
-  const [tailor, setTailor] = useState("");
+
   const [dateIn, setDateIn] = useState("");
   const [completedDate, setCompletedDate] = useState("");
 
@@ -100,6 +95,19 @@ function CustomerInformationModal() {
   const [categories, setCategories] = useState([]);
 
   const [stockReport, setStockReport] = useState([]);
+
+  const [inputValues, setInputValues] = useState({});
+
+  const handleInputChange = (e, stockId) => {
+    const { value } = e.target;
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [stockId]: value,
+    }));
+  };
+
+
+
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -193,6 +201,8 @@ function CustomerInformationModal() {
           discount: discount,
           credit: credit,
           profit: profit,
+          stock_values: JSON.stringify(inputValues),
+
         }),
         {
           headers: {
@@ -200,72 +210,72 @@ function CustomerInformationModal() {
           },
         }
       );
-      console.log(response);
+      console.log(response.data);
       if (response.status === 200) {
         toast.success("Customer added successfully");
-        setOpen(false);
-        setCustomerName("");
-        setContactNumber("");
-        setTrialDate("");
-        setExpectedDelivery("");
-        setItemCategory("");
-        setDesignerName("");
-        setOrderNumber("");
-        setOrderDate("");
-        setEmergency("");
+        // setOpen(false);
+        // setCustomerName("");
+        // setContactNumber("");
+        // setTrialDate("");
+        // setExpectedDelivery("");
+        // setItemCategory("");
+        // setDesignerName("");
+        // setOrderNumber("");
+        // setOrderDate("");
+        // setEmergency("");
 
-        setYokeLength("");
-        setYokeRound("");
-        setFullLength("");
-        setUpperBust("");
-        setBust("");
-        setUnderBust("");
-        setMidWaist("");
-        setHip("");
-        setShoulder("");
-        setShoulderWidth("");
-        setSlitLength("");
-        setSlitRound("");
-        setSleeveType("");
-        setSleeveLength("");
-        setWrist("");
-        setThreeFourth("");
-        setElbow("");
-        setArmRound("");
-        setNeck("");
-        setFrontNeck("");
-        setBackNeck("");
-        setCollarRound("");
-        setTuckPoint("");
-        setPointToPoint("");
+        // setYokeLength("");
+        // setYokeRound("");
+        // setFullLength("");
+        // setUpperBust("");
+        // setBust("");
+        // setUnderBust("");
+        // setMidWaist("");
+        // setHip("");
+        // setShoulder("");
+        // setShoulderWidth("");
+        // setSlitLength("");
+        // setSlitRound("");
+        // setSleeveType("");
+        // setSleeveLength("");
+        // setWrist("");
+        // setThreeFourth("");
+        // setElbow("");
+        // setArmRound("");
+        // setNeck("");
+        // setFrontNeck("");
+        // setBackNeck("");
+        // setCollarRound("");
+        // setTuckPoint("");
+        // setPointToPoint("");
 
-        setSkirtFullLength("");
-        setSeat("");
-        setThigh("");
-        setKnee("");
-        setCalf("");
-        setBottomRound("");
+        // setSkirtFullLength("");
+        // setSeat("");
+        // setThigh("");
+        // setKnee("");
+        // setCalf("");
+        // setBottomRound("");
 
-        setPad(false);
-        setZip(false);
-        setBackOpen(false);
-        setFrontOpen(false);
-        setImage("");
+        // setPad(false);
+        // setZip(false);
+        // setBackOpen(false);
+        // setFrontOpen(false);
+        // setImage("");
 
-        setCutting("");
-        setStitching("");
-        setHandWork("");
-        setMeasurer("");
-        setChecker("");
-        setTailor("");
-        setDateIn("");
-        setCompletedDate("");
+        // setCutting("");
+        // setStitching("");
+        // setHandWork("");
+        // setMeasurer("");
+        // setChecker("");
+        // setTailor("");
+        // setDateIn("");
+        // setCompletedDate("");
 
-        setTotalPrice("");
-        setAdvancedPrice("");
-        setBalancePrice("");
+        // setTotalPrice("");
+        // setAdvancedPrice("");
+        // setBalancePrice("");
 
-        setNote("");
+        // setNote("");
       }
     } catch (error) {
       console.error("Error adding  type:", error);
@@ -301,20 +311,6 @@ function CustomerInformationModal() {
   const section2Ref = useRef();
   const section3Ref = useRef();
 
-  const [inputValues, setInputValues] = useState({});
-  const [showSubmit, setShowSubmit] = useState(false);
-
-  const handleInputChange = (e, stockId) => {
-    const { value } = e.target;
-    setInputValues((prevValues) => ({
-      ...prevValues,
-      [stockId]: value,
-    }));
-
-    if (value) {
-      setShowSubmit(true);
-    }
-  };
 
 
   const handleMaterialSubmit = async () => {
@@ -338,6 +334,29 @@ function CustomerInformationModal() {
   };
 
   const [open, setOpen] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [cutting, setCutting] = useState("");
+  const [stitching, setStitching] = useState("");
+  const [handWork, setHandWork] = useState("");
+  const [measurer, setMeasurer] = useState("");
+  const [checker, setChecker] = useState("");
+  const [tailor, setTailor] = useState("");
+  useEffect(() => {
+    const calculateTotal = () => {
+      const values = [
+        cutting,
+        stitching,
+        handWork,
+        measurer,
+        checker,
+        tailor,
+      ].map((val) => parseFloat(val) || 0);
+      const sum = values.reduce((acc, curr) => acc + curr, 0);
+      setTotal(sum);
+    };
+    calculateTotal();
+  }, [cutting, stitching, handWork, measurer, checker, tailor]);
+
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -369,10 +388,13 @@ function CustomerInformationModal() {
                   Enter Material Information
                 </DialogDescription>
               </button>
-              {/* <button className="border p-5">
-                <DialogTitle>Customer Information</DialogTitle>
-                <DialogDescription>Create New Information</DialogDescription>
-              </button> */}
+              <button
+                className="border p-5 rounded-xl"
+                onClick={() => setActiveSection("paymentInformation")}
+              >
+                <DialogTitle>Payment Information</DialogTitle>
+                <DialogDescription>Add New Information</DialogDescription>
+              </button>
             </div>
           </DialogHeader>
 
@@ -1181,31 +1203,114 @@ function CustomerInformationModal() {
             </form>
           )}
           {activeSection === "materialInformation" && (
-            <div className="p-6 font-sans">
+            <div className="mb-80 mr-96 w-full ">
               {stockReport.map((stock) => (
-                <div
-                  key={stock.id}
-                  className="mb-4 p-4 border border-gray-300 rounded-md"
-                >
-                  <h1 className="text-lg font-semibold mb-2">{stock.items}</h1>
-                  <input
+                <div key={stock.id} className="mb-4 p-4 rounded-md">
+                  <div className="flex items-center mb-4">
+                    <Label
+                      htmlFor={`stock-${stock.id}`}
+                      className="text-md font-bold w-1/4 text-right pr-4"
+                    >
+                      {stock.items}
+                    </Label>
+                    <Input
+                      id={`stock-${stock.id}`}
+                      type="number"
+                      placeholder={`Enter value for ${stock.items}`}
+                      value={inputValues[stock.stock_id] || ""}
+                      onChange={(e) => handleInputChange(e, stock.stock_id)}
+                      className="flex-1 border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+              ))}
+
+              <button
+                onClick={handleMaterialSubmit}
+                className="mt-4 px-6 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 transition duration-200"
+              >
+                Submit
+              </button>
+            </div>
+          )}
+          {activeSection === "paymentInformation" && (
+            <div className="flex flex-col gap-4 lg:w-full mx-auto p-4">
+              {[
+                {
+                  id: "cutting",
+                  label: "Cutting",
+                  value: cutting,
+                  onChange: (e) => setCutting(e.target.value),
+                },
+                {
+                  id: "stitching",
+                  label: "Stitching",
+                  value: stitching,
+                  onChange: (e) => setStitching(e.target.value),
+                },
+                {
+                  id: "hand-work",
+                  label: "Hand Work",
+                  value: handWork,
+                  onChange: (e) => setHandWork(e.target.value),
+                },
+                {
+                  id: "measurer",
+                  label: "Measurer",
+                  value: measurer,
+                  onChange: (e) => setMeasurer(e.target.value),
+                },
+                {
+                  id: "checker",
+                  label: "Checker",
+                  value: checker,
+                  onChange: (e) => setChecker(e.target.value),
+                },
+                {
+                  id: "tailor",
+                  label: "Tailor",
+                  value: tailor,
+                  onChange: (e) => setTailor(e.target.value),
+                },
+              ].map(({ id, label, value, onChange }) => (
+                <div key={id} className="flex items-center mb-4">
+                  <Label
+                    htmlFor={id}
+                    className="text-md font-bold w-1/4 text-right pr-4"
+                  >
+                    {label}
+                  </Label>
+                  <Input
+                    id={id}
                     type="number"
-                    placeholder={`Enter value for ${stock.items}`}
-                    value={inputValues[stock.stock_id]}
-                    onChange={(e) => handleInputChange(e, stock.stock_id)}
-                    className="px-3 py-2 w-64 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={value}
+                    onChange={onChange}
+                    className="flex-1 border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               ))}
 
-              {showSubmit && (
-                <button
-                  onClick={handleMaterialSubmit}
-                  className="mt-4 px-6 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 transition duration-200"
+              <div className="flex items-center mt-6 border-t border-gray-300 pt-4">
+                <Label
+                  htmlFor="total"
+                  className="text-md font-bold w-1/4 text-right pr-4"
                 >
-                  Submit
-                </button>
-              )}
+                  Total
+                </Label>
+                <Input
+                  id="total"
+                  type="text"
+                  value={total.toFixed(2)}
+                  className="flex-1 border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  readOnly
+                />
+              </div>
+              <button
+                onClick={handleMaterialSubmit}
+                className="mt-4 px-6 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 transition duration-200"
+              >
+                Submit
+              </button>
             </div>
           )}
         </DialogContent>
