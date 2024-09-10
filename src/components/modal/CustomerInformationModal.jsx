@@ -4,37 +4,34 @@ import { FiPlus } from "react-icons/fi";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog";
-import { Input } from "../../components/ui/input";
-import { Label } from "../../components/ui/label";
-import { IoMdArrowRoundForward } from "react-icons/io";
 import axios from "axios";
-import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { toast } from "react-hot-toast";
+import Userinfo from "./WorkOrder/Userinfo";
+import MeasurmentFirst from "./WorkOrder/MeasurmentFirst";
+import MeasurmentSecond from "./WorkOrder/MeasurmentSecond";
+import MeasurmentThird from "./WorkOrder/MeasurmentThird";
+import MeterialIfo from "./WorkOrder/MeterialIfo";
+import PaymentInfo from "./WorkOrder/PaymentInfo";
+import MeasurmentImg from "./WorkOrder/MeasurmentImg";
+import WorkOrderHeader from "./WorkOrder/WorkOrderHeader";
 
 function CustomerInformationModal() {
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState("");
   const [activeSection, setActiveSection] = useState("userInformation");
-
-  // Basic Information
   const [customerName, setCustomerName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [trialDate, setTrialDate] = useState("");
   const [expectedDelivery, setExpectedDelivery] = useState("");
-  const [itemCategory, setItemCategory] = useState("");
   const [designerName, setDesignerName] = useState("");
   const [orderNumber, setOrderNumber] = useState("");
   const [orderDate, setOrderDate] = useState("");
   const [emergency, setEmergency] = useState("");
   const [status, setStatus] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(category);
-  // Measurements
   const [yokeLength, setYokeLength] = useState("");
   const [yokeRound, setYokeRound] = useState("");
   const [fullLength, setFullLength] = useState("");
@@ -60,54 +57,44 @@ function CustomerInformationModal() {
   const [collarRound, setCollarRound] = useState("");
   const [tuckPoint, setTuckPoint] = useState("");
   const [pointToPoint, setPointToPoint] = useState("");
-
-  // Skirt & Pant Measurements
   const [skirtFullLength, setSkirtFullLength] = useState("");
   const [seat, setSeat] = useState("");
   const [thigh, setThigh] = useState("");
   const [knee, setKnee] = useState("");
   const [calf, setCalf] = useState("");
   const [bottomRound, setBottomRound] = useState("");
-
-  // Options
   const [pad, setPad] = useState(false);
   const [zip, setZip] = useState(false);
   const [backOpen, setBackOpen] = useState(false);
   const [frontOpen, setFrontOpen] = useState(false);
   const [image, setImage] = useState("");
-
-  // Additional Information
-
   const [dateIn, setDateIn] = useState("");
   const [completedDate, setCompletedDate] = useState("");
-
-  // Payment Information
   const [totalPrice, setTotalPrice] = useState("");
   const [advancedPrice, setAdvancedPrice] = useState("");
   const [balancePrice, setBalancePrice] = useState("");
-  const [cgst, setCgst] = useState("");
-  const [sgst, setSgst] = useState("");
   const [discount, setDiscount] = useState("");
-  const [credit, setCredit] = useState("");
-  const [profit, setProfit] = useState("");
-  // Note
   const [note, setNote] = useState("");
   const [categories, setCategories] = useState([]);
-
   const [stockReport, setStockReport] = useState([]);
-
   const [inputValues, setInputValues] = useState({});
-
-  const handleInputChange = (e, stockId) => {
-    const { value } = e.target;
-    setInputValues((prevValues) => ({
-      ...prevValues,
-      [stockId]: value,
-    }));
-  };
-
-
-
+  const section1Ref = useRef();
+  const section2Ref = useRef();
+  const section3Ref = useRef();
+  const [open, setOpen] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [cutting, setCutting] = useState("");
+  const [stitching, setStitching] = useState("");
+  const [handWork, setHandWork] = useState("");
+  const [measurer, setMeasurer] = useState("");
+  const [checker, setChecker] = useState("");
+  const [tailor, setTailor] = useState("");
+  const [cuttingPrice, setCuttingPrice] = useState("");
+  const [stitchingPrice, setStitchingPrice] = useState("");
+  const [handWorkPrice, setHandWorkPrice] = useState("");
+  const [measurerPrice, setMeasurerPrice] = useState("");
+  const [checkerPrice, setCheckerPrice] = useState("");
+  const [tailorPrice, setTailorPrice] = useState("");
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -123,6 +110,30 @@ function CustomerInformationModal() {
 
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    const calculateTotal = () => {
+      const values = [
+        cutting,
+        stitching,
+        handWork,
+        measurer,
+        checker,
+        tailor,
+      ].map((val) => parseFloat(val) || 0);
+      const sum = values.reduce((acc, curr) => acc + curr, 0);
+      setTotal(sum);
+    };
+    calculateTotal();
+  }, [cutting, stitching, handWork, measurer, checker, tailor]);
+
+  const handleInputChange = (e, stockId) => {
+    const { value } = e.target;
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [stockId]: value,
+    }));
+  };
 
   const handleCategoryChange = (e) => {
     const newCategory = e.target.value;
@@ -191,17 +202,15 @@ function CustomerInformationModal() {
           tailor: tailor,
           date_in: dateIn,
           completed_date: completedDate,
-
-          totalprice: totalPrice,
-          advanceprice: advancedPrice,
-          balanceprice: balancePrice,
-          note: note,
-          cgst: cgst,
-          sgst: sgst,
-          discount: discount,
-          credit: credit,
-          profit: profit,
           stock_values: JSON.stringify(inputValues),
+          
+          cutting1: cuttingPrice,
+          stiching1: stitchingPrice,
+          handwork1: handWorkPrice,
+          measurer1: measurerPrice,
+          checker1: checkerPrice,
+          tailor1: tailorPrice,
+          total1:300,
 
         }),
         {
@@ -293,70 +302,6 @@ function CustomerInformationModal() {
     setImage(e.target.files[0]);
   };
 
-  useEffect(() => {
-    const fetchStockReport = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=stock"
-        );
-        setStockReport(response.data);
-      } catch (error) {
-        console.error("Error fetching stock report:", error);
-      }
-    };
-    fetchStockReport();
-  }, []);
-
-  const section1Ref = useRef();
-  const section2Ref = useRef();
-  const section3Ref = useRef();
-
-
-
-  const handleMaterialSubmit = async () => {
-    try {
-      const response = await axios.post(
-        "https://storeconvo.com/php/materials.php",
-        {
-          stock_values: inputValues,
-        },
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
-      console.log(response);
-      console.log("Submission successful", response.data);
-    } catch (error) {
-      console.error("Error submitting data:", error);
-    }
-  };
-
-  const [open, setOpen] = useState(false);
-  const [total, setTotal] = useState(0);
-  const [cutting, setCutting] = useState("");
-  const [stitching, setStitching] = useState("");
-  const [handWork, setHandWork] = useState("");
-  const [measurer, setMeasurer] = useState("");
-  const [checker, setChecker] = useState("");
-  const [tailor, setTailor] = useState("");
-  useEffect(() => {
-    const calculateTotal = () => {
-      const values = [
-        cutting,
-        stitching,
-        handWork,
-        measurer,
-        checker,
-        tailor,
-      ].map((val) => parseFloat(val) || 0);
-      const sum = values.reduce((acc, curr) => acc + curr, 0);
-      setTotal(sum);
-    };
-    calculateTotal();
-  }, [cutting, stitching, handWork, measurer, checker, tailor]);
-
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -370,949 +315,185 @@ function CustomerInformationModal() {
           </Button>
         </DialogTrigger>
         <DialogContent className="lg:max-w-[90%] overflow-auto lg:max-h-[90%] h-full  mt-3 sm:max-w-[900px]">
-          <DialogHeader>
-            <div className="flex gap-8">
-              <button
-                className="border p-5 rounded-xl"
-                onClick={() => setActiveSection("userInformation")}
-              >
-                <DialogTitle>Customer Information</DialogTitle>
-                <DialogDescription>Create New Information</DialogDescription>
-              </button>
-              <button
-                className="border p-5 rounded-xl"
-                onClick={() => setActiveSection("materialInformation")}
-              >
-                <DialogTitle>Material Information</DialogTitle>
-                <DialogDescription>
-                  Enter Material Information
-                </DialogDescription>
-              </button>
-              <button
-                className="border p-5 rounded-xl"
-                onClick={() => setActiveSection("paymentInformation")}
-              >
-                <DialogTitle>Payment Information</DialogTitle>
-                <DialogDescription>Add New Information</DialogDescription>
-              </button>
-            </div>
-          </DialogHeader>
+          <WorkOrderHeader
+            activeSection={activeSection}
+            setActiveSection={setActiveSection}
+          />
 
           {activeSection === "userInformation" && (
-            <form onSubmit={handleSubmit}>
-              <div className="p-4 sm:p-6 lg:p-8">
-                <div
-                  className="grid grid-cols-1 sm:grid-cols-2 gap-6"
-                  ref={section1Ref}
-                >
-                  <div className="flex flex-col gap-4">
-                    <Label htmlFor="customerName" className="text-md font-bold">
-                      Customer Name
-                    </Label>
-                    <Input
-                      id="customerName"
-                      name="customerName"
-                      value={customerName}
-                      onChange={(e) => setCustomerName(e.target.value)}
-                      className="w-full"
-                    />
-
-                    <Label
-                      htmlFor="contact-number"
-                      className="text-md font-bold"
-                    >
-                      Contact Number
-                    </Label>
-                    <Input
-                      id="contact-number"
-                      value={contactNumber}
-                      onChange={(e) => setContactNumber(e.target.value)}
-                      className="w-full"
-                    />
-
-                    <Label htmlFor="trial-date" className="text-md font-bold">
-                      Trial Date
-                    </Label>
-                    <Input
-                      id="trial-date"
-                      value={trialDate}
-                      onChange={(e) => setTrialDate(e.target.value)}
-                      type="date"
-                      className="w-full"
-                    />
-
-                    <Label
-                      htmlFor="expected-delivery"
-                      className="text-md font-bold"
-                    >
-                      Expected Delivery
-                    </Label>
-                    <Input
-                      id="expected-delivery"
-                      value={expectedDelivery}
-                      onChange={(e) => setExpectedDelivery(e.target.value)}
-                      type="date"
-                      className="w-full"
-                    />
-                  </div>
-
-                  <div className="flex flex-col gap-4">
-                    <Label
-                      htmlFor="item-category"
-                      className="text-md font-bold"
-                    >
-                      Item Category
-                    </Label>
-                    <select
-                      name="Category"
-                      id="Category"
-                      className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
-                      value={selectedCategory}
-                      onChange={handleCategoryChange}
-                    >
-                      <option value="">Choose Category</option>
-                      {categories.map((cat) => (
-                        <option key={cat.cat_id} value={cat.cat_id}>
-                          {cat.cat_name}
-                        </option>
-                      ))}
-                    </select>
-
-                    <Label
-                      htmlFor="designer-name"
-                      className="text-md font-bold"
-                    >
-                      Designer Name
-                    </Label>
-                    <Input
-                      id="designer-name"
-                      value={designerName}
-                      onChange={(e) => setDesignerName(e.target.value)}
-                      className="w-full"
-                    />
-
-                    <Label htmlFor="order-number" className="text-md font-bold">
-                      Order Number
-                    </Label>
-                    <Input
-                      id="order-number"
-                      value={orderNumber}
-                      onChange={(e) => setOrderNumber(e.target.value)}
-                      className="w-full"
-                    />
-
-                    <Label htmlFor="order-date" className="text-md font-bold">
-                      Order Date
-                    </Label>
-                    <Input
-                      id="order-date"
-                      value={orderDate}
-                      onChange={(e) => setOrderDate(e.target.value)}
-                      type="date"
-                      className="w-full"
-                    />
-
-                    <Label htmlFor="emergency" className="text-md font-bold">
-                      Emergency
-                    </Label>
-                    <Input
-                      id="emergency"
-                      value={emergency}
-                      onChange={(e) => setEmergency(e.target.value)}
-                      className="w-full"
-                    />
-                    <Label htmlFor="status" className="text-md font-bold">
-                      Status
-                    </Label>
-                    <select
-                      id="status"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                      className="w-full p-2 border rounded"
-                    >
-                      <option value="">Select Status</option>
-                      <option value="Delivered">Delivered</option>
-                      <option value="Pending">Pending</option>
-                      <option value="Completed">Completed</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
+            <div>
+              <Userinfo
+                section1Ref={section1Ref}
+                setCustomerName={setCustomerName}
+                setContactNumber={setContactNumber}
+                setTrialDate={setTrialDate}
+                setExpectedDelivery={setExpectedDelivery}
+                setDesignerName={setDesignerName}
+                setOrderNumber={setOrderNumber}
+                setOrderDate={setOrderDate}
+                setEmergency={setEmergency}
+                setStatus={setStatus}
+                customerName={customerName}
+                contactNumber={contactNumber}
+                trialDate={trialDate}
+                expectedDelivery={expectedDelivery}
+                selectedCategory={selectedCategory}
+                handleCategoryChange={handleCategoryChange}
+                categories={categories}
+                designerName={designerName}
+                orderNumber={orderNumber}
+                orderDate={orderDate}
+                emergency={emergency}
+                status={status}
+              />
               <div className="border-t  border-gray-300 my-6 pt-4 lg:flex md:flex gap-8">
-                <div className="lg:w-1/3 md:w-1/3" ref={section2Ref}>
-                  <div className="text-lg font-semibold mb-4">
-                    Measurements:
-                  </div>
-                  <table className="min-w-full border-collapse">
-                    <tbody>
-                      <tr>
-                        <th className="border p-2 text-left">Yoke Length</th>
-                        <td>
-                          <input
-                            value={yokeLength}
-                            onChange={(e) => setYokeLength(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Yoke Round</th>
-                        <td>
-                          <input
-                            value={yokeRound}
-                            onChange={(e) => setYokeRound(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Full Length</th>
-                        <td>
-                          <input
-                            value={fullLength}
-                            onChange={(e) => setFullLength(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Upper Bust</th>
-                        <td>
-                          <input
-                            value={upperBust}
-                            onChange={(e) => setUpperBust(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Bust</th>
-                        <td>
-                          <input
-                            value={bust}
-                            onChange={(e) => setBust(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Under Bust</th>
-                        <td>
-                          <input
-                            value={underBust}
-                            onChange={(e) => setUnderBust(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Mid Waist</th>
-                        <td>
-                          <input
-                            value={midWaist}
-                            onChange={(e) => setMidWaist(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Hip</th>
-                        <td>
-                          <input
-                            value={hip}
-                            onChange={(e) => setHip(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Shoulder</th>
-                        <td>
-                          <input
-                            value={shoulder}
-                            onChange={(e) => setShoulder(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Shoulder Width</th>
-                        <td>
-                          <input
-                            value={shoulderWidth}
-                            onChange={(e) => setShoulderWidth(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Slit Length</th>
-                        <td>
-                          <input
-                            value={slitLength}
-                            onChange={(e) => setSlitLength(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Slit Round</th>
-                        <td>
-                          <input
-                            value={slitRound}
-                            onChange={(e) => setSlitRound(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Sleeve Type</th>
-                        <td>
-                          <input
-                            value={sleeveType}
-                            onChange={(e) => setSleeveType(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Sleeve Length</th>
-                        <td>
-                          <input
-                            value={sleeveLength}
-                            onChange={(e) => setSleeveLength(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Wrist</th>
-                        <td>
-                          <input
-                            value={wrist}
-                            onChange={(e) => setWrist(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">3/4th</th>
-                        <td>
-                          <input
-                            value={threeFourth}
-                            onChange={(e) => setThreeFourth(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Elbow</th>
-                        <td>
-                          <input
-                            value={elbow}
-                            onChange={(e) => setElbow(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Arm Round</th>
-                        <td>
-                          <input
-                            value={armRound}
-                            onChange={(e) => setArmRound(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Arm Hole</th>
-                        <td>
-                          <input
-                            value={armHole}
-                            onChange={(e) => setArmHole(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Neck</th>
-                        <td>
-                          <input
-                            value={neck}
-                            onChange={(e) => setNeck(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">F/N</th>
-                        <td>
-                          <input
-                            value={frontNeck}
-                            onChange={(e) => setFrontNeck(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">B/N</th>
-                        <td>
-                          <input
-                            value={backNeck}
-                            onChange={(e) => setBackNeck(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Collar Round</th>
-                        <td>
-                          <input
-                            value={collarRound}
-                            onChange={(e) => setCollarRound(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Tuck Point</th>
-                        <td>
-                          <input
-                            value={tuckPoint}
-                            onChange={(e) => setTuckPoint(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th className="border p-2 text-left">Point to Point</th>
-                        <td>
-                          <input
-                            value={pointToPoint}
-                            onChange={(e) => setPointToPoint(e.target.value)}
-                            type="text"
-                            className="md:p-6 lg:p-2 p-2 border w-full"
-                          />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <MeasurmentFirst
+                  section2Ref={section2Ref}
+                  yokeLength={yokeLength}
+                  setYokeLength={setYokeLength}
+                  yokeRound={yokeRound}
+                  setYokeRound={setYokeRound}
+                  fullLength={fullLength}
+                  setFullLength={setFullLength}
+                  upperBust={upperBust}
+                  setUpperBust={setUpperBust}
+                  bust={bust}
+                  setBust={setBust}
+                  underBust={underBust}
+                  setUnderBust={setUnderBust}
+                  midWaist={midWaist}
+                  setMidWaist={setMidWaist}
+                  hip={hip}
+                  setHip={setHip}
+                  shoulder={shoulder}
+                  setShoulder={setShoulder}
+                  shoulderWidth={shoulderWidth}
+                  setShoulderWidth={setShoulderWidth}
+                  slitLength={slitLength}
+                  setSlitLength={setSlitLength}
+                  slitRound={slitRound}
+                  setSlitRound={setSlitRound}
+                  sleeveType={sleeveType}
+                  setSleeveType={setSleeveType}
+                  sleeveLength={sleeveLength}
+                  setSleeveLength={setSleeveLength}
+                  wrist={wrist}
+                  setWrist={setWrist}
+                  threeFourth={threeFourth}
+                  setThreeFourth={setThreeFourth}
+                  elbow={elbow}
+                  setElbow={setElbow}
+                  armRound={armRound}
+                  setArmRound={setArmRound}
+                  armHole={armHole}
+                  setArmHole={setArmHole}
+                  neck={neck}
+                  setNeck={setNeck}
+                  frontNeck={frontNeck}
+                  setFrontNeck={setFrontNeck}
+                  backNeck={backNeck}
+                  setBackNeck={setBackNeck}
+                  collarRound={collarRound}
+                  setCollarRound={setCollarRound}
+                  tuckPoint={tuckPoint}
+                  setTuckPoint={setTuckPoint}
+                  pointToPoint={pointToPoint}
+                  setPointToPoint={setPointToPoint}
+                />
 
-                <div
-                  className="lg:w-1/3 md:w-1/3 mt-10 flex flex-col gap-8"
-                  ref={section3Ref}
-                >
-                  <div>
-                    <div className="flex border p-3 justify-center">
-                      <h1 className="text-lg font-semibold mb-4">
-                        SKIRT & PANT:
-                      </h1>
-                    </div>
-                    <table className="min-w-full border-collapse">
-                      <tbody>
-                        <tr>
-                          <th className="border p-2 text-left">Full length</th>
-                          <td>
-                            <input
-                              value={skirtFullLength}
-                              onChange={(e) =>
-                                setSkirtFullLength(e.target.value)
-                              }
-                              type="text"
-                              className="p-2 border w-full"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <th className="border p-2 text-left">Seat</th>
-                          <td>
-                            <input
-                              value={seat}
-                              onChange={(e) => setSeat(e.target.value)}
-                              type="text"
-                              className="p-2 border w-full"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <th className="border p-2 text-left">Thigh</th>
-                          <td>
-                            <input
-                              value={thigh}
-                              onChange={(e) => setThigh(e.target.value)}
-                              type="text"
-                              className="p-2 border w-full"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <th className="border p-2 text-left">Knee</th>
-                          <td>
-                            <input
-                              type="text"
-                              value={knee}
-                              onChange={(e) => setKnee(e.target.value)}
-                              className="p-2 border w-full"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <th className="border p-2 text-left">Calf</th>
-                          <td>
-                            <input
-                              type="text"
-                              value={calf}
-                              onChange={(e) => setCalf(e.target.value)}
-                              className="p-2 border w-full"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <th className="border p-2 text-left">Bottom Round</th>
-                          <td>
-                            <input
-                              type="text"
-                              value={bottomRound}
-                              onChange={(e) => setBottomRound(e.target.value)}
-                              className="p-2 border w-full"
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <div className="min-w-full border-collapse">
-                    <div className="flex flex-col gap-7 border p-1">
-                      <div className="flex gap-7 items-center">
-                        <div className="border p-2 px-8 text-left">Zip</div>
-                        <IoMdArrowRoundForward />
-                        <input
-                          checked={zip}
-                          onChange={handleCheckboxChange(setZip)}
-                          className="w-8 h-8"
-                          type="checkbox"
-                        />
-                      </div>
-                      <div className="flex gap-7 items-center">
-                        <div className="border p-2 px-8 text-left">Pad</div>
-                        <IoMdArrowRoundForward />
-                        <input
-                          checked={pad}
-                          onChange={handleCheckboxChange(setPad)}
-                          className="w-8 h-8"
-                          type="checkbox"
-                        />
-                      </div>
-                      <div className="flex lg:gap-7 gap-4 items-center">
-                        <div className="border p-2 text-left">Back Open</div>
-                        <IoMdArrowRoundForward />
-                        <input
-                          checked={backOpen}
-                          onChange={handleCheckboxChange(setBackOpen)}
-                          className="w-8 h-8"
-                          type="checkbox"
-                        />
-                        <div className="border p-2 text-left">Front Open</div>
-                        <IoMdArrowRoundForward />
-                        <input
-                          checked={frontOpen}
-                          onChange={handleCheckboxChange(setFrontOpen)}
-                          className="w-8 h-8"
-                          type="checkbox"
-                        />
-                      </div>
-                      <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <label htmlFor="picture">Picture</label>
-                        <input
-                          id="picture"
-                          type="file"
-                          onChange={handleFileChange}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="">
-                  <img
-                    src="https://thumbs.dreamstime.com/b/women-to-do-body-measurement-fashion-illustration-size-chart-head-girl-site-online-shop-human-infographic-template-clothes-176399026.jpg"
-                    alt="image"
-                  />
-                </div>
+                <MeasurmentSecond
+                  section3Ref={section3Ref}
+                  skirtFullLength={skirtFullLength}
+                  setSkirtFullLength={setSkirtFullLength}
+                  seat={seat}
+                  setSeat={setSeat}
+                  thigh={thigh}
+                  setThigh={setThigh}
+                  knee={knee}
+                  setKnee={setKnee}
+                  calf={calf}
+                  setCalf={setCalf}
+                  bottomRound={bottomRound}
+                  setBottomRound={setBottomRound}
+                  zip={zip}
+                  setZip={setZip}
+                  pad={pad}
+                  handleCheckboxChange={handleCheckboxChange}
+                  setPad={setPad}
+                  backOpen={backOpen}
+                  setBackOpen={setBackOpen}
+                  frontOpen={frontOpen}
+                  setFrontOpen={setFrontOpen}
+                  handleFileChange={handleFileChange}
+                />
+                <MeasurmentImg />
               </div>
 
-              <div className="border-t border-gray-300 my-6 pt-4">
-                <div className="text-lg font-semibold mb-4">
-                  Additional Information:
-                </div>
-                <div className="lg:flex md:flex lg:gap-4 md:gap-4 mt-7 lg:mx-20">
-                  <div className="flex flex-col items-start gap-4 lg:w-1/2">
-                    <Label htmlFor="customerName" className="text-md font-bold">
-                      Cutting
-                    </Label>
-                    <Input
-                      id="cutting"
-                      value={cutting}
-                      onChange={(e) => setCutting(e.target.value)}
-                      className="w-full"
-                    />
-
-                    <Label htmlFor="stitching" className="text-md font-bold">
-                      Stitching
-                    </Label>
-                    <Input
-                      id="stitching"
-                      value={stitching}
-                      onChange={(e) => setStitching(e.target.value)}
-                      className="w-full"
-                    />
-
-                    <Label htmlFor="hand-work" className="text-md font-bold">
-                      Hand Work
-                    </Label>
-                    <Input
-                      id="hand-work"
-                      value={handWork}
-                      onChange={(e) => setHandWork(e.target.value)}
-                      className="w-full"
-                    />
-
-                    <Label htmlFor="measurer" className="text-md font-bold">
-                      Measurer
-                    </Label>
-                    <Input
-                      id="measurer"
-                      value={measurer}
-                      onChange={(e) => setMeasurer(e.target.value)}
-                      className="w-full"
-                    />
-
-                    <Label htmlFor="checker" className="text-md font-bold">
-                      Checker
-                    </Label>
-                    <Input
-                      id="checker"
-                      value={checker}
-                      onChange={(e) => setChecker(e.target.value)}
-                      className="w-full"
-                    />
-
-                    <Label htmlFor="tailor" className="text-md font-bold">
-                      Tailor
-                    </Label>
-                    <Input
-                      id="tailor"
-                      value={tailor}
-                      onChange={(e) => setTailor(e.target.value)}
-                      className="w-full"
-                    />
-
-                    <Label htmlFor="date-in" className="text-md font-bold">
-                      Date In
-                    </Label>
-                    <Input
-                      id="date-in"
-                      type="date"
-                      value={dateIn}
-                      onChange={(e) => setDateIn(e.target.value)}
-                      className="w-full"
-                    />
-
-                    <Label
-                      htmlFor="completed-date"
-                      className="text-md font-bold"
-                    >
-                      Completed Date
-                    </Label>
-                    <Input
-                      id="completed-date"
-                      type="date"
-                      value={completedDate}
-                      onChange={(e) => setCompletedDate(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-
-                  <div className="relative flex flex-col items-start mt-28 lg:mt-0 gap-1 lg:w-1/2">
-                    <div className="text-lg font-semibold mb-4 absolute -top-14">
-                      Payment Information:
-                    </div>
-                    <div className="flex flex-col w-full items-start gap-4">
-                      <Label
-                        htmlFor="total-price"
-                        className="text-md font-bold"
-                      >
-                        Total Price
-                      </Label>
-                      <Input
-                        id="total-price"
-                        type="text"
-                        value={totalPrice}
-                        onChange={(e) => setTotalPrice(e.target.value)}
-                        className="w-full"
-                        placeholder="Enter total price"
-                      />
-
-                      <Label
-                        htmlFor="advanced-price"
-                        className="text-md font-bold"
-                      >
-                        Advanced Price
-                      </Label>
-                      <Input
-                        id="advanced-price"
-                        type="text"
-                        value={advancedPrice}
-                        onChange={(e) => setAdvancedPrice(e.target.value)}
-                        className="w-full"
-                        placeholder="Enter advanced price"
-                      />
-
-                      <Label
-                        htmlFor="balance-price"
-                        className="text-md font-bold"
-                      >
-                        Balance Price
-                      </Label>
-                      <Input
-                        id="balance-price"
-                        type="text"
-                        value={balancePrice}
-                        onChange={(e) => setBalancePrice(e.target.value)}
-                        className="w-full"
-                        placeholder="Enter balance price"
-                      />
-
-                      <div className="flex gap-3">
-                        <Label htmlFor="cgst" className="text-md font-bold">
-                          CGST
-                        </Label>
-                        <Input
-                          id="cgst"
-                          type="text"
-                          value={cgst}
-                          onChange={(e) => setCgst(e.target.value)}
-                          className="w-full"
-                          placeholder="CGST"
-                        />
-                        <Label htmlFor="sgst" className="text-md font-bold">
-                          SGST
-                        </Label>
-                        <Input
-                          id="sgst"
-                          type="text"
-                          value={sgst}
-                          onChange={(e) => setSgst(e.target.value)}
-                          className="w-full"
-                          placeholder="SGST"
-                        />
-                      </div>
-
-                      <div className="flex gap-3">
-                        <Label htmlFor="profit" className="text-md font-bold">
-                          Profit
-                        </Label>
-                        <Input
-                          id="profit"
-                          type="text"
-                          value={profit}
-                          onChange={(e) => setProfit(e.target.value)}
-                          className="w-full"
-                          placeholder="Profit"
-                        />
-                        <Label htmlFor="credit" className="text-md font-bold">
-                          Credit
-                        </Label>
-                        <Input
-                          id="credit"
-                          type="text"
-                          value={sgst}
-                          onChange={(e) => setCredit(e.target.value)}
-                          className="w-full"
-                          placeholder="Credit"
-                        />
-                      </div>
-
-                      <Label
-                        htmlFor="discount-price"
-                        className="text-md font-bold"
-                      >
-                        Discount Price
-                      </Label>
-                      <Input
-                        id="discount-price"
-                        type="text"
-                        value={discount}
-                        onChange={(e) => setDiscount(e.target.value)}
-                        className="w-full"
-                        placeholder="Discount Price"
-                      />
-
-                      <Label htmlFor="note" className="text-lg font-semibold">
-                        Note
-                      </Label>
-                      <textarea
-                        id="note"
-                        value={note}
-                        onChange={(e) => setNote(e.target.value)}
-                        className="w-full p-2 border rounded"
-                        rows="4"
-                        placeholder="Add any additional notes here..."
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <DialogFooter>
-                <Button
-                  type="submit"
-                  className="bg-[#308E87] hover:bg-[#308E87]"
-                >
-                  Save Changes
-                </Button>
-              </DialogFooter>
-            </form>
+              <MeasurmentThird
+                cutting={cutting}
+                setCutting={setCutting}
+                stitching={stitching}
+                setStitching={setStitching}
+                handWork={handWork}
+                setHandWork={setHandWork}
+                measurer={measurer}
+                setMeasurer={setMeasurer}
+                checker={checker}
+                setChecker={setChecker}
+                tailor={tailor}
+                setTailor={setTailor}
+                note={note}
+                setNote={setNote}
+                dateIn={dateIn}
+                setDateIn={setDateIn}
+                completedDate={completedDate}
+                setCompletedDate={setCompletedDate}
+                totalPrice={totalPrice}
+                advancedPrice={advancedPrice}
+                setAdvancedPrice={setAdvancedPrice}
+                setTotalPrice={setTotalPrice}
+                balancePrice={balancePrice}
+                setBalancePrice={setBalancePrice}
+                discount={discount}
+                setDiscount={setDiscount}
+              />
+            </div>
           )}
           {activeSection === "materialInformation" && (
-            <div className="mb-80 mr-96 w-full ">
-              {stockReport.map((stock) => (
-                <div key={stock.id} className="mb-4 p-4 rounded-md">
-                  <div className="flex items-center mb-4">
-                    <Label
-                      htmlFor={`stock-${stock.id}`}
-                      className="text-md font-bold w-1/4 text-right pr-4"
-                    >
-                      {stock.items}
-                    </Label>
-                    <Input
-                      id={`stock-${stock.id}`}
-                      type="number"
-                      placeholder={`Enter value for ${stock.items}`}
-                      value={inputValues[stock.stock_id] || ""}
-                      onChange={(e) => handleInputChange(e, stock.stock_id)}
-                      className="flex-1 border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                </div>
-              ))}
-
-              <button
-                onClick={handleMaterialSubmit}
-                className="mt-4 px-6 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 transition duration-200"
-              >
-                Submit
-              </button>
-            </div>
+            <MeterialIfo
+              stockReport={stockReport}
+              setStockReport={setStockReport}
+              handleInputChange={handleInputChange}
+              inputValues={inputValues}
+            />
           )}
           {activeSection === "paymentInformation" && (
-            <div className="flex flex-col gap-4 lg:w-full mx-auto p-4">
-              {[
-                {
-                  id: "cutting",
-                  label: "Cutting",
-                  value: cutting,
-                  onChange: (e) => setCutting(e.target.value),
-                },
-                {
-                  id: "stitching",
-                  label: "Stitching",
-                  value: stitching,
-                  onChange: (e) => setStitching(e.target.value),
-                },
-                {
-                  id: "hand-work",
-                  label: "Hand Work",
-                  value: handWork,
-                  onChange: (e) => setHandWork(e.target.value),
-                },
-                {
-                  id: "measurer",
-                  label: "Measurer",
-                  value: measurer,
-                  onChange: (e) => setMeasurer(e.target.value),
-                },
-                {
-                  id: "checker",
-                  label: "Checker",
-                  value: checker,
-                  onChange: (e) => setChecker(e.target.value),
-                },
-                {
-                  id: "tailor",
-                  label: "Tailor",
-                  value: tailor,
-                  onChange: (e) => setTailor(e.target.value),
-                },
-              ].map(({ id, label, value, onChange }) => (
-                <div key={id} className="flex items-center mb-4">
-                  <Label
-                    htmlFor={id}
-                    className="text-md font-bold w-1/4 text-right pr-4"
-                  >
-                    {label}
-                  </Label>
-                  <Input
-                    id={id}
-                    type="number"
-                    value={value}
-                    onChange={onChange}
-                    className="flex-1 border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-              ))}
-
-              <div className="flex items-center mt-6 border-t border-gray-300 pt-4">
-                <Label
-                  htmlFor="total"
-                  className="text-md font-bold w-1/4 text-right pr-4"
-                >
-                  Total
-                </Label>
-                <Input
-                  id="total"
-                  type="text"
-                  value={total.toFixed(2)}
-                  className="flex-1 border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  readOnly
-                />
-              </div>
-              <button
-                onClick={handleMaterialSubmit}
-                className="mt-4 px-6 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 transition duration-200"
-              >
-                Submit
-              </button>
-            </div>
+            <PaymentInfo
+              cutting={cuttingPrice}
+              setCutting={setCuttingPrice}
+              stitching={stitchingPrice}
+              setStitching={setStitchingPrice}
+              handWork={handWorkPrice}
+              setHandWork={setHandWorkPrice}
+              measurer={measurerPrice}
+              setMeasurer={setMeasurerPrice}
+              checker={checkerPrice}
+              setChecker={setCheckerPrice}
+              tailor={tailorPrice}
+              setTailor={setTailorPrice}
+              total={total}
+            />
           )}
+
+          <DialogFooter>
+            <Button
+              type="submit"
+              className="bg-[#308E87] hover:bg-[#308E87]"
+              onClick={handleSubmit}
+            >
+              Save Changes
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

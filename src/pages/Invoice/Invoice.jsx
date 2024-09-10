@@ -1,31 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../../components/ui/table";
-import { AiFillEdit } from "react-icons/ai";
-import { BiSolidTrashAlt } from "react-icons/bi";
-import NewPurchaseEntryModal from "@/components/modal/NewPurchaseEntryModal";
-import EditPurchaseEntryModal from "@/components/modal/EditPurchaseEntryModal";
-import jsPDF from "jspdf";
 import "jspdf-autotable";
 import AddInvoice from "@/components/modal/AddInvoice";
 import axios from "axios";
-import EditInvoice from "@/components/modal/EditInvoice";
 import { toast } from "react-hot-toast";
+import InvoiceTable from "./InvoiceTable";
 
 function Invoice() {
   const [invoice, setInvoice] = useState([]);
-
   useEffect(() => {
     fetchInvoices();
   }, []);
-
   const fetchInvoices = async () => {
     try {
       const response = await axios.get(
@@ -37,7 +21,6 @@ function Invoice() {
     }
   };
 
-  console.log(invoice);
 
   const handleDelete = (InvoiceId) => {
     toast(
@@ -79,7 +62,7 @@ function Invoice() {
         }
       );
       setInvoice((prevInvoice) =>
-      prevInvoice.filter((invoice) => invoice.invoice_id !== InvoiceId)
+        prevInvoice.filter((invoice) => invoice.invoice_id !== InvoiceId)
       );
 
       toast.success("Delete successful", { id: toastId });
@@ -106,51 +89,7 @@ function Invoice() {
               <AddInvoice />
             </div>
 
-            <Table className="w-full">
-              <TableCaption>List of Purchase Entries</TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[50px]">S.No</TableHead>
-                  <TableHead>Customer Name</TableHead>
-                  <TableHead>Mobile Number</TableHead>
-                  <TableHead>Address</TableHead>
-                  <TableHead>Balance</TableHead>
-                  <TableHead>Product Name</TableHead>
-                  <TableHead>Total</TableHead>
-                  <TableHead>Qty</TableHead>
-                  <TableHead>Cash Mode</TableHead>
-                  <TableHead className="text-center w-[120px]">
-                    Actions
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {invoice.map((entry, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell className="font-medium">
-                      {entry.cust_id}
-                    </TableCell>
-                    <TableCell>{entry.phone}</TableCell>
-                    <TableCell>{entry.address}</TableCell>
-                    <TableCell>{entry.balance}</TableCell>
-                    <TableCell>{entry.product_name}</TableCell>
-                    <TableCell>{entry.total}</TableCell>
-                    <TableCell>{entry.qty}</TableCell>
-                    <TableCell>{entry.cash_option}</TableCell>
-                    <TableCell className="text-center">
-                      <div className="flex justify-center gap-4">
-                        <EditInvoice />
-                        <BiSolidTrashAlt
-                          onClick={() => handleDelete(entry.invoice_id)}
-                          className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
-                        />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <InvoiceTable invoice={invoice} handleDelete={handleDelete} />
           </div>
         </div>
       </div>

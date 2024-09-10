@@ -34,8 +34,8 @@ function Items({ open }) {
 
   const customerSubItems = [
     {
-      label: "Customer List",
-      path: "/customerlist",
+      label: "Work Orders",
+      path: "/workorder",
     },
   ];
 
@@ -58,7 +58,7 @@ function Items({ open }) {
 
   const InvoiceItems = [
     {
-      label: "Invoice List",
+      label: "Pre-Invoice",
       path: "/invoice",
     },
   ];
@@ -89,7 +89,7 @@ function Items({ open }) {
       </Link>
       <MenuItem
         icon={TiUserOutline}
-        label="Customer"
+        label="Orders"
         open={open}
         subItems={customerSubItems}
       />

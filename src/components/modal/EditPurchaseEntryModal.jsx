@@ -32,7 +32,6 @@ function EditPurchaseEntryModal() {
             <DialogDescription>Edit the details of your purchase entry</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
-            {/* First Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-center gap-4">
               <Label htmlFor="billNumber" className="text-left">
                 Bill Number
@@ -54,7 +53,6 @@ function EditPurchaseEntryModal() {
               <Input id="purchaseDate" type="date" className="w-full" />
             </div>
 
-            {/* Second Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center gap-4">
               <Label htmlFor="productName" className="text-left">
                 Product Name

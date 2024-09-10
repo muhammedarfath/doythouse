@@ -77,7 +77,7 @@ function StockReport() {
     XLSX.writeFile(workbook, "stock_report.xlsx");
   };
 
-
+console.log(stockReport);
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -147,7 +147,7 @@ function StockReport() {
                 <TableRow>
                   <TableHead className="w-[50px]">SINO</TableHead>
                   <TableHead>Stock Item</TableHead>
-                  <TableHead>Items</TableHead>
+                  {/* <TableHead>Items</TableHead> */}
                   <TableHead className="text-right">Stock Value</TableHead>
                 </TableRow>
               </TableHeader>
@@ -155,10 +155,10 @@ function StockReport() {
                 {stockReport.map((stock, index) => (
                   <TableRow key={stock.id}>
                     <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>{stock.subcat_name}</TableCell>
-                    <TableCell>{stock.count}</TableCell>
+                    <TableCell>{stock.items}</TableCell>
+                    {/* <TableCell>{stock.count}</TableCell> */}
                     <TableCell className="text-right">
-                      {stock.total_purchase_price || "N/A"}
+                      {stock.stockvalue || "N/A"}
                     </TableCell>
                   </TableRow>
                 ))}

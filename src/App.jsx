@@ -6,7 +6,6 @@ import Login from './pages/authentication/Login';
 import AddProduct from './pages/Product/AddProduct';
 import Category from './pages/Category/Category';
 import SubCategory from './pages/Category/SubCategory';
-import CustomerList from './pages/CustomerList';
 import ProductList from './pages/Product/ProductList';
 import Shopinformation from './pages/Master/Shopinformation';
 import ExpenseList from './pages/Master/ExpenseList';
@@ -18,6 +17,7 @@ import TaxReport from './pages/Report/TaxReport';
 import Units from './pages/Units/Units';
 import PurchaseEntryList from './pages/Purchase/PurchaseEntryList';
 import Invoice from './pages/Invoice/Invoice';
+import CustomerList from './pages/Workorder/CustomerList';
 function App() {
 
   return (
@@ -32,7 +32,7 @@ function App() {
             <Route path="/subcategory" element={<SubCategory/>} />
             <Route path="/shopinformation" element={<Shopinformation/>} />
             <Route path="/employelist" element={<EmployeeList/>} />
-            <Route path="/customerlist" element={<CustomerList/>} />
+            <Route path="/workorder" element={<CustomerList/>} />
             <Route path="/expenselist" element={<ExpenseList/>} />
             <Route path="/supplier" element={<SupplierList/>} />
             <Route path="/salesreport" element={<SalesReport/>} />

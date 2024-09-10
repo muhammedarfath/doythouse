@@ -29,7 +29,6 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
   const [orderDate, setOrderDate] = useState(customer.cust_orderdate || "");
   const [emergency, setEmergency] = useState(customer.cust_emergency || "");
   const [status, setStatus] = useState(customer.status || "pending");
-
   // Measurements
   const [yokeLength, setYokeLength] = useState(customer.yoke_length || "");
   const [yokeRound, setYokeRound] = useState(customer.yokeRound || "");

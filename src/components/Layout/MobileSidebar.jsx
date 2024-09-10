@@ -53,8 +53,8 @@ function MobileSidebar({ onClose }) {
     { icon: <GiThermometerScale />, label: "Units", subItems: [{ label: "Unit List", path: "/units" }] },
     {
       icon: <TiUserOutline />,
-      label: "Customer",
-      subItems: [{ label: "Customer List", path: "/CustomerList" }],
+      label: "Orders",
+      subItems: [{ label: "Work Orders", path: "/workorder" }],
     },
     { icon: <TbTruck />, label: "Supplier", subItems: [{ label: "Supplier List", path: "/supplier" }] },
     {
