@@ -10,24 +10,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FaFileInvoice } from "react-icons/fa6";
 import PreInvoice from "./PreInvoice";
 
+
+
 function InvoiceTable({ invoice, handleDelete }) {
+  
+
   return (
     <Table className="w-full">
       <TableCaption>List of Purchase Entries</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="w-[50px]">S.No</TableHead>
-          <TableHead>Order Number</TableHead>
-          <TableHead>Customer Name</TableHead>
-          <TableHead>Mobile Number</TableHead>
+          <TableHead>Work Orders</TableHead>
           <TableHead>Address</TableHead>
-          <TableHead>Balance</TableHead>
           <TableHead>Product Name</TableHead>
           <TableHead>Total</TableHead>
-          <TableHead>Qty</TableHead>
           <TableHead>Cash Mode</TableHead>
           <TableHead className="text-center w-[120px]">Actions</TableHead>
         </TableRow>
@@ -36,18 +35,16 @@ function InvoiceTable({ invoice, handleDelete }) {
         {invoice.map((entry, index) => (
           <TableRow key={index}>
             <TableCell>{index + 1}</TableCell>
-            <TableCell className="font-medium">{entry.cust_id}</TableCell>
-            <TableCell className="font-medium">{entry.cust_name}</TableCell>
-            <TableCell>{entry.phone}</TableCell>
+            <TableCell className="font-medium">
+              {entry.cust_orderno}
+            </TableCell>
             <TableCell>{entry.address}</TableCell>
-            <TableCell>{entry.balance}</TableCell>
             <TableCell>{entry.product_name}</TableCell>
             <TableCell>{entry.total}</TableCell>
-            <TableCell>{entry.qty}</TableCell>
             <TableCell>{entry.cash_option}</TableCell>
             <TableCell className="text-center">
               <div className="flex justify-center gap-4">
-                <PreInvoice />
+                <PreInvoice order_id={entry.cust_orderno}/>
                 <EditInvoice entry={entry} />
                 <BiSolidTrashAlt
                   onClick={() => handleDelete(entry.invoice_id)}

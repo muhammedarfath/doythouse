@@ -1,6 +1,7 @@
 import React from "react";
 import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/label";
+import axios from "axios";
 
 function Userinfo({
   section1Ref,
@@ -26,6 +27,25 @@ function Userinfo({
   emergency,
   status,
 }) {
+  const handleOrderNumberChange = async (e) => {
+    const newOrderNumber = e.target.value;
+    setOrderNumber(newOrderNumber);
+    console.log(newOrderNumber);
+
+    try {
+      const response = await axios.post(
+        "https://storeconvo.com/php/fetch_post.php",
+        new URLSearchParams({
+          id: newOrderNumber,
+          typ: "checkorderno",
+        })
+      );
+      console.log(response);
+    } catch (error) {
+      console.error("API call error:", error);
+    }
+  };
+
   return (
     <div className="p-4 sm:p-6 lg:p-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6" ref={section1Ref}>
@@ -36,7 +56,7 @@ function Userinfo({
           <Input
             id="order-number"
             value={orderNumber}
-            onChange={(e) => setOrderNumber(e.target.value)}
+            onChange={handleOrderNumberChange}
             className="w-full"
           />
           <Label htmlFor="customerName" className="text-md font-bold">

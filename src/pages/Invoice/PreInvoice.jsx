@@ -1,9 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaFileInvoice } from "react-icons/fa";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import axios from "axios";
 
-function PreInvoice() {
+function PreInvoice({ order_id }) {
   const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState("");
+
+  const handleIconClick = async () => {
+    try {
+      const response = await axios.get(
+        `https://storeconvo.com/php/fetch.php?typ=invoicedetails&id=${order_id}`
+      );
+      console.log("Invoice Data:", response.data);
+      setOpen(true);
+    } catch (error) {
+      console.error("Error fetching invoice data:", error);
+    }
+  };
+
+
+  const handleStatusChange = async (e) => {
+    const newStatus = e.target.value;
+    setStatus(newStatus);
+    console.log(newStatus);
+    try {
+      const response = await axios.post(
+        "https://storeconvo.com/php/edit.php",
+        {
+          id: order_id,
+          inv_status: newStatus,
+          typ: "invoicestatus",
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
+
+
+
+  useEffect(() => {
+    fetchInvoicesStatus();
+  }, []);
+  const fetchInvoicesStatus = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=invoice"
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching invoices:", error);
+    }
+  };
+ 
+
 
   return (
     <>
@@ -12,7 +70,7 @@ function PreInvoice() {
           <DialogTrigger asChild>
             <FaFileInvoice
               className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
-              onClick={() => setOpen(true)}
+              onClick={handleIconClick}
             />
           </DialogTrigger>
           <DialogContent className="lg:max-w-[50%] overflow-auto lg:max-h-[90%] h-full  mt-3 sm:max-w-[900px]">
@@ -252,17 +310,21 @@ function PreInvoice() {
                     </div>
                   </div>
 
-                  <div class="mt-8 sm:mt-12 print:hidden">
-                    <div class="flex gap-x-3">
+                  <div className="mt-8 sm:mt-12 print:hidden">
+                    <div className="flex gap-x-3">
                       <a
                         href="#"
-                        class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border font-semibold bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 focus:ring-offset-gray-800 transition-all text-sm dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-300 dark:hover:text-white dark:focus:ring-gray-700 dark:hover:bg-white/20"
+                        className="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border font-semibold bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 focus:ring-offset-gray-800 transition-all text-sm dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-300 dark:hover:text-white dark:focus:ring-gray-700 dark:hover:bg-white/20"
                       >
                         Print Invoice
                       </a>
 
-                      <select class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border font-semibold bg-[#308E87] text-white shadow-sm align-middle hover:bg-[#308E87] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#308E87] focus:ring-offset-gray-800 transition-all text-sm dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-300 dark:hover:text-white dark:focus:ring-gray-700 dark:hover:bg-white/20">
-                        <option value="" disabled selected>
+                      <select
+                        className="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border font-semibold bg-[#308E87] text-white shadow-sm align-middle hover:bg-[#308E87] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#308E87] focus:ring-offset-gray-800 transition-all text-sm dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-300 dark:hover:text-white dark:focus:ring-gray-700 dark:hover:bg-white/20"
+                        value={status}
+                        onChange={handleStatusChange}
+                      >
+                        <option value="" disabled>
                           Change Status
                         </option>
                         <option value="closed">Closed</option>
