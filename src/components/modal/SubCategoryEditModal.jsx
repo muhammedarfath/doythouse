@@ -15,7 +15,7 @@ import { Button } from "../../components/ui/button";
 import { AiFillEdit } from "react-icons/ai";
 import toast from "react-hot-toast";
 
-function SubCategoryEditModal({ subcategory }) {
+function SubCategoryEditModal({ subcategory,onSuccess }) {
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(subcategory.cat_id || "");
@@ -38,17 +38,19 @@ function SubCategoryEditModal({ subcategory }) {
     };
     fetchCategories();
   }, []);
+  
+
 
   const handleSave = async () => {
     setLoading(true);
     try {
-      const response = await axios.put(
+      const response = await axios.post(
         "https://storeconvo.com/php/edit.php",
         new URLSearchParams({
           id: subcategory.subcat_id,
           category_id: selectedCategory, 
-          subcategory_name: subCategoryName,
-          hsn: hsn,
+          category_name: subCategoryName,
+          hsnacs: hsn,
           cgst: cgst,
           sgst: sgst,
           typ: "subcategory",
@@ -59,10 +61,12 @@ function SubCategoryEditModal({ subcategory }) {
           },
         }
       );
-
-      if (response.data.success) {
+      console.log(response.data);
+      if (response.data) {
         toast.success("Subcategory updated successfully!");
         setOpen(false);
+        onSuccess()
+        
       } else {
         toast.error("Failed to update subcategory.");
       }

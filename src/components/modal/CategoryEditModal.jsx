@@ -42,6 +42,7 @@ function CategoryEditModal({ category,onSuccess }) {
           },
         }
       );
+      console.log(response.data);
       if (response.status === 200) {
         toast.success("Category updated successfully");
         setOpen(false); 

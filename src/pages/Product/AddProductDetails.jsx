@@ -22,6 +22,7 @@ function AddProductDetails({
   setSalesUnit,
   packSize,
   setPackSize,
+  units,
 }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -107,17 +108,24 @@ function AddProductDetails({
 
         <div className="md:col-span-2">
           <label htmlFor="unit">Product Unit</label>
-          <div className="h-10 bg-[#fff] flex border border-gray-200 rounded items-center mt-1">
-            <input
-              name="unit"
-              id="unit"
-              value={unitId || ""}
-              onChange={handleChange}
-              placeholder="Unit"
-              className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
-              required
-            />
-          </div>
+          <select
+            id="sort-by-type"
+            name="unit"
+            value={unitId}
+            onChange={handleChange}
+            className="h-10 border rounded px-4 bg-gray-50"
+          >
+            <option value="">Select Type</option>
+            {units.length > 0 ? (
+              units.map((unit) => (
+                <option key={unit.unitid} value={unit.unitid}>
+                  {unit.unitname}
+                </option>
+              ))
+            ) : (
+              <option value="">No units available</option>
+            )}
+          </select>
         </div>
 
         <div className="md:col-span-2">
@@ -162,7 +170,6 @@ function AddProductDetails({
             placeholder="CGST"
             required
           />
-
         </div>
 
         <div className="md:col-span-1">
@@ -191,7 +198,6 @@ function AddProductDetails({
               className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
               required
             />
-
           </div>
         </div>
 

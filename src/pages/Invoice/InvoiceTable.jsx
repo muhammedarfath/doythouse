@@ -12,11 +12,7 @@ import {
 } from "@/components/ui/table";
 import PreInvoice from "./PreInvoice";
 
-
-
 function InvoiceTable({ invoice, handleDelete }) {
-  
-
   return (
     <Table className="w-full">
       <TableCaption>List of Purchase Entries</TableCaption>
@@ -26,7 +22,7 @@ function InvoiceTable({ invoice, handleDelete }) {
           <TableHead>Work Orders</TableHead>
           <TableHead>Address</TableHead>
           <TableHead>Product Name</TableHead>
-          <TableHead>Total</TableHead>
+          <TableHead>Date</TableHead>
           <TableHead>Cash Mode</TableHead>
           <TableHead className="text-center w-[120px]">Actions</TableHead>
         </TableRow>
@@ -35,16 +31,14 @@ function InvoiceTable({ invoice, handleDelete }) {
         {invoice.map((entry, index) => (
           <TableRow key={index}>
             <TableCell>{index + 1}</TableCell>
-            <TableCell className="font-medium">
-              {entry.cust_orderno}
-            </TableCell>
+            <TableCell className="font-medium">{entry.cust_orderno}</TableCell>
             <TableCell>{entry.address}</TableCell>
-            <TableCell>{entry.product_name}</TableCell>
-            <TableCell>{entry.total}</TableCell>
+            <TableCell>{entry.product}</TableCell>
+            <TableCell>{entry.date}</TableCell>
             <TableCell>{entry.cash_option}</TableCell>
             <TableCell className="text-center">
               <div className="flex justify-center gap-4">
-                <PreInvoice order_id={entry.cust_orderno}/>
+                <PreInvoice order_id={entry.cust_orderno} />
                 <EditInvoice entry={entry} />
                 <BiSolidTrashAlt
                   onClick={() => handleDelete(entry.invoice_id)}

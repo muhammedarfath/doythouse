@@ -15,7 +15,7 @@ import { Label } from "../../components/ui/label";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-function ProductEditModal({ product }) {
+function ProductEditModal({ product,onSuccess }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -41,9 +41,6 @@ function ProductEditModal({ product }) {
 
 
 
-  console.log(product);
-
-
   useEffect(() => {
     if (product) {
       setProductName(product.productname || "");
@@ -56,8 +53,8 @@ function ProductEditModal({ product }) {
       setSgst(product.sgst || "");
       setSalesUnit(product.salesunit || "");
       setPackSize(product.packsize || "");
-      setCategory(product.cat_name || "");
-      setSubCategory(product.subcat_name || "");
+      setCategory(product.cateoryid || "");
+      setSubCategory(product.subcat_id || "");
       setMrp(product.mrp || "");
       setPurchasePrice(product.purchaseprice || "");
       setRetailPrice(product.retailprice || "");
@@ -67,6 +64,10 @@ function ProductEditModal({ product }) {
       setOpenQty(product.openqty || "");
     }
   }, [product]);
+
+
+
+
 
   const handleSave = async () => {
     setLoading(true);
@@ -108,6 +109,7 @@ function ProductEditModal({ product }) {
       if (response.status === 200) {
         toast.success("Product Edit Successful");
         setOpen(false);
+        onSuccess()
       }
     } catch (error) {
       console.error("Error updating Product:", error);

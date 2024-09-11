@@ -45,7 +45,6 @@ function ExpenseModal({setExpenses,onChange}) {
       console.error("Error fetching expense types:", error);
     }
   };
-
   useEffect(() => {
     fetchSubExpenseTypes();
   }, []);
@@ -59,7 +58,6 @@ function ExpenseModal({setExpenses,onChange}) {
       console.error("Error fetching sub expense types:", error);
     }
   };
-
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -74,7 +72,6 @@ function ExpenseModal({setExpenses,onChange}) {
     };
     fetchEmployees();
   }, []);
-
   const handleAddNewExpenseType = async () => {
     setLoading(true);
     try {
@@ -101,7 +98,6 @@ function ExpenseModal({setExpenses,onChange}) {
       setLoading(false);
     }
   };
-
   const handleAddNewSubExpenseType = async () => {
     setLoading(true);
 
@@ -132,11 +128,8 @@ function ExpenseModal({setExpenses,onChange}) {
     }
   };
 
-
-
   const handleSave = async () => {
     setLoading(true);
-
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_expense.php",
@@ -154,20 +147,17 @@ function ExpenseModal({setExpenses,onChange}) {
           },
         }
       );
-      console.log(response,"new addedddddddd");
       if (response.status === 200) {
         toast.success("Expense added successfully");
         setIsOpen(false);
         setDate("");
-        onChange()
-
         setAmount("");
         setSelectedEmployee("");
         setNote("");
+        onChange()
       }
     } catch (error) {
-      console.error("Error saving expense:", error);
-      alert("Failed to save expense");
+      toast.error("Failed to save expense");
     } finally {
       setLoading(false);
     }

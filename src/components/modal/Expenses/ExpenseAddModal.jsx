@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/label";
 import { Button } from "../../../components/ui/button";
@@ -25,20 +24,17 @@ function ExpenseAddModal({
   setSelecteSubdExpense,
   selectedSubExpense,
   subExpenseType,
-  setSubExpenseType,
 }) {
   const handleExpenseChange = (e) => {
     const newExpense = e.target.value;
     setSelectedExpense(newExpense);
   };
-  
   const handleSubExpenseChange = (e) => {
     const newSubExpense = e.target.value;
     setSelecteSubdExpense(newSubExpense);
   };
-
   return (
-    <div className="-mb-20 lg:mb-0 md:mb-0 h-full overflow-scroll">
+    <div className="-mb-20 lg:mb-0 md:mb-0 h-full">
       <div className="flex lg:flex-row md:flex-row flex-col gap-2 lg:gap-0 md:gap-0 justify-end lg:space-x-3 md:space-x-3 mb-4">
         <Button
           className="text-left bg-[#308E87] text-white hover:bg-[#308E87] w-full sm:w-auto"

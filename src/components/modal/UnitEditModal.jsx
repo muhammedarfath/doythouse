@@ -20,6 +20,7 @@ function UnitEditModal({ unit, onSuccess }) {
   const [unitCode, setUnitCode] = useState(unit.unitcode || "");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+
   const handleSave = async () => {
     if (!unitName || !unitCode) {
       toast.error("Please fill out all fields");
@@ -33,8 +34,8 @@ function UnitEditModal({ unit, onSuccess }) {
         "https://storeconvo.com/php/edit.php", 
         new URLSearchParams({
           id: unit.unitid,
-          unit_name: unitName,
-          unit_code: unitCode,
+          unitname: unitName,
+          unitcode: unitCode,
           typ:"unit"
         }),
         {

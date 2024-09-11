@@ -16,12 +16,9 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 
 function EditExpenseModal({ expense,onChange }) {
-
-
-
   const [open, setOpen] = useState(false);
-  const [type, setType] = useState(expense.type || "");
-  const [subType, setSubType] = useState(expense.subtypexpid || "");
+  const [type, setType] = useState(expense.subtypexpid || "");
+  const [subType, setSubType] = useState(expense.expsub_type || "");
   const [amount, setAmount] = useState(expense.exp_amount || "");
   const [selectedEmployee, setSelectedEmployee] = useState(
     expense.exp_employee || ""
@@ -39,11 +36,10 @@ function EditExpenseModal({ expense,onChange }) {
           axios.get("https://storeconvo.com/php/fetch.php?typ=employee"),
           axios.get("https://storeconvo.com/php/fetch.php?typ=expense_type"),
         ]);
-
         setEmployees(employeesResponse.data);
         setExpenseTypes(typesResponse.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        toast.error("Error fetching data:", error);
       }
     };
 
@@ -58,25 +54,14 @@ function EditExpenseModal({ expense,onChange }) {
         );
         setSubTypes(response.data);
       } catch (error) {
-        console.error("Error fetching sub expense types:", error);
+        toast.error("Error fetching sub expense types:", error);
       }
     };
     fetchSubExpenseTypes();
   }, []);
 
-
   const handleSave = async () => {
-    setLoading(true);
-
-    console.log(expense.exp_id);
-    console.log(expense.exp_date);
-    console.log(type);
-    console.log(subType);
-    console.log(amount);
-    console.log(selectedEmployee);
-    console.log(note);
-    
-    
+    setLoading(true);    
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/edit.php",
@@ -96,20 +81,18 @@ function EditExpenseModal({ expense,onChange }) {
           },
         }
       );
-      console.log(response);
       if (response.status === 200) {
         toast.success("Expense Edit successfully")
         setOpen(false);
         onChange()
-
       }
     } catch (error) {
-      console.error("Error saving expense:", error);
-      alert("Failed to save expense");
+      toast.error("Error saving expense:", error);
     } finally {
       setLoading(false);
     }
   };
+  
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>

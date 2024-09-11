@@ -45,7 +45,6 @@ function NewSubExpenseModal({
           ))}
         </select>
       </div>
-
       <div className="flex gap-2">
         <Button
           className="bg-[#308E87] text-white hover:bg-[#308E87]"

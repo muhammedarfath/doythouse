@@ -34,16 +34,34 @@ function AddProduct() {
   const [specialPrice, setSpecialPrice] = useState("");
   const [dealerPrice, setDealerPrice] = useState("");
   const [openQty, setOpenQty] = useState("");
+  const [units, setUnits] = useState("");
+
+
+
+
+  useEffect(() => {
+    fetchUnits();
+  }, []);
+
+  const fetchUnits = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=unit"
+      );
+      setUnits(response.data);
+    } catch (error) {
+      console.error("Error fetching units:", error);
+    }
+  };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Validation
     if (!productname) return toast.error("Product name is required");
     if (!ProductDescription)
       return toast.error("Product description is required");
     if (!productUserCode) return toast.error("Product user code is required");
-    if (!unitId) return toast.error("Unit ID is required");
+    if (!units) return toast.error("Unit ID is required");
     if (!reorderLevel) return toast.error("Reorder level is required");
     if (!hsn) return toast.error("HSN is required");
     if (!cgst || isNaN(cgst))
@@ -310,6 +328,7 @@ function AddProduct() {
                     setSalesUnit={setSalesUnit}
                     packSize={packSize}
                     setPackSize={setPackSize}
+                    units={units}
                   />
                 )}
                 {activeSection === "gallery" && (

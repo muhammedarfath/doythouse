@@ -22,18 +22,19 @@ function StockReport() {
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
 
   useEffect(() => {
-    const fetchStockReport = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=stock"
-        );
-        setStockReport(response.data);
-      } catch (error) {
-        console.error("Error fetching stock report:", error);
-      }
-    };
     fetchStockReport();
   }, []);
+
+  const fetchStockReport = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=stock"
+      );
+      setStockReport(response.data);
+    } catch (error) {
+      console.error("Error fetching stock report:", error);
+    }
+  };
 
 
   const toggleFilter = () => {
@@ -77,7 +78,6 @@ function StockReport() {
     XLSX.writeFile(workbook, "stock_report.xlsx");
   };
 
-console.log(stockReport);
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -90,7 +90,7 @@ console.log(stockReport);
                 <span>Search</span>
                 <input
                   type="text"
-                  placeholder="Search by category..."
+                  placeholder="Search by stock..."
                   className="h-10 border rounded px-4 w-64 bg-gray-50"
                   value={searchTerm}
                   onChange={handleSearchChange}
@@ -103,7 +103,7 @@ console.log(stockReport);
                 >
                   <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
                 </div>
-                <AddStock />
+                <AddStock onSuccess={fetchStockReport}/>
                 <Button
                   className="bg-[#308E87] hover:bg-[#308E87]"
                   onClick={downloadExcel}
@@ -147,7 +147,7 @@ console.log(stockReport);
                 <TableRow>
                   <TableHead className="w-[50px]">SINO</TableHead>
                   <TableHead>Stock Item</TableHead>
-                  {/* <TableHead>Items</TableHead> */}
+                  <TableHead>Unit</TableHead>
                   <TableHead className="text-right">Stock Value</TableHead>
                 </TableRow>
               </TableHeader>
@@ -156,24 +156,13 @@ console.log(stockReport);
                   <TableRow key={stock.id}>
                     <TableCell className="font-medium">{index + 1}</TableCell>
                     <TableCell>{stock.items}</TableCell>
-                    {/* <TableCell>{stock.count}</TableCell> */}
+                    <TableCell>{stock.unitname}</TableCell>
                     <TableCell className="text-right">
                       {stock.stockvalue || "N/A"}
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
-              <tfoot>
-                {/* <TableRow>
-                  <TableCell colSpan={2} className="font-semibold text-right">
-                    Total:
-                  </TableCell>
-                  <TableCell className="font-semibold">{totalItems}</TableCell>
-                  <TableCell className="text-right font-semibold">
-                    ₹{totalStockValue.toLocaleString()}
-                  </TableCell>
-                </TableRow> */}
-              </tfoot>
             </Table>
           </div>
         </div>

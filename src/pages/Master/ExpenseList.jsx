@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "../../components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../../components/ui/table";
 import ExpenseModal from "@/components/modal/ExpenseModal";
 import { CiFilter } from "react-icons/ci";
-import { BiSolidTrashAlt } from "react-icons/bi";
 import axios from "axios";
-import EditExpenseModal from "@/components/modal/EditExpenseModal";
 import { toast } from "react-hot-toast";
+import Search from "@/components/Search/Search";
+import ExpenseTable from "./ExpenseTable";
+import ExpenseFilter from "./ExpenseFilter";
 
 function ExpenseList() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -28,11 +19,9 @@ function ExpenseList() {
     expenseType: "",
     employee: "",
   });
-
   useEffect(() => {
     fetchExpenseList();
   }, []);
-
   const fetchExpenseList = async () => {
     try {
       const response = await axios.get(
@@ -43,7 +32,6 @@ function ExpenseList() {
       console.error("Error fetching expenses:", error);
     }
   };
-
   useEffect(() => {
     const fetchExpenseTypes = async () => {
       try {
@@ -57,7 +45,6 @@ function ExpenseList() {
     };
     fetchExpenseTypes();
   }, []);
-
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -72,7 +59,6 @@ function ExpenseList() {
     };
     fetchEmployees();
   }, []);
-
   const handleDelete = (expensesId) => {
     toast(
       (t) => (
@@ -97,7 +83,6 @@ function ExpenseList() {
       { duration: 4000 }
     );
   };
-
   const confirmDelete = async (expensesId, toastId) => {
     try {
       await axios.post(
@@ -121,11 +106,9 @@ function ExpenseList() {
       toast.error("Failed to delete expense", { id: toastId });
     }
   };
-
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
-
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({
@@ -133,7 +116,6 @@ function ExpenseList() {
       [name]: value,
     }));
   };
-
   const filteredExpenses = expenses.filter((expense) => {
     const { fromDate, toDate, expenseType, employee } = filters;
 
@@ -147,10 +129,17 @@ function ExpenseList() {
 
     const isMatchingSearchQuery =
       expense.exp_type?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      expense.employee_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      expense.employee_name
+        ?.toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
       expense.exp_note?.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return isWithinDateRange && isMatchingType && isMatchingEmployee && isMatchingSearchQuery;
+    return (
+      isWithinDateRange &&
+      isMatchingType &&
+      isMatchingEmployee &&
+      isMatchingSearchQuery
+    );
   });
 
   return (
@@ -160,16 +149,11 @@ function ExpenseList() {
           <h2 className="font-semibold text-xl text-black">Expense List</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 lg:w-full">
             <div className="flex items-center justify-between mb-4 lg:flex-row gap-4 lg:gap-0  flex-col">
-              <div className="flex gap-2">
-                <span>Search</span>
-                <input
-                  type="text"
-                  placeholder="Search by expense..."
-                  className="h-10 border rounded px-4 w-64 bg-white"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
+              <Search
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                name={"expense"}
+              />
               <div className="flex items-center gap-5">
                 <div
                   className="border rounded-md p-2 bg-[#D8E9E7] text-[#308E87] "
@@ -177,135 +161,25 @@ function ExpenseList() {
                 >
                   <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
                 </div>
-
-                <ExpenseModal setExpenses={setExpenses} onChange={fetchExpenseList}/>
+                <ExpenseModal
+                  setExpenses={setExpenses}
+                  onChange={fetchExpenseList}
+                />
               </div>
             </div>
-
             {isFilterVisible && (
-              <div className="flex flex-wrap gap-4 mb-4">
-                <div className="flex flex-col">
-                  <label htmlFor="from-date" className="text-sm font-medium">
-                    From Date
-                  </label>
-                  <input
-                    type="date"
-                    id="from-date"
-                    name="fromDate"
-                    value={filters.fromDate}
-                    onChange={handleFilterChange}
-                    className="h-10 border rounded px-4 bg-gray-50"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="to-date" className="text-sm font-medium">
-                    To Date
-                  </label>
-                  <input
-                    type="date"
-                    id="to-date"
-                    name="toDate"
-                    value={filters.toDate}
-                    onChange={handleFilterChange}
-                    className="h-10 border rounded px-4 bg-gray-50"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="sort-by-type" className="text-sm font-medium">
-                    Sort by Expense Type
-                  </label>
-                  <select
-                    id="sort-by-type"
-                    name="expenseType"
-                    value={filters.expenseType}
-                    onChange={handleFilterChange}
-                    className="h-10 border rounded px-4 bg-gray-50"
-                  >
-                    <option value="">Select Type</option>
-                    {ExpenseType.map((type) => (
-                      <option key={type} value={type.exp_type}>
-                        {type.exp_type}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex flex-col">
-                  <label
-                    htmlFor="sort-by-employee"
-                    className="text-sm font-medium"
-                  >
-                    Sort by Employee Name
-                  </label>
-                  <select
-                    id="sort-by-employee"
-                    name="employee"
-                    value={filters.employee}
-                    onChange={handleFilterChange}
-                    className="h-10 border rounded px-4 bg-gray-50"
-                  >
-                    <option value="">Select Employee</option>
-                    {employees.map((emp) => (
-                      <option key={emp} value={emp.employee_name}>
-                        {emp.employee_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
+              <ExpenseFilter
+                filters={filters}
+                handleFilterChange={handleFilterChange}
+                employees={employees}
+              />
             )}
-
-            <Table>
-              <TableCaption>A list of your expenses.</TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[50px]">Select</TableHead>
-                  <TableHead className="w-[50px]">SINO</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Expense Type</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
-                  {Array.isArray(expenses) &&
-                    expenses.some((expense) => expense.expsub_type) && (
-                      <TableHead className="text-right">Sub Expense</TableHead>
-                    )}
-                  <TableHead>Employee</TableHead>
-                  <TableHead>Note</TableHead>
-                  <TableHead className="text-center">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredExpenses.map((expense, index) => (
-                  <TableRow key={expense.exp_id}>
-                    <TableCell>
-                      <input type="checkbox" />
-                    </TableCell>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>{expense.exp_date}</TableCell>
-                    <TableCell>{expense.exp_type}</TableCell>
-                    <TableCell className="text-right">
-                      {expense.exp_amount}
-                    </TableCell>
-                    {Array.isArray(expenses) &&
-                      expenses.some((expense) => expense.expsub_type) && (
-                        <TableCell className="text-right">
-                          {expense.subexp_name || ""}
-                        </TableCell>
-                      )}
-                    <TableCell>{expense.employee_name}</TableCell>
-                    <TableCell>{expense.exp_note}</TableCell>
-                    <TableCell className="flex justify-center gap-4">
-                      <EditExpenseModal
-                        expense={expense}
-                        onChange={fetchExpenseList}
-                      />
-                      <BiSolidTrashAlt
-                        onClick={() => handleDelete(expense.exp_id)}
-                        className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <ExpenseTable
+              expenses={expenses}
+              filteredExpenses={filteredExpenses}
+              fetchExpenseList={fetchExpenseList}
+              handleDelete={handleDelete}
+            />
           </div>
         </div>
       </div>

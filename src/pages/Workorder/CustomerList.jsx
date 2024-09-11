@@ -29,15 +29,20 @@ function CustomerList() {
     }
   };
 
+console.log(customer,"this is s");
+
+
+
+
   const handleChangeStatus = async (e, customerId) => {
     const newStatus = e.target.value;
     try {
     const response =   await axios.post(
-        `https://storeconvo.com/php/edit.php/`,
+        'https://storeconvo.com/php/edit.php/',
         {
           id: customerId,
+          status:newStatus,
           typ: "status",
-          status:newStatus
         },
         {
           headers: {

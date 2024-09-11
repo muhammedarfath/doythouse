@@ -22,6 +22,9 @@ function Invoice() {
   };
 
 
+  console.log(invoice,"this is invoi");
+
+
   const handleDelete = (InvoiceId) => {
     toast(
       (t) => (

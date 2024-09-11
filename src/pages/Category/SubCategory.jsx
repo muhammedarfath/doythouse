@@ -144,7 +144,7 @@ function SubCategory() {
                     <TableCell>{subcategory.sgst}</TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <SubCategoryEditModal subcategory={subcategory} />
+                        <SubCategoryEditModal subcategory={subcategory} onSuccess={fetchSubCategories}/>
                         <BiSolidTrashAlt
                           className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
                           onClick={() => handleDelete(subcategory.subcat_id)}

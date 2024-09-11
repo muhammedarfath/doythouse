@@ -3,7 +3,7 @@ import { Button } from "../../components/ui/button";
 import {
   Table,
   TableBody,
-  TableCaption,
+
   TableCell,
   TableHead,
   TableHeader,
@@ -22,20 +22,20 @@ function ProductList() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    const fetchProductList = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=product"
-        );
-        console.log(response.data);
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
     fetchProductList();
   }, []);
+  const fetchProductList = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=product"
+      );
+      console.log(response.data);
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value.toLowerCase());
@@ -169,7 +169,7 @@ function ProductList() {
                       <TableCell className="text-center">
                         <div className="flex justify-center gap-4">
                           <ProductDetailsModal product={product} />
-                          <ProductEditModal product={product} />
+                          <ProductEditModal product={product} onSuccess={fetchProductList}/>
                           <BiSolidTrashAlt
                             onClick={() => handleDelete(product.productid)}
                             className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"

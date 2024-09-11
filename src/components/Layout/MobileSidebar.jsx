@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { LuBadgeCheck } from "react-icons/lu";
-import { RiShoppingBag4Line, RiShoppingCart2Line } from "react-icons/ri";
+import { RiShoppingBag4Line } from "react-icons/ri";
 import { TiUserOutline } from "react-icons/ti";
 import { TbTruck, TbReportAnalytics } from "react-icons/tb";
 import { GiThermometerScale } from "react-icons/gi";

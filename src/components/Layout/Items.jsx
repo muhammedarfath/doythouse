@@ -1,9 +1,4 @@
 import React from "react";
-import {
-  AiOutlineDashboard,
-  AiOutlineAppstore,
-  AiOutlineSetting,
-} from "react-icons/ai";
 import { LuBadgeCheck } from "react-icons/lu";
 import MenuItem from "./MenuItem";
 import { Link } from "react-router-dom";
@@ -13,7 +8,6 @@ import { TiUserOutline } from "react-icons/ti";
 import { TbTruck } from "react-icons/tb";
 import { TbReportAnalytics } from "react-icons/tb";
 import { GiThermometerScale } from "react-icons/gi";
-import { RiShoppingCart2Line } from "react-icons/ri";
 import { TbFileInvoice } from "react-icons/tb";
 
 function Items({ open }) {
@@ -40,12 +34,17 @@ function Items({ open }) {
   ];
 
   const productSubItems = [
+    { label: "Product List", path: "/product" },
     { label: "Add Product", path: "/addproduct" },
     { label: "Category", path: "/category" },
     { label: "SubCategory", path: "/subcategory" },
   ];
 
   const ReportSubItems = [
+    {
+      label: "Sales List",
+      path: "/salesreport",
+    },
     {
       label: "Stock Report",
       path: "/stockreport",
@@ -65,7 +64,9 @@ function Items({ open }) {
 
   return (
     <ul
-      className={`pt-6 ${open ? "pl-4" : "pl-1"} transition-all duration-300 `}
+      className={`pt-6 ${
+        open ? "pl-4" : "pl-1"
+      } transition-all duration-300 flex h-full gap-4 flex-col`}
     >
       <Link to="/">
         <MenuItem icon={BiHomeSmile} label="Dashboard" open={open} />
@@ -76,14 +77,12 @@ function Items({ open }) {
         open={open}
         subItems={masterSubItems}
       />
-      <Link to="/product">
-        <MenuItem
-          icon={RiShoppingBag4Line}
-          label="Product"
-          open={open}
-          subItems={productSubItems}
-        />
-      </Link>
+      <MenuItem
+        icon={RiShoppingBag4Line}
+        label="Product"
+        open={open}
+        subItems={productSubItems}
+      />
       <Link to="/units">
         <MenuItem icon={GiThermometerScale} label="Units" open={open} />
       </Link>
@@ -96,22 +95,19 @@ function Items({ open }) {
       <Link to="/supplier">
         <MenuItem icon={TbTruck} label="Supplier" open={open} />
       </Link>
-      <Link>
-        <MenuItem
-          icon={TbFileInvoice}
-          label="Invoice"
-          open={open}
-          subItems={InvoiceItems}
-        />
-      </Link>
-      <Link to="/salesreport">
-        <MenuItem
-          icon={TbReportAnalytics}
-          label="Sales Report"
-          open={open}
-          subItems={ReportSubItems}
-        />
-      </Link>
+
+      <MenuItem
+        icon={TbFileInvoice}
+        label="Invoice"
+        open={open}
+        subItems={InvoiceItems}
+      />
+      <MenuItem
+        icon={TbReportAnalytics}
+        label="Sales Report"
+        open={open}
+        subItems={ReportSubItems}
+      />
     </ul>
   );
 }

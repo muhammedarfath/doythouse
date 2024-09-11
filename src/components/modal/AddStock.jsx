@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -15,24 +15,63 @@ import { FiPlus } from "react-icons/fi";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-function AddStock() {
+function AddStock({ onSuccess }) {
   const [isOpen, setIsOpen] = useState(false);
   const [stockItem, setStockItem] = useState("");
-  const [totalItems, setTotalItems] = useState("");
   const [stockValue, setStockValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [unit, setUnit] = useState([]); 
+  const [selectedUnit, setSelectedUnit] = useState("");
+
+  useEffect(() => {
+    fetchUnits();
+  }, []);
+
+  const fetchUnits = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=unit"
+      );
+      if (Array.isArray(response.data)) {
+        setUnit(response.data);
+      } else {
+        console.error("Unexpected response format:", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching units:", error);
+    }
+  };
+  
+
+  const handlUnitChange = (e) => {
+    const newUnit = e.target.value;
+    setSelectedUnit(newUnit);
+  };
 
   const handleSave = async () => {
     setLoading(true);
     try {
-      // Replace with your API endpoint
-      await axios.post("/api/stock", {
-        stockItem,
-        totalItems,
-        stockValue,
-      });
-      toast.success("Stock added successfully!");
-      setIsOpen(false);
+      const response = await axios.post(
+        "https://storeconvo.com/php/add_stock.php",
+        {
+          items: stockItem,
+          unit:selectedUnit,
+          stockvalue: stockValue,
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      console.log(response.data);
+      if (response.data) {
+        toast.success("Stock added successfully!");
+        setIsOpen(false);
+        onSuccess();
+      } else {
+        toast.error("Something went wrong");
+      }
     } catch (error) {
       toast.error("Failed to add stock!");
     } finally {
@@ -69,16 +108,25 @@ function AddStock() {
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="totalItems" className="text-right">
-              Total Items
-            </Label>
-            <Input
-              id="totalItems"
-              className="col-span-3"
-              placeholder="Enter total items"
-              value={totalItems}
-              onChange={(e) => setTotalItems(e.target.value)}
-            />
+            <label htmlFor="SubCategory">SubCategory</label>
+            <select
+              name="unit"
+              id="unit"
+              className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+              value={selectedUnit}
+              onChange={handlUnitChange}
+            >
+              <option value="">Choose Subcategory</option>
+              {unit.length > 0 ? (
+                unit.map((unit) => (
+                  <option key={unit.unitid} value={unit.unitid}>
+                    {unit.unitname}
+                  </option>
+                ))
+              ) : (
+                <option value="">No units available</option>
+              )}
+            </select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="stockValue" className="text-right">
