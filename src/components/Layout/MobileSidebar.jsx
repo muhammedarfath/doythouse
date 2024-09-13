@@ -11,7 +11,7 @@ import { TbFileInvoice } from "react-icons/tb";
 
 function MobileSidebar({ onClose }) {
   const [openSubMenu, setOpenSubMenu] = useState({});
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const toggleSubMenu = (label) => {
     setOpenSubMenu((prev) => ({
@@ -25,7 +25,7 @@ function MobileSidebar({ onClose }) {
       toggleSubMenu(label);
     } else {
       navigate(path);
-      onClose(); 
+      onClose();
     }
   };
 
@@ -50,17 +50,28 @@ function MobileSidebar({ onClose }) {
         { label: "Subcategory", path: "/subcategory" },
       ],
     },
-    { icon: <GiThermometerScale />, label: "Units", subItems: [{ label: "Unit List", path: "/units" }] },
+    {
+      icon: <GiThermometerScale />,
+      label: "Units",
+      subItems: [{ label: "Unit List", path: "/units" }],
+    },
     {
       icon: <TiUserOutline />,
       label: "Orders",
       subItems: [{ label: "Work Orders", path: "/workorder" }],
     },
-    { icon: <TbTruck />, label: "Supplier", subItems: [{ label: "Supplier List", path: "/supplier" }] },
+    {
+      icon: <TbTruck />,
+      label: "Supplier",
+      subItems: [{ label: "Supplier List", path: "/supplier" }],
+    },
     {
       icon: <TbFileInvoice />,
       label: "Invoice",
-      subItems: [{ label: "Invoice List", path: "/invoice" }],
+      subItems: [
+        { label: "Pri-Invoice", path: "/invoice" },
+        { label: "Closed-Invoice", path: "/finalinvoice" },
+      ],
     },
     {
       icon: <TbReportAnalytics />,
@@ -81,7 +92,9 @@ function MobileSidebar({ onClose }) {
             <li key={index}>
               <div
                 className="flex items-center space-x-2 p-2 hover:bg-[#D8E9E7] rounded-md cursor-pointer"
-                onClick={() => handleItemClick(item.path, item.label, item.subItems)}
+                onClick={() =>
+                  handleItemClick(item.path, item.label, item.subItems)
+                }
               >
                 <span className="text-2xl">{item.icon}</span>
                 <span className="text-sm">{item.label}</span>

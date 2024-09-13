@@ -10,6 +10,8 @@ import axios from "axios";
 import { FiPlus } from "react-icons/fi";
 import { FaArrowRight } from "react-icons/fa6";
 import toast from "react-hot-toast";
+import ProductIcons from "./ProductIcons";
+import MobileProductIcons from "./MobileProductIcons";
 
 function AddProduct() {
   const [activeSection, setActiveSection] = useState("details");
@@ -36,9 +38,6 @@ function AddProduct() {
   const [openQty, setOpenQty] = useState("");
   const [units, setUnits] = useState("");
 
-
-
-
   useEffect(() => {
     fetchUnits();
   }, []);
@@ -53,7 +52,6 @@ function AddProduct() {
       console.error("Error fetching units:", error);
     }
   };
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -124,39 +122,36 @@ function AddProduct() {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data", 
+            "Content-Type": "multipart/form-data",
           },
         }
       );
-
-      console.log(response.data);
       if (response.status === 200) {
         toast.success("Product saved successfully!");
-        // setProductName("");
-        // setProductDescription("");
-        // setProductUserCode("");
-        // setUnitId("");
-        // setReorderLevel("");
-        // setHsn("");
-        // setCgst("");
-        // setSgst("");
-        // setImage("");
-        // setSalesUnit("");
-        // setPackSize("");
-        // setCategory("");
-        // setSubCategory("");
-        // setMrp("");
-        // setPurchasePrice("");
-        // setRetailPrice("");
-        // setWholesalePrice("");
-        // setSpecialPrice("");
-        // setDealerPrice("");
-        // setOpenQty("");
+        setProductName("");
+        setProductDescription("");
+        setProductUserCode("");
+        setUnitId("");
+        setReorderLevel("");
+        setHsn("");
+        setCgst("");
+        setSgst("");
+        setImage("");
+        setSalesUnit("");
+        setPackSize("");
+        setCategory("");
+        setSubCategory("");
+        setMrp("");
+        setPurchasePrice("");
+        setRetailPrice("");
+        setWholesalePrice("");
+        setSpecialPrice("");
+        setDealerPrice("");
+        setOpenQty("");
       } else {
         toast.error("Failed to save product");
       }
     } catch (error) {
-      console.error("Error saving product:", error);
       toast.error("Failed to save product");
     } finally {
       setLoading(false);
@@ -168,143 +163,12 @@ function AddProduct() {
       <div className="w-full mx-auto">
         <div className="flex flex-col gap-11 mt-8">
           <h2 className="font-bold text-xl text-black">Add New Product</h2>
-
           <div className="bg-white flex rounded-2xl shadow-sm p-4 px-4 md:p-8 mb-6 w-full">
             <div className="lg:relative md:relative flex gap-4 gap-y-2 text-sm w-full">
-              <div className="lg:flex  md:flex lg:flex-col md:flex-col items-center hidden lg:w-1/3 md:w-1/6">
-                <div
-                  className="flex flex-col items-center pr-2 cursor-pointer rounded-lg"
-                  onClick={() => setActiveSection("details")}
-                >
-                  <div className="flex items-center gap-2">
-                    <div
-                      className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                        activeSection === "details" ? "bg-[#308E87]" : ""
-                      } animate-bounce`}
-                    >
-                      <RiShoppingBag3Line
-                        className={`text-2xl ${
-                          activeSection === "details"
-                            ? "text-white"
-                            : "text-black"
-                        }`}
-                      />
-                    </div>
-                    <div className="md:hidden lg:block flex flex-col items-center justify-center">
-                      <p
-                        className={`font-medium text-lg ${
-                          activeSection === "details" ? "text-[#308E87]" : ""
-                        }`}
-                      >
-                        Add Product Details
-                      </p>
-                      <small>Add product name & details</small>
-                    </div>
-
-                    <div></div>
-                  </div>
-                </div>
-
-                <div className="border-l-2 md:mr-2 lg:mr-[186px] border-dotted border-gray-400 h-20"></div>
-
-                <div
-                  className="flex flex-col pr-2 cursor-pointer rounded-lg"
-                  onClick={() => setActiveSection("gallery")}
-                >
-                  <div className="flex gap-2 items-center">
-                    <div
-                      className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                        activeSection === "gallery" ? "bg-[#308E87]" : ""
-                      } animate-bounce`}
-                    >
-                      <LuImagePlus
-                        className={`text-2xl ${
-                          activeSection === "gallery"
-                            ? "text-white"
-                            : "text-black"
-                        }`}
-                      />
-                    </div>
-                    <div className="md:hidden lg:block flex flex-col items-center justify-center">
-                      <p
-                        className={`font-medium text-lg ${
-                          activeSection === "gallery" ? "text-[#308E87]" : ""
-                        }`}
-                      >
-                        Product Gallery
-                      </p>
-                      <small>Thumbnail & add product gallery</small>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="border-l-2 md:mr-2 lg:mr-[186px] border-dotted border-gray-400 h-20"></div>
-
-                <div
-                  className="flex flex-col items-center pr-2 cursor-pointer rounded-lg"
-                  onClick={() => setActiveSection("category")}
-                >
-                  <div className="flex gap-2 items-center">
-                    <div
-                      className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                        activeSection === "category" ? "bg-[#308E87]" : ""
-                      } animate-bounce`}
-                    >
-                      <RiStackLine
-                        className={`text-2xl ${
-                          activeSection === "category"
-                            ? "text-white"
-                            : "text-black"
-                        }`}
-                      />
-                    </div>
-                    <div className="md:hidden lg:block flex flex-col items-center justify-center">
-                      <p
-                        className={`font-medium text-lg ${
-                          activeSection === "category" ? "text-[#308E87]" : ""
-                        }`}
-                      >
-                        Product Categories
-                      </p>
-                      <small>Add product category</small>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="border-l-2 md:mr-2 lg:mr-[186px] border-dotted border-gray-400 h-20"></div>
-
-                <div
-                  className="flex flex-col pr-2 cursor-pointer rounded-lg"
-                  onClick={() => setActiveSection("price")}
-                >
-                  <div className="flex gap-2 items-center">
-                    <div
-                      className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                        activeSection === "price" ? "bg-[#308E87]" : ""
-                      } animate-bounce`}
-                    >
-                      <IoPricetagsOutline
-                        className={`text-2xl ${
-                          activeSection === "price"
-                            ? "text-white"
-                            : "text-black"
-                        }`}
-                      />
-                    </div>
-                    <div className="md:hidden lg:block flex flex-col items-center justify-center">
-                      <p
-                        className={`font-medium text-lg ${
-                          activeSection === "price" ? "text-[#308E87]" : ""
-                        }`}
-                      >
-                        Selling Prices
-                      </p>
-                      <small>Add product basic price & discount</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
+              <ProductIcons
+                setActiveSection={setActiveSection}
+                activeSection={activeSection}
+              />
               <div className="flex-grow lg:w-2/3 md:w-5/6">
                 {activeSection === "details" && (
                   <AddProductDetails
@@ -361,7 +225,6 @@ function AddProduct() {
                   />
                 )}
               </div>
-
               <div className="absolute bottom-2 right-0 hidden lg:block md:block">
                 <button
                   onClick={handleSubmit}
@@ -376,84 +239,10 @@ function AddProduct() {
             </div>
           </div>
 
-          <div className="lg:hidden md:hidden w-full flex items-center justify-center gap-3 p-3 rounded-full shadow-lg bg-white h-20">
-            <div
-              className="flex flex-col items-center pr-2 cursor-pointer rounded-lg"
-              onClick={() => setActiveSection("details")}
-            >
-              <div className="flex items-center gap-2">
-                <div
-                  className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                    activeSection === "details" ? "bg-[#308E87]" : ""
-                  } animate-bounce`}
-                >
-                  <RiShoppingBag3Line
-                    className={`text-2xl ${
-                      activeSection === "details" ? "text-white" : "text-black"
-                    }`}
-                  />
-                </div>
-              </div>
-            </div>
-            <FaArrowRight />
-            <div
-              className="flex flex-col pr-2 cursor-pointer rounded-lg"
-              onClick={() => setActiveSection("gallery")}
-            >
-              <div className="flex gap-2 items-center">
-                <div
-                  className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                    activeSection === "gallery" ? "bg-[#308E87]" : ""
-                  } animate-bounce`}
-                >
-                  <LuImagePlus
-                    className={`text-2xl ${
-                      activeSection === "gallery" ? "text-white" : "text-black"
-                    }`}
-                  />
-                </div>
-              </div>
-            </div>
-            <FaArrowRight />
-            <div
-              className="flex flex-col pr-2 cursor-pointer rounded-lg"
-              onClick={() => setActiveSection("category")}
-            >
-              <div className="flex gap-2 items-center">
-                <div
-                  className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                    activeSection === "category" ? "bg-[#308E87]" : ""
-                  } animate-bounce`}
-                >
-                  <RiStackLine
-                    className={`text-2xl ${
-                      activeSection === "category" ? "text-white" : "text-black"
-                    }`}
-                  />
-                </div>
-              </div>
-            </div>
-            <FaArrowRight />
-            <div
-              className="flex flex-col pr-2 cursor-pointer rounded-lg"
-              onClick={() => setActiveSection("price")}
-            >
-              <div className="flex gap-2 items-center">
-                <div
-                  className={`border-2 rounded-full p-2 shadow-xl border-white ${
-                    activeSection === "price" ? "bg-[#308E87]" : ""
-                  } animate-bounce`}
-                >
-                  <IoPricetagsOutline
-                    className={`text-2xl ${
-                      activeSection === "price" ? "text-white" : "text-black"
-                    }`}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
+          <MobileProductIcons
+            setActiveSection={setActiveSection}
+            activeSection={activeSection}
+          />
           <div className="lg:hidden md:hidden flex justify-end">
             <button
               onClick={handleSubmit}

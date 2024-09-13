@@ -1,18 +1,19 @@
 import React from "react";
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-  } from "../../components/ui/table";
-  import { BiSolidTrashAlt } from "react-icons/bi";
-  import EditCustomerDetailsModal from "../../components/modal/EditCustomerDetailsModal";
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../components/ui/table";
+import { BiSolidTrashAlt } from "react-icons/bi";
+import EditCustomerDetailsModal from "../../components/modal/EditCustomerDetailsModal";
+import WorkOrderDetails from "@/components/modal/WorkOrder/WorkOrderDetails";
 
-
-function CustomerTable({customer,fetchCustomer,handleChangeStatus}) {
+function CustomerTable({ customer, fetchCustomer, handleChangeStatus,handleDelete }) {
+console.log(customer);
   return (
     <Table className="w-full">
       <TableCaption>A list of your orders.</TableCaption>
@@ -24,34 +25,32 @@ function CustomerTable({customer,fetchCustomer,handleChangeStatus}) {
           <TableHead>Customer Name</TableHead>
           <TableHead>Expected Delivery</TableHead>
           <TableHead>Item Category</TableHead>
-          <TableHead>Total Price</TableHead>
           <TableHead>Status</TableHead>
           <TableHead className="text-center w-[150px]">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {customer.length === 0 ? (
+        {customer.length === 0 ? ( 
           <TableRow>
             <TableCell colSpan={9} className="text-center">
               No Data Available
             </TableCell>
           </TableRow>
         ) : (
-          customer.map((customer, index) => (
-            <TableRow key={customer.id}>
+          customer.map((cust, index) => (
+            <TableRow key={cust.cust_id}>
               <TableCell>
                 <input type="checkbox" />
               </TableCell>
               <TableCell className="font-medium">{index + 1}</TableCell>
-              <TableCell>{customer.cust_orderno}</TableCell>
-              <TableCell>{customer.cust_name}</TableCell>
-              <TableCell>{customer.cust_expecteddelivery}</TableCell>
-              <TableCell>{customer.cust_itemcategory}</TableCell>
-              <TableCell>{customer.totalprice}</TableCell>
+              <TableCell>{cust.cust_orderno}</TableCell>
+              <TableCell>{cust.cust_name}</TableCell>
+              <TableCell>{cust.cust_expecteddelivery}</TableCell>
+              <TableCell>{cust.cust_itemcategory}</TableCell>
               <TableCell>
                 <select
-                  value={customer.status}
-                  onChange={(e) => handleChangeStatus(e, customer.cust_id)}
+                  value={cust.status}
+                  onChange={(e) => handleChangeStatus(e, cust.cust_id)}
                   className="bg-gray-200 p-1 rounded"
                 >
                   <option value="pending">Pending</option>
@@ -61,11 +60,15 @@ function CustomerTable({customer,fetchCustomer,handleChangeStatus}) {
               </TableCell>
               <TableCell className="text-center">
                 <div className="flex justify-center gap-3">
+                  <WorkOrderDetails cust={cust}/>
                   <EditCustomerDetailsModal
-                    customer={customer}
+                    customer={cust}
                     onSuccess={fetchCustomer}
                   />
-                  <BiSolidTrashAlt className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
+                  <BiSolidTrashAlt
+                    className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+                    onClick={() => handleDelete(cust.cust_id)}
+                  />
                 </div>
               </TableCell>
             </TableRow>

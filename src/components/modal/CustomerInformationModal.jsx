@@ -18,7 +18,7 @@ import PaymentInfo from "./WorkOrder/PaymentInfo";
 import MeasurmentImg from "./WorkOrder/MeasurmentImg";
 import WorkOrderHeader from "./WorkOrder/WorkOrderHeader";
 
-function CustomerInformationModal() {
+function CustomerInformationModal({onSuccess}) {
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState("");
   const [activeSection, setActiveSection] = useState("userInformation");
@@ -111,22 +111,6 @@ function CustomerInformationModal() {
     fetchCategories();
   }, []);
 
-  useEffect(() => {
-    const calculateTotal = () => {
-      const values = [
-        cutting,
-        stitching,
-        handWork,
-        measurer,
-        checker,
-        tailor,
-      ].map((val) => parseFloat(val) || 0);
-      const sum = values.reduce((acc, curr) => acc + curr, 0);
-      setTotal(sum);
-    };
-    calculateTotal();
-  }, [cutting, stitching, handWork, measurer, checker, tailor]);
-
   const handleInputChange = (e, stockId) => {
     const { value } = e.target;
     setInputValues((prevValues) => ({
@@ -141,157 +125,195 @@ function CustomerInformationModal() {
     setCategory(newCategory);
   };
 
+  const handleOrderNumberValidation = async () => {
+    if (!/^\d{4}$/.test(orderNumber)) {
+      toast.error("Order number must be a 4-digit number.");
+      return false;
+    }
+
+    try {
+      const response = await axios.post(
+        "https://storeconvo.com/php/fetch_post.php",
+        new URLSearchParams({
+          id: orderNumber,
+          typ: "checkorderno",
+        })
+      );
+
+      if (response.data === 1) {
+        toast.error("This order number is already in use.");
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error checking order number:", error);
+      toast.error("Error checking order number.");
+      return false;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const isOrderNumberValid = await handleOrderNumberValidation();
+    if (!isOrderNumberValid) {
+      setLoading(false);
+      return;
+    }
+
+    const formData = new FormData();
+
+    formData.append("cust_name", customerName);
+    formData.append("cust_phone", contactNumber);
+    formData.append("cust_trialdate", trialDate);
+    formData.append("cust_expecteddelivery", expectedDelivery);
+    formData.append("cust_itemcategory", category);
+    formData.append("cust_designername", designerName);
+    formData.append("cust_orderno", orderNumber);
+    formData.append("cust_orderdate", orderDate);
+    formData.append("cust_emergency", emergency);
+    formData.append("status", status);
+
+    formData.append("yoke_length", yokeLength);
+    formData.append("yoke_round", yokeRound);
+    formData.append("full_length", fullLength);
+    formData.append("shoulder", shoulder);
+    formData.append("sleeve_length", sleeveLength);
+    formData.append("mid_waist", midWaist);
+    formData.append("arm_hole", armHole);
+    formData.append("hip", hip);
+    formData.append("upper_bust", upperBust);
+    formData.append("bust", bust);
+    formData.append("under_bust", underBust);
+    formData.append("slit_round", slitRound);
+    formData.append("shoulder_wide", shoulderWidth);
+    formData.append("slit_length", slitLength);
+    formData.append("tuck_point", tuckPoint);
+    formData.append("point_to_point", pointToPoint);
+    formData.append("collor_round", collarRound);
+    formData.append("neck", neck);
+    formData.append("fn", frontNeck);
+    formData.append("bn", backNeck);
+    formData.append("sleeve_type", sleeveType);
+    formData.append("wrist", wrist);
+    formData.append("three_fourth", threeFourth);
+
+    formData.append("skirt_full_length", skirtFullLength);
+    formData.append("skirt_seat", seat);
+    formData.append("skirt_knee", knee);
+    formData.append("skirt_thigh", thigh);
+    formData.append("skirt_calf", calf);
+    formData.append("skirt_bottom_round", bottomRound);
+
+    formData.append("pad", pad);
+    formData.append("zip", zip);
+    formData.append("back_open", backOpen);
+    formData.append("front_open", frontOpen);
+
+    if (image) {
+      formData.append("image", image);
+    }
+    formData.append("cutting", cutting);
+    formData.append("stiching", stitching);
+    formData.append("handwork", handWork);
+    formData.append("measurer", measurer);
+    formData.append("checker", checker);
+    formData.append("tailor", tailor);
+    formData.append("date_in", dateIn);
+    formData.append("completed_date", completedDate);
+    formData.append("stock_values", JSON.stringify(inputValues));
+
+    formData.append("cutting1", cuttingPrice);
+    formData.append("stiching1", stitchingPrice);
+    formData.append("handwork1", handWorkPrice);
+    formData.append("measurer1", measurerPrice);
+    formData.append("checker1", checkerPrice);
+    formData.append("tailor1", tailorPrice);
+    formData.append("total1", total);
 
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_customer.php",
-        new URLSearchParams({
-          cust_name: customerName,
-          cust_phone: contactNumber,
-          cust_trialdate: trialDate,
-          cust_expecteddelivery: expectedDelivery,
-          cust_itemcategory: category,
-          cust_designername: designerName,
-          cust_orderno: orderNumber,
-          cust_orderdate: orderDate,
-          cust_emergency: emergency,
-          status: status,
-
-          yoke_length: yokeLength,
-          yoke_round: yokeRound,
-          full_length: fullLength,
-          shoulder: shoulder,
-          sleeve_length: sleeveLength,
-          mid_waist: midWaist,
-          arm_hole: armHole,
-          hip: hip,
-          upper_bust: upperBust,
-          bust: bust,
-          under_bust: underBust,
-          slit_round: slitRound,
-          shoulder_wide: shoulderWidth,
-          slit_length: slitLength,
-          tuck_point: tuckPoint,
-          point_to_point: pointToPoint,
-          collor_round: collarRound,
-          neck: neck,
-          fn: frontNeck,
-          bn: backNeck,
-          sleeve_type: sleeveType,
-          wrist: wrist,
-          three_fourth: threeFourth,
-
-          skirt_full_length: skirtFullLength,
-          skirt_seat: seat,
-          skirt_knee: knee,
-          skirt_thigh: thigh,
-          skirt_calf: calf,
-          skirt_bottom_round: bottomRound,
-          pad: pad,
-          zip: zip,
-          back_open: backOpen,
-          front_open: frontOpen,
-
-          cutting: cutting,
-          stiching: stitching,
-          handwork: handWork,
-          measurer: measurer,
-          checker: checker,
-          tailor: tailor,
-          date_in: dateIn,
-          completed_date: completedDate,
-          stock_values: JSON.stringify(inputValues),
-          
-          cutting1: cuttingPrice,
-          stiching1: stitchingPrice,
-          handwork1: handWorkPrice,
-          measurer1: measurerPrice,
-          checker1: checkerPrice,
-          tailor1: tailorPrice,
-          total1:300,
-
-        }),
+        formData,
         {
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
       console.log(response.data);
       if (response.status === 200) {
         toast.success("Customer added successfully");
-        // setOpen(false);
-        // setCustomerName("");
-        // setContactNumber("");
-        // setTrialDate("");
-        // setExpectedDelivery("");
-        // setItemCategory("");
-        // setDesignerName("");
-        // setOrderNumber("");
-        // setOrderDate("");
-        // setEmergency("");
-
-        // setYokeLength("");
-        // setYokeRound("");
-        // setFullLength("");
-        // setUpperBust("");
-        // setBust("");
-        // setUnderBust("");
-        // setMidWaist("");
-        // setHip("");
-        // setShoulder("");
-        // setShoulderWidth("");
-        // setSlitLength("");
-        // setSlitRound("");
-        // setSleeveType("");
-        // setSleeveLength("");
-        // setWrist("");
-        // setThreeFourth("");
-        // setElbow("");
-        // setArmRound("");
-        // setNeck("");
-        // setFrontNeck("");
-        // setBackNeck("");
-        // setCollarRound("");
-        // setTuckPoint("");
-        // setPointToPoint("");
-
-        // setSkirtFullLength("");
-        // setSeat("");
-        // setThigh("");
-        // setKnee("");
-        // setCalf("");
-        // setBottomRound("");
-
-        // setPad(false);
-        // setZip(false);
-        // setBackOpen(false);
-        // setFrontOpen(false);
-        // setImage("");
-
-        // setCutting("");
-        // setStitching("");
-        // setHandWork("");
-        // setMeasurer("");
-        // setChecker("");
-        // setTailor("");
-        // setDateIn("");
-        // setCompletedDate("");
-
-        // setTotalPrice("");
-        // setAdvancedPrice("");
-        // setBalancePrice("");
-
-        // setNote("");
+        setOpen(false);
+        resetFormFields();
+        onSuccess()
       }
     } catch (error) {
-      console.error("Error adding  type:", error);
-      alert("Failed to add ");
+      toast.error("Error adding customer:", error);
+      alert("Failed to add customer");
     } finally {
       setLoading(false);
     }
+  };
+
+  const resetFormFields = () => {
+    setCustomerName("");
+    setContactNumber("");
+    setTrialDate("");
+    setExpectedDelivery("");
+    setCategory("");
+    setDesignerName("");
+    setOrderNumber("");
+    setOrderDate("");
+    setEmergency("");
+    setYokeLength("");
+    setYokeRound("");
+    setFullLength("");
+    setUpperBust("");
+    setBust("");
+    setUnderBust("");
+    setMidWaist("");
+    setHip("");
+    setShoulder("");
+    setShoulderWidth("");
+    setSlitLength("");
+    setSlitRound("");
+    setSleeveType("");
+    setSleeveLength("");
+    setWrist("");
+    setThreeFourth("");
+    setElbow("");
+    setArmRound("");
+    setNeck("");
+    setFrontNeck("");
+    setBackNeck("");
+    setCollarRound("");
+    setTuckPoint("");
+    setPointToPoint("");
+    setSkirtFullLength("");
+    setSeat("");
+    setThigh("");
+    setKnee("");
+    setCalf("");
+    setBottomRound("");
+    setPad(false);
+    setZip(false);
+    setBackOpen(false);
+    setFrontOpen(false);
+    setImage(null);
+    setCutting("");
+    setStitching("");
+    setHandWork("");
+    setMeasurer("");
+    setChecker("");
+    setTailor("");
+    setDateIn("");
+    setCompletedDate("");
+    setTotalPrice("");
+    setAdvancedPrice("");
+    setBalancePrice("");
+    setNote("");
   };
 
   const handleCheckboxChange = (setter) => (e) => {
@@ -319,7 +341,6 @@ function CustomerInformationModal() {
             activeSection={activeSection}
             setActiveSection={setActiveSection}
           />
-
           {activeSection === "userInformation" && (
             <div>
               <Userinfo
@@ -482,9 +503,9 @@ function CustomerInformationModal() {
               tailor={tailorPrice}
               setTailor={setTailorPrice}
               total={total}
+              setTotal={setTotal}
             />
           )}
-
           <DialogFooter>
             <Button
               type="submit"

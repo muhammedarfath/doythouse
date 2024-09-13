@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,20 +8,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog";
+import { Button } from "../../components/ui/button";
+import { AiFillEdit } from "react-icons/ai";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
-import { Button } from "../../components/ui/button";
-import { FiPlus } from "react-icons/fi";
 import axios from "axios";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast"; 
 
-function AddStock({ onSuccess }) {
+function EditStockModal({ stock, onSuccess }) {
+   console.log(stock); 
   const [isOpen, setIsOpen] = useState(false);
-  const [stockItem, setStockItem] = useState("");
-  const [stockValue, setStockValue] = useState("");
+  const [stockItem, setStockItem] = useState(stock?.items || "");
+  const [stockValue, setStockValue] = useState(stock?.stockvalue || "");
   const [loading, setLoading] = useState(false);
   const [unit, setUnit] = useState([]);
-  const [selectedUnit, setSelectedUnit] = useState("");
+  const [selectedUnit, setSelectedUnit] = useState(stock?.unit || "");
 
   useEffect(() => {
     fetchUnits();
@@ -29,9 +30,7 @@ function AddStock({ onSuccess }) {
 
   const fetchUnits = async () => {
     try {
-      const response = await axios.get(
-        "https://storeconvo.com/php/fetch.php?typ=unit"
-      );
+      const response = await axios.get("https://storeconvo.com/php/fetch.php?typ=unit");
       if (Array.isArray(response.data)) {
         setUnit(response.data);
       } else {
@@ -42,20 +41,17 @@ function AddStock({ onSuccess }) {
     }
   };
 
-  const handlUnitChange = (e) => {
-    const newUnit = e.target.value;
-    setSelectedUnit(newUnit);
-  };
-
   const handleSave = async () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://storeconvo.com/php/add_stock.php",
+        "https://storeconvo.com/php/edit.php",
         {
+          id: stock.stock_id,
           items: stockItem,
           unit: selectedUnit,
           stockvalue: stockValue,
+          typ: "stock"
         },
         {
           headers: {
@@ -63,34 +59,38 @@ function AddStock({ onSuccess }) {
           },
         }
       );
-      console.log(response.data);
       if (response.data) {
-        toast.success("Stock added successfully!");
+        toast.success("Stock edited successfully!");
         setIsOpen(false);
-        onSuccess();
+        if (onSuccess) onSuccess(); 
       } else {
         toast.error("Something went wrong");
       }
     } catch (error) {
-      toast.error("Failed to add stock!");
+      toast.error("Failed to edit stock!");
+      console.error("Edit stock error:", error);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleUnitChange = (e) => {
+    setSelectedUnit(e.target.value);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-[#308E87] hover:bg-[#308E87]">
-          <FiPlus className="text-white text-xl mr-2" />
-          Add New Stock
-        </Button>
+        <AiFillEdit
+          className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+          onClick={() => setIsOpen(true)}
+        />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Add New Stock</DialogTitle>
+          <DialogTitle>Edit Stock</DialogTitle>
           <DialogDescription>
-            Fill out the details to add a new stock item.
+            Update the details of the stock item.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -107,36 +107,33 @@ function AddStock({ onSuccess }) {
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="SubCategory" className="text-right">
-              Unit
-            </label>
+            <Label htmlFor="unit" className="text-right">
+              SubCategory
+            </Label>
             <select
-              name="unit"
               id="unit"
-              className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+              className="col-span-3 h-10 border mt-1 rounded px-4 w-full bg-white"
               value={selectedUnit}
-              onChange={handlUnitChange}
+              onChange={handleUnitChange}
             >
-              <option value="">Choose Unit</option>
-              {unit.length > 0 ? (
-                unit.map((unit) => (
-                  <option key={unit.unitid} value={unit.unitid}>
-                    {unit.unitname}
-                  </option>
-                ))
-              ) : (
-                <option value="">No units available</option>
-              )}
+              <option value="">Choose Subcategory</option>
+              {unit.length > 0
+                ? unit.map((u) => (
+                    <option key={u.unitid} value={u.unitid}>
+                      {u.unitname}
+                    </option>
+                  ))
+                : <option value="">No units available</option>}
             </select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="stockValue" className="text-right">
-              Total Stock Items
+              Stock Value
             </Label>
             <Input
               id="stockValue"
               className="col-span-3"
-              placeholder="Enter total stock"
+              placeholder="Enter stock value"
               value={stockValue}
               onChange={(e) => setStockValue(e.target.value)}
             />
@@ -157,4 +154,4 @@ function AddStock({ onSuccess }) {
   );
 }
 
-export default AddStock;
+export default EditStockModal;

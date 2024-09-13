@@ -78,7 +78,6 @@ function AddProductDetails({
             required
           />
         </div>
-
         <div className="md:col-span-5">
           <label htmlFor="description">Description</label>
           <textarea
@@ -105,17 +104,16 @@ function AddProductDetails({
             required
           />
         </div>
-
         <div className="md:col-span-2">
           <label htmlFor="unit">Product Unit</label>
           <select
-            id="sort-by-type"
+            id="unit"
             name="unit"
             value={unitId}
             onChange={handleChange}
-            className="h-10 border rounded px-4 bg-gray-50"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff] appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="">Select Type</option>
+            <option value="">Select Unit</option>
             {units.length > 0 ? (
               units.map((unit) => (
                 <option key={unit.unitid} value={unit.unitid}>
@@ -142,7 +140,6 @@ function AddProductDetails({
             />
           </div>
         </div>
-
         <div className="md:col-span-2">
           <label htmlFor="hsn_code">HSN/ACS Code</label>
           <div className="h-10 bg-[#fff] flex border border-gray-200 rounded items-center mt-1">
@@ -157,7 +154,6 @@ function AddProductDetails({
             />
           </div>
         </div>
-
         <div className="md:col-span-1">
           <label htmlFor="cgst">CGST</label>
           <input
@@ -171,7 +167,6 @@ function AddProductDetails({
             required
           />
         </div>
-
         <div className="md:col-span-1">
           <label htmlFor="sgst">SGST</label>
           <input
@@ -185,7 +180,6 @@ function AddProductDetails({
             required
           />
         </div>
-
         <div className="md:col-span-2">
           <label htmlFor="sales_unit">Sales Unit</label>
           <div className="h-10 bg-[#fff] flex border border-gray-200 rounded items-center mt-1">
@@ -200,7 +194,6 @@ function AddProductDetails({
             />
           </div>
         </div>
-
         <div className="md:col-span-1">
           <label htmlFor="size">Pack Size</label>
           <input

@@ -157,7 +157,7 @@ function MeasurmentThird({
             />
           </div>
         </div>
-        <div className="flex flex-col gap-4">
+        {/* <div className="flex flex-col gap-4">
           <div className="text-lg font-semibold mb-4">Payment Information:</div>
           <div>
             <Label htmlFor="total-price" className="text-md font-bold">
@@ -228,7 +228,7 @@ function MeasurmentThird({
               placeholder="Add any additional notes here..."
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

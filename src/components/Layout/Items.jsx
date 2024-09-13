@@ -60,6 +60,10 @@ function Items({ open }) {
       label: "Pre-Invoice",
       path: "/invoice",
     },
+    {
+      label: "Closed-Invoice",
+      path: "/finalinvoice",
+    },
   ];
 
   return (

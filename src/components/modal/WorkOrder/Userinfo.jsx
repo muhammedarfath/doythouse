@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/label";
 import axios from "axios";
@@ -27,10 +27,22 @@ function Userinfo({
   emergency,
   status,
 }) {
+  const [orderNumberError, setOrderNumberError] = useState("");
+  const [orderNumberValid, setOrderNumberValid] = useState(true);
+
   const handleOrderNumberChange = async (e) => {
     const newOrderNumber = e.target.value;
     setOrderNumber(newOrderNumber);
-    console.log(newOrderNumber);
+
+    // Validate order number (4-digit check)
+    if (!/^\d{4}$/.test(newOrderNumber)) {
+      setOrderNumberError("Order number must be a 4-digit number.");
+      setOrderNumberValid(false);
+      return;
+    }
+
+    setOrderNumberError("");
+    setOrderNumberValid(true);
 
     try {
       const response = await axios.post(
@@ -40,9 +52,19 @@ function Userinfo({
           typ: "checkorderno",
         })
       );
-      console.log(response);
+
+      // Handle server response
+      if (response.data === 1) {
+        setOrderNumberError("This order number is already in use.");
+        setOrderNumberValid(false);
+      } else {
+        setOrderNumberError("");
+        setOrderNumberValid(true);
+      }
     } catch (error) {
       console.error("API call error:", error);
+      setOrderNumberError("Error checking order number.");
+      setOrderNumberValid(false);
     }
   };
 
@@ -57,8 +79,12 @@ function Userinfo({
             id="order-number"
             value={orderNumber}
             onChange={handleOrderNumberChange}
-            className="w-full"
+            className={`w-full ${!orderNumberValid ? 'border-red-500' : ''}`}
           />
+          {orderNumberError && (
+            <p className="text-red-500 text-sm">{orderNumberError}</p>
+          )}
+
           <Label htmlFor="customerName" className="text-md font-bold">
             Customer Name
           </Label>

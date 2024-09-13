@@ -10,10 +10,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import PreInvoice from "./PreInvoice";
+import FinalInvoiceCard from "./FinalInvoiceCard";
 
-function InvoiceTable({ invoice, handleDelete, fetchInvoices }) {
-  const filteredInvoices = invoice.filter(entry => entry.status === "open" || entry.status === "pending");
+function FinalInvoice({ invoice,fetchInvoices }) {
+  const filteredInvoices = invoice.filter(entry => entry.status === "closed");
 
   return (
     <Table className="w-full">
@@ -40,8 +40,7 @@ function InvoiceTable({ invoice, handleDelete, fetchInvoices }) {
             <TableCell>{entry.cash_option}</TableCell>
             <TableCell className="text-center">
               <div className="flex justify-center gap-4">
-                <PreInvoice order_id={entry.cust_orderno} onSuccess={fetchInvoices} invoice={entry}/>
-                <EditInvoice entry={entry} onSuccess={fetchInvoices}/>
+                <FinalInvoiceCard order_id={entry.cust_orderno} onSuccess={fetchInvoices} invoice={entry}/>
                 <BiSolidTrashAlt
                   onClick={() => handleDelete(entry.invoice_id)}
                   className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
@@ -55,4 +54,4 @@ function InvoiceTable({ invoice, handleDelete, fetchInvoices }) {
   );
 }
 
-export default InvoiceTable;
+export default FinalInvoice;

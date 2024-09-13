@@ -1,9 +1,10 @@
+
 import React, { useEffect, useState } from "react";
 import { FaFileInvoice } from "react-icons/fa";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import axios from "axios";
-import logo from "../../assets/logo.jpg";
-function PreInvoice({ order_id, onSuccess, invoice }) {
+import logo from "../../../assets/logo.jpg";
+function FinalInvoiceCard({ order_id, onSuccess, invoice }) {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState("");
   const [currentInvoice, setCurrentInvoice] = useState();
@@ -307,4 +308,4 @@ function PreInvoice({ order_id, onSuccess, invoice }) {
   );
 }
 
-export default PreInvoice;
+export default FinalInvoiceCard;

@@ -14,6 +14,9 @@ import axios from "axios";
 import * as XLSX from "xlsx";
 import UnitModal from "@/components/modal/UnitModal";
 import AddStock from "@/components/modal/AddStock";
+import { toast } from "react-hot-toast";
+import EditStockModal from "@/components/modal/EditStockModal";
+import { BiSolidTrashAlt } from "react-icons/bi";
 
 function StockReport() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -36,7 +39,6 @@ function StockReport() {
     }
   };
 
-
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
@@ -49,27 +51,53 @@ function StockReport() {
     setSelectedSubcategory(e.target.value);
   };
 
-  // const filteredStockReport = stockReport.filter((item) => {
-  //   const matchesSearchTerm = item.subcat_name
-  //     .toLowerCase()
-  //     .includes(searchTerm.toLowerCase());
-  //   const matchesSubcategory =
-  //     selectedSubcategory === "" || item.subcat_name === selectedSubcategory;
-  //   return matchesSearchTerm && matchesSubcategory;
-  // });
+  const handleDelete = (stockId) => {
+    toast(
+      (t) => (
+        <div>
+          <p>Are you sure you want to delete this stock?</p>
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={() => confirmDelete(stockId, t.id)}
+              className="bg-red-500 text-white px-4 py-1 rounded"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-gray-300 text-black px-4 py-1 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: 4000 }
+    );
+  };
 
-  // const totalItems = filteredStockReport.reduce((total, item) => {
-  //   const itemCount = item.count ? parseInt(item.count) : 0;
-  //   return total + itemCount;
-  // }, 0);
-
-  // const totalStockValue = filteredStockReport.reduce((total, item) => {
-  //   const stockValue = item.total_purchase_price
-  //     ? parseInt(item.total_purchase_price.replace(/[^0-9]/g, ""))
-  //     : 0;
-  //   return total + stockValue;
-  // }, 0);
-
+  const confirmDelete = async (stockId, toastId) => {
+    try {
+      await axios.post(
+        `https://storeconvo.com/php/delete.php/`,
+        {
+          id: stockId,
+          typ: "stock",
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      setStockReport((prevStock) =>
+      prevStock.filter((stock) => stock.stock_id !== stockId)
+      );
+      toast.success("Delete successful", { id: toastId });
+    } catch (error) {
+      toast.error("Error deleting supplier:", error);
+    }
+  };
 
   const downloadExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(stockReport);
@@ -78,6 +106,7 @@ function StockReport() {
     XLSX.writeFile(workbook, "stock_report.xlsx");
   };
 
+console.log(stockReport);
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -103,7 +132,7 @@ function StockReport() {
                 >
                   <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
                 </div>
-                <AddStock onSuccess={fetchStockReport}/>
+                <AddStock onSuccess={fetchStockReport} />
                 <Button
                   className="bg-[#308E87] hover:bg-[#308E87]"
                   onClick={downloadExcel}
@@ -148,7 +177,7 @@ function StockReport() {
                   <TableHead className="w-[50px]">SINO</TableHead>
                   <TableHead>Stock Item</TableHead>
                   <TableHead>Unit</TableHead>
-                  <TableHead className="text-right">Stock Value</TableHead>
+                  <TableHead className="text-right">Total Stock</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -159,6 +188,18 @@ function StockReport() {
                     <TableCell>{stock.unitname}</TableCell>
                     <TableCell className="text-right">
                       {stock.stockvalue || "N/A"}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex justify-center gap-4">
+                        <EditStockModal
+                          stock={stock}
+                          onSuccess={fetchStockReport}
+                        />
+                        <BiSolidTrashAlt
+                          className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+                          onClick={() => handleDelete(stock.stock_id)}
+                        />
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}

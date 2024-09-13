@@ -27,10 +27,7 @@ function MeterialIfo({
     <div className="mb-80 w-full">
       <div className="flex flex-wrap">
         {stockReport.map((stock) => (
-          <div
-            key={stock.id}
-            className="w-full md:w-1/2 mb-4 p-4 rounded-md"
-          >
+          <div key={stock.id} className="w-full md:w-1/2 mb-4 p-4 rounded-md">
             <div className="flex items-center mb-4">
               <Label
                 htmlFor={`stock-${stock.id}`}
@@ -41,7 +38,7 @@ function MeterialIfo({
               <Input
                 id={`stock-${stock.id}`}
                 type="number"
-                placeholder={`Enter value for ${stock.items}`}
+                placeholder={`Enter ${stock.items} in ${stock.unitname}`} 
                 value={inputValues[stock.stock_id] || ""}
                 onChange={(e) => handleInputChange(e, stock.stock_id)}
                 className="flex-1 border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

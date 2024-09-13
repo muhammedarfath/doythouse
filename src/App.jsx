@@ -18,6 +18,7 @@ import Units from './pages/Units/Units';
 import PurchaseEntryList from './pages/Purchase/PurchaseEntryList';
 import Invoice from './pages/Invoice/Invoice';
 import CustomerList from './pages/Workorder/CustomerList';
+import FInvoice from './pages/Invoice/FinalInvoice/Invoice';
 function App() {
 
   return (
@@ -41,6 +42,7 @@ function App() {
             <Route path="/units" element={<Units/>} />
             <Route path="/purchaseentry" element={<PurchaseEntryList/>} />
             <Route path="/invoice" element={<Invoice/>} />
+            <Route path="/finalinvoice" element={<FInvoice/>} />
           </Route>
           <Route path="/login" element={<Login />} />
         </Routes>

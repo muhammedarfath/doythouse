@@ -37,7 +37,7 @@ function WorkOrderHeader({ activeSection, setActiveSection }) {
           }`}
           onClick={() => setActiveSection("paymentInformation")}
         >
-          <DialogTitle>Payment Information</DialogTitle>
+          <DialogTitle>Labour Payment Information</DialogTitle>
           <DialogDescription>Add New Information</DialogDescription>
         </button>
       </div>

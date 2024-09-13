@@ -62,6 +62,7 @@ function EditSupplierModal({ supplier, onSuccess }) {
           },
         }
       );
+      console.log(response.data);
       if (response.status === 200) {
         toast.success("Supplier details updated successfully");
         setOpen(false);
@@ -73,12 +74,6 @@ function EditSupplierModal({ supplier, onSuccess }) {
       setLoading(false);
     }
   };
-
-
-
-
-
-
 
 
   return (

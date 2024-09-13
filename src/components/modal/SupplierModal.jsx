@@ -59,6 +59,7 @@ function SupplierModal({ setSupplier }) {
           },
         }
       );
+      console.log(response.data);
       if (response.data) {
         toast.success("Supplier added successfully");
         setIsOpen(false);

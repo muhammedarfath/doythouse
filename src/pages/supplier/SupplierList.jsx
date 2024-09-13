@@ -21,6 +21,7 @@ function SupplierList() {
     fetchSuppliers();
   }, []);
 
+
   const fetchSuppliers = async () => {
     try {
       const response = await axios.get(
@@ -121,13 +122,13 @@ function SupplierList() {
                       {supplier.supplier_name}
                     </TableCell>
                     <TableCell>{supplier.supplier_contactperson}</TableCell>
-                    <TableCell>{supplier.supplier_phone}</TableCell>
+                    <TableCell>{supplier.supplier_mobile1}</TableCell>
                     <TableCell className="text-right">
                       {supplier.supplier_balancedmoney}
                     </TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center gap-4">
-                        <EditSupplierModal supplier={supplier} />
+                        <EditSupplierModal supplier={supplier} onSuccess={fetchSuppliers} />
                         <BiSolidTrashAlt
                           className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
                           onClick={() => handleDelete(supplier.supplier_id)}

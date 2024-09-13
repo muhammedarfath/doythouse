@@ -3,24 +3,27 @@ import { AiOutlineClose } from "react-icons/ai";
 
 function ProductGallery({ setImage }) {
   const [previewUrls, setPreviewUrls] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]); 
 
   const handleFileChange = (e) => {
     const newFiles = Array.from(e.target.files);
     const newPreviewUrls = newFiles.map((file) => URL.createObjectURL(file));
+
     setPreviewUrls((prevUrls) => [...prevUrls, ...newPreviewUrls]);
-    console.log(newFiles);
+    setImageFiles((prevFiles) => [...prevFiles, ...newFiles]); 
     setImage((prevFiles) => [...prevFiles, ...newFiles]);
   };
 
   const handleRemoveImage = (index) => {
     const newPreviewUrls = [...previewUrls];
-    const newFiles = [...setImage];
+    const newImageFiles = [...imageFiles];
 
     newPreviewUrls.splice(index, 1);
-    newFiles.splice(index, 1);
+    newImageFiles.splice(index, 1);
 
     setPreviewUrls(newPreviewUrls);
-    setImage(newFiles);
+    setImageFiles(newImageFiles); 
+    setImage(newImageFiles); 
   };
 
   return (
