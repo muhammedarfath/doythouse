@@ -58,6 +58,7 @@ function AddStock({ onSuccess }) {
           items: stockItem,
           unit: selectedUnit,
           stockvalue: stockValue,
+          stockMrp:stockMrp
         },
         {
           headers: {
