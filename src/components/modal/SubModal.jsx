@@ -15,7 +15,7 @@ import { Button } from "../../components/ui/button";
 import { FiPlus } from "react-icons/fi";
 import toast from "react-hot-toast";
 
-function SubModal({setSubCategory,onChange}) {
+function SubModal({ setSubCategory, onChange }) {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [subCategoryName, setSubCategoryName] = useState("");
@@ -25,7 +25,33 @@ function SubModal({setSubCategory,onChange}) {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const validateFields = () => {
+    if (!selectedCategory) {
+      toast.error("Category is required.");
+      return false;
+    }
+    if (!subCategoryName) {
+      toast.error("Subcategory name is required.");
+      return false;
+    }
+    if (!hsn) {
+      toast.error("HSN ACS is required.");
+      return false;
+    }
+    if (!cgst) {
+      toast.error("CGST is required.");
+      return false;
+    }
+    if (!sgst) {
+      toast.error("SGST is required.");
+      return false;
+    }
+    return true; // All validations passed
+  };
+
   const handleSave = async () => {
+    if (!validateFields()) return; // Validate before proceeding
+
     setLoading(true);
     try {
       const response = await axios.post(
@@ -43,11 +69,10 @@ function SubModal({setSubCategory,onChange}) {
           },
         }
       );
-      console.log(response);
       if (response.status === 200) {
         toast.success("Subcategory added successfully!");
         setOpen(false);
-        onChange()
+        onChange();
       }
     } catch (error) {
       toast.error("Failed to add subcategory.");
@@ -70,7 +95,6 @@ function SubModal({setSubCategory,onChange}) {
 
     fetchCategories();
   }, []);
-
 
   return (
     <div>
@@ -98,7 +122,7 @@ function SubModal({setSubCategory,onChange}) {
                 id="category"
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="col-span-3 p-2 border rounded"
+                className="col-span-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
               >
                 <option value="">Choose Category</option>
                 {categories.map((cat) => (
@@ -115,6 +139,7 @@ function SubModal({setSubCategory,onChange}) {
               <Input
                 id="subcategory"
                 value={subCategoryName}
+                placeholder="subcategory name"
                 onChange={(e) => setSubCategoryName(e.target.value)}
                 className="col-span-3"
               />
@@ -126,6 +151,7 @@ function SubModal({setSubCategory,onChange}) {
               <Input
                 id="hsn"
                 value={hsn}
+                placeholder="HSN ACS"
                 onChange={(e) => setHsn(e.target.value)}
                 className="col-span-3"
               />
@@ -136,6 +162,7 @@ function SubModal({setSubCategory,onChange}) {
               </Label>
               <Input
                 id="cgst"
+                placeholder="CGST"
                 value={cgst}
                 onChange={(e) => setCgst(e.target.value)}
                 className="col-span-3"
@@ -147,6 +174,7 @@ function SubModal({setSubCategory,onChange}) {
               </Label>
               <Input
                 id="sgst"
+                placeholder="SGST"
                 value={sgst}
                 onChange={(e) => setSgst(e.target.value)}
                 className="col-span-3"

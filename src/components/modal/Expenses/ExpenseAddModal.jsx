@@ -74,7 +74,7 @@ function ExpenseAddModal({
           </Label>
           <select
             id="type"
-            className="col-span-3 sm:col-span-3 p-2 border rounded"
+            className="col-span-3 sm:col-span-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
             value={selectedExpense}
             onChange={handleExpenseChange}
           >
@@ -96,7 +96,7 @@ function ExpenseAddModal({
             </Label>
             <select
               id="subtype"
-              className="col-span-3 sm:col-span-3 p-2 border rounded"
+              className="col-span-3 sm:col-span-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
               value={selectedSubExpense}
               onChange={handleSubExpenseChange}
             >
@@ -136,7 +136,7 @@ function ExpenseAddModal({
           </Label>
           <select
             id="employee"
-            className="col-span-3 sm:col-span-3 p-2 border rounded"
+            className="col-span-3 sm:col-span-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
             value={selectedEmployee}
             onChange={handleEmployeeChange}
           >

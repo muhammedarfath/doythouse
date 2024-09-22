@@ -15,10 +15,12 @@ import { Label } from "../../components/ui/label";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-function EditEmployeeModal({ employee,onSuccess }) {
+function EditEmployeeModal({ employee, onSuccess }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState(employee.employee_name || "");
-  const [department, setDepartment] = useState(employee.employee_department || "");
+  const [department, setDepartment] = useState(
+    employee.employee_department || ""
+  );
   const [mobile, setMobile] = useState(employee.employee_phone || "");
   const [address, setAddress] = useState(employee.employee_address || "");
   const [username, setUsername] = useState(employee.employee_username || "");
@@ -32,13 +34,13 @@ function EditEmployeeModal({ employee,onSuccess }) {
       const response = await axios.post(
         "https://storeconvo.com/php/edit.php",
         new URLSearchParams({
-          id:employee.employee_id,
-          employee_name:name,
-          employee_phone:mobile,
-          employee_department:department,
-          employee_address:address,
-          employee_username:username,
-          typ:"emp"
+          id: employee.employee_id,
+          employee_name: name,
+          employee_phone: mobile,
+          employee_department: department,
+          employee_address: address,
+          employee_username: username,
+          typ: "emp",
         }),
         {
           headers: {
@@ -47,9 +49,9 @@ function EditEmployeeModal({ employee,onSuccess }) {
         }
       );
       if (response.data) {
-        toast.success("edit successful")
+        toast.success("edit successful");
         setOpen(false);
-        onSuccess()
+        onSuccess();
       }
     } catch (error) {
       console.error("Error updating employee:", error);
@@ -63,10 +65,12 @@ function EditEmployeeModal({ employee,onSuccess }) {
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <AiFillEdit
-            className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
-            onClick={() => setOpen(true)}
-          />
+          <span>
+            <AiFillEdit
+              className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+              onClick={() => setOpen(true)}
+            />
+          </span>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[900px]">
           <DialogHeader>
@@ -115,7 +119,7 @@ function EditEmployeeModal({ employee,onSuccess }) {
                 id="address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="col-span-3 p-2 border rounded"
+                className="col-span-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -129,7 +133,6 @@ function EditEmployeeModal({ employee,onSuccess }) {
                 className="col-span-3"
               />
             </div>
-
           </div>
           <DialogFooter>
             <Button

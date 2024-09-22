@@ -8,7 +8,7 @@ import Search from "@/components/Search/Search";
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-
+  
   useEffect(() => {
     fetchEmployees();
   }, []);

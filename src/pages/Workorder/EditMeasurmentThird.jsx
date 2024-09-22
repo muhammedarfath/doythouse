@@ -1,8 +1,8 @@
 import React from "react";
-import { Input } from "../../../components/ui/input";
-import { Label } from "../../../components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-function MeasurmentThird({
+function EditMeasurmentThird({
   cutting,
   setCutting,
   stitching,
@@ -216,4 +216,4 @@ function MeasurmentThird({
   );
 }
 
-export default MeasurmentThird;
+export default EditMeasurmentThird;

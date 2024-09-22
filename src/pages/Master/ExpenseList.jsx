@@ -19,6 +19,14 @@ function ExpenseList() {
     expenseType: "",
     employee: "",
   });
+  const handleClearFilters = () => {
+    setFilters({
+      fromDate: "",
+      toDate: "",
+      expenseType: "",
+      employee: "",
+    });
+  };
   useEffect(() => {
     fetchExpenseList();
   }, []);
@@ -51,7 +59,6 @@ function ExpenseList() {
         const response = await axios.get(
           "https://storeconvo.com/php/fetch.php?typ=employee"
         );
-        console.log(response.data, "this is employee");
         setEmployees(response.data);
       } catch (error) {
         console.error("Error fetching employees:", error);
@@ -117,6 +124,7 @@ function ExpenseList() {
     }));
   };
   const filteredExpenses = expenses.filter((expense) => {
+
     const { fromDate, toDate, expenseType, employee } = filters;
 
     const isWithinDateRange =
@@ -125,7 +133,7 @@ function ExpenseList() {
 
     const isMatchingType = !expenseType || expense.exp_type === expenseType;
 
-    const isMatchingEmployee = !employee || expense.exp_employee === employee;
+    const isMatchingEmployee = !employee || expense.employee_name === employee;
 
     const isMatchingSearchQuery =
       expense.exp_type?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -141,6 +149,7 @@ function ExpenseList() {
       isMatchingSearchQuery
     );
   });
+
 
   return (
     <div className="flex items-center justify-center w-full ">
@@ -172,6 +181,8 @@ function ExpenseList() {
                 filters={filters}
                 handleFilterChange={handleFilterChange}
                 employees={employees}
+                ExpenseType={ExpenseType}
+                handleClearFilters={handleClearFilters}
               />
             )}
             <ExpenseTable

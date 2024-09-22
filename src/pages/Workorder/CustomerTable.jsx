@@ -13,7 +13,6 @@ import EditCustomerDetailsModal from "../../components/modal/EditCustomerDetails
 import WorkOrderDetails from "@/components/modal/WorkOrder/WorkOrderDetails";
 
 function CustomerTable({ customer, fetchCustomer, handleChangeStatus,handleDelete }) {
-console.log(customer);
   return (
     <Table className="w-full">
       <TableCaption>A list of your orders.</TableCaption>

@@ -41,7 +41,7 @@ function ProductPrices({
             id="mrp"
             value={mrp}
             onChange={(e) => setMrp(e.target.value)}
-            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="MRP"
           />
         </div>
@@ -53,7 +53,7 @@ function ProductPrices({
             id="retailPrice"
             value={retailPrice}
             onChange={(e) => setRetailPrice(e.target.value)}
-            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="Retail Price"
           />
         </div>
@@ -65,7 +65,7 @@ function ProductPrices({
             id="dealerPrice"
             value={dealerPrice}
             onChange={(e) => setDealerPrice(e.target.value)}
-            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="Dealer Price"
           />
         </div>
@@ -77,7 +77,7 @@ function ProductPrices({
             id="openQty"
             value={openQty}
             onChange={(e) => setOpenQty(e.target.value)}
-            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="Open Qty"
           />
         </div>
@@ -89,7 +89,7 @@ function ProductPrices({
             id="purchasePrice"
             value={purchasePrice}
             onChange={(e) => setPurchasePrice(e.target.value)}
-            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="Purchase Price"
           />
         </div>
@@ -101,7 +101,7 @@ function ProductPrices({
             id="wholesalePrice"
             value={wholesalePrice}
             onChange={(e) => setWholesalePrice(e.target.value)}
-            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="Wholesale Price"
           />
         </div>
@@ -113,7 +113,7 @@ function ProductPrices({
             id="specialPrice"
             value={specialPrice}
             onChange={(e) => setSpecialPrice(e.target.value)}
-            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="Special Price"
           />
         </div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Button } from "../../components/ui/button";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus, FiEye, FiEyeOff } from "react-icons/fi";
 import {
   Dialog,
   DialogContent,
@@ -24,6 +24,11 @@ function EmployeeModal({ setEmployees }) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); 
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
 
   const validateFields = () => {
     if (!name || !department || !mobile || !address || !username || !password) {
@@ -57,8 +62,8 @@ function EmployeeModal({ setEmployees }) {
         "https://storeconvo.com/php/add_employee.php",
         new URLSearchParams({
           employee_name: name,
-          employee_phone: department,
-          employee_department: mobile,
+          employee_phone: mobile,
+          employee_department: department,
           employee_address: address,
           employee_username: username,
           employee_password: password,
@@ -66,7 +71,7 @@ function EmployeeModal({ setEmployees }) {
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-          },
+          }
         }
       );
       if (response.status === 200) {
@@ -117,6 +122,7 @@ function EmployeeModal({ setEmployees }) {
                 </Label>
                 <Input
                   id="name"
+                  placeholder="Enter employee name"
                   className="col-span-3"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -128,6 +134,7 @@ function EmployeeModal({ setEmployees }) {
                 </Label>
                 <Input
                   id="department"
+                  placeholder="Enter department"
                   className="col-span-3"
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
@@ -139,6 +146,7 @@ function EmployeeModal({ setEmployees }) {
                 </Label>
                 <Input
                   id="mobile"
+                  placeholder="Enter 10-digit mobile number"
                   className="col-span-3"
                   value={mobile}
                   onChange={(e) => setMobile(e.target.value)}
@@ -150,7 +158,8 @@ function EmployeeModal({ setEmployees }) {
                 </Label>
                 <textarea
                   id="address"
-                  className="col-span-3 p-2 border rounded"
+                  placeholder="Enter address"
+                  className="col-span-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                 />
@@ -161,22 +170,30 @@ function EmployeeModal({ setEmployees }) {
                 </Label>
                 <Input
                   id="username"
+                  placeholder="Enter username"
                   className="col-span-3"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
+              <div className="grid grid-cols-4 items-center gap-4 relative">
                 <Label htmlFor="password" className="text-right">
                   Password
                 </Label>
                 <Input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter password"
                   className="col-span-3"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <div
+                  className="absolute right-3 top-3 cursor-pointer"
+                  onClick={togglePasswordVisibility}
+                >
+                  {!showPassword ? <FiEyeOff /> : <FiEye />}
+                </div>
               </div>
             </div>
             <DialogFooter>

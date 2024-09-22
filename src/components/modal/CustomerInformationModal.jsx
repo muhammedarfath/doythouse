@@ -18,7 +18,7 @@ import PaymentInfo from "./WorkOrder/PaymentInfo";
 import MeasurmentImg from "./WorkOrder/MeasurmentImg";
 import WorkOrderHeader from "./WorkOrder/WorkOrderHeader";
 
-function CustomerInformationModal({onSuccess}) {
+function CustomerInformationModal({ onSuccess }) {
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState("");
   const [activeSection, setActiveSection] = useState("userInformation");
@@ -77,7 +77,7 @@ function CustomerInformationModal({onSuccess}) {
   const [note, setNote] = useState("");
   const [categories, setCategories] = useState([]);
   const [stockReport, setStockReport] = useState([]);
-  const [inputValues, setInputValues] = useState({});
+  const [rows, setRows] = useState([{ item: "", quantity: "", mrp: "" }]);
   const section1Ref = useRef();
   const section2Ref = useRef();
   const section3Ref = useRef();
@@ -94,7 +94,30 @@ function CustomerInformationModal({onSuccess}) {
   const [handWorkPrice, setHandWorkPrice] = useState("");
   const [measurerPrice, setMeasurerPrice] = useState("");
   const [checkerPrice, setCheckerPrice] = useState("");
-  const [tailorPrice, setTailorPrice] = useState("");
+  const [selectedStock, setSelectedStock] = useState("");
+  const [designers, setDesigners] = useState([]);
+  const [designerPhoneNumber, setDesignerPhoneNumber] = useState("");
+
+  useEffect(() => {
+    // Set orderDate to current date in YYYY-MM-DD format
+    const currentDate = new Date().toISOString().split('T')[0];
+    setOrderDate(currentDate);
+}, []);
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+
+  const fetchEmployees = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=employee"
+      );
+      setDesigners(response.data);
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -111,12 +134,10 @@ function CustomerInformationModal({onSuccess}) {
     fetchCategories();
   }, []);
 
-  const handleInputChange = (e, stockId) => {
-    const { value } = e.target;
-    setInputValues((prevValues) => ({
-      ...prevValues,
-      [stockId]: value,
-    }));
+  const handleInputChange = (e, index, field) => {
+    const updatedRows = [...rows];
+    updatedRows[index][field] = e.target.value;
+    setRows(updatedRows);
   };
 
   const handleCategoryChange = (e) => {
@@ -125,40 +146,22 @@ function CustomerInformationModal({onSuccess}) {
     setCategory(newCategory);
   };
 
-  const handleOrderNumberValidation = async () => {
-    if (!/^\d{4}$/.test(orderNumber)) {
-      toast.error("Order number must be a 4-digit number.");
-      return false;
-    }
-
-    try {
-      const response = await axios.post(
-        "https://storeconvo.com/php/fetch_post.php",
-        new URLSearchParams({
-          id: orderNumber,
-          typ: "checkorderno",
-        })
-      );
-
-      if (response.data === 1) {
-        toast.error("This order number is already in use.");
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error("Error checking order number:", error);
-      toast.error("Error checking order number.");
-      return false;
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const isOrderNumberValid = await handleOrderNumberValidation();
-    if (!isOrderNumberValid) {
-      setLoading(false);
+    if (
+      !customerName ||
+      !contactNumber ||
+      !trialDate ||
+      !expectedDelivery ||
+      !category ||
+      !designerName ||
+      !orderNumber ||
+      !orderDate || 
+      !designerPhoneNumber ||
+      !emergency ||
+      !status
+    ) {
+      toast.error("Please fill in all mandatory fields.");
       return;
     }
 
@@ -170,6 +173,7 @@ function CustomerInformationModal({onSuccess}) {
     formData.append("cust_expecteddelivery", expectedDelivery);
     formData.append("cust_itemcategory", category);
     formData.append("cust_designername", designerName);
+    formData.append("cust_designername", designerPhoneNumber);
     formData.append("cust_orderno", orderNumber);
     formData.append("cust_orderdate", orderDate);
     formData.append("cust_emergency", emergency);
@@ -219,18 +223,25 @@ function CustomerInformationModal({onSuccess}) {
     formData.append("handwork", handWork);
     formData.append("measurer", measurer);
     formData.append("checker", checker);
-    formData.append("tailor", tailor);
     formData.append("date_in", dateIn);
     formData.append("completed_date", completedDate);
-    formData.append("stock_values", JSON.stringify(inputValues));
+
+    rows.forEach((row, index) => {
+      formData.append(`items[${index}][item]`, row.item);
+      formData.append(`items[${index}][quantity]`, row.quantity);
+      formData.append(`items[${index}][mrp]`, row.mrp);
+    });
 
     formData.append("cutting1", cuttingPrice);
     formData.append("stiching1", stitchingPrice);
     formData.append("handwork1", handWorkPrice);
     formData.append("measurer1", measurerPrice);
     formData.append("checker1", checkerPrice);
-    formData.append("tailor1", tailorPrice);
     formData.append("total1", total);
+
+    formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
+    });
 
     try {
       const response = await axios.post(
@@ -247,7 +258,7 @@ function CustomerInformationModal({onSuccess}) {
         toast.success("Customer added successfully");
         setOpen(false);
         resetFormFields();
-        onSuccess()
+        onSuccess();
       }
     } catch (error) {
       toast.error("Error adding customer:", error);
@@ -364,8 +375,11 @@ function CustomerInformationModal({onSuccess}) {
                 designerName={designerName}
                 orderNumber={orderNumber}
                 orderDate={orderDate}
+                designers={designers}
                 emergency={emergency}
                 status={status}
+                designerPhoneNumber={designerPhoneNumber}
+                setDesignerPhoneNumber={setDesignerPhoneNumber}
               />
               <div className="border-t  border-gray-300 my-6 pt-4 lg:flex md:flex gap-8">
                 <MeasurmentFirst
@@ -420,6 +434,8 @@ function CustomerInformationModal({onSuccess}) {
                   setTuckPoint={setTuckPoint}
                   pointToPoint={pointToPoint}
                   setPointToPoint={setPointToPoint}
+                  designerPhoneNumber={designerPhoneNumber}
+                  setDesignerPhoneNumber={setDesignerPhoneNumber}
                 />
 
                 <MeasurmentSecond
@@ -461,8 +477,6 @@ function CustomerInformationModal({onSuccess}) {
                 setMeasurer={setMeasurer}
                 checker={checker}
                 setChecker={setChecker}
-                tailor={tailor}
-                setTailor={setTailor}
                 note={note}
                 setNote={setNote}
                 dateIn={dateIn}
@@ -485,7 +499,10 @@ function CustomerInformationModal({onSuccess}) {
               stockReport={stockReport}
               setStockReport={setStockReport}
               handleInputChange={handleInputChange}
-              inputValues={inputValues}
+              rows={rows}
+              setRows={setRows}
+              selectedStock={selectedStock}
+              setSelectedStock={setSelectedStock}
             />
           )}
           {activeSection === "paymentInformation" && (
@@ -500,8 +517,6 @@ function CustomerInformationModal({onSuccess}) {
               setMeasurer={setMeasurerPrice}
               checker={checkerPrice}
               setChecker={setCheckerPrice}
-              tailor={tailorPrice}
-              setTailor={setTailorPrice}
               total={total}
               setTotal={setTotal}
             />

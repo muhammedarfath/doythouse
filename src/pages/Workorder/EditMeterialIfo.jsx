@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Input } from "../../../components/ui/input";
+import { Input } from "@/components/ui/input";
 import axios from "axios";
 
-function MeterialIfo({
+function EditMeterialIfo({
   stockReport,
   setStockReport,
   handleInputChange,
@@ -124,4 +124,4 @@ function MeterialIfo({
   );
 }
 
-export default MeterialIfo;
+export default EditMeterialIfo;

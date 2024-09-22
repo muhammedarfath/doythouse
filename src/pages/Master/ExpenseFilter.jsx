@@ -1,6 +1,13 @@
 import React from "react";
+import { RiCloseLargeLine } from "react-icons/ri";
 
-function ExpenseFilter({ filters, handleFilterChange, employees }) {
+function ExpenseFilter({
+  filters,
+  handleFilterChange,
+  handleClearFilters,
+  employees,
+  ExpenseType,
+}) {
   return (
     <div className="flex flex-wrap gap-4 mb-4">
       <div className="flex flex-col">
@@ -13,7 +20,7 @@ function ExpenseFilter({ filters, handleFilterChange, employees }) {
           name="fromDate"
           value={filters.fromDate}
           onChange={handleFilterChange}
-          className="h-10 border rounded px-4 bg-gray-50"
+          className="h-10 border rounded px-4 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black"
         />
       </div>
       <div className="flex flex-col">
@@ -26,7 +33,7 @@ function ExpenseFilter({ filters, handleFilterChange, employees }) {
           name="toDate"
           value={filters.toDate}
           onChange={handleFilterChange}
-          className="h-10 border rounded px-4 bg-gray-50"
+          className="h-10 border rounded px-4 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black"
         />
       </div>
       <div className="flex flex-col">
@@ -38,7 +45,7 @@ function ExpenseFilter({ filters, handleFilterChange, employees }) {
           name="expenseType"
           value={filters.expenseType}
           onChange={handleFilterChange}
-          className="h-10 border rounded px-4 bg-gray-50"
+          className="h-10 border rounded px-4 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black"
         >
           <option value="">Select Type</option>
           {ExpenseType.map((type) => (
@@ -57,7 +64,7 @@ function ExpenseFilter({ filters, handleFilterChange, employees }) {
           name="employee"
           value={filters.employee}
           onChange={handleFilterChange}
-          className="h-10 border rounded px-4 bg-gray-50"
+          className="h-10 border rounded px-4 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black"
         >
           <option value="">Select Employee</option>
           {employees.map((emp) => (
@@ -66,6 +73,14 @@ function ExpenseFilter({ filters, handleFilterChange, employees }) {
             </option>
           ))}
         </select>
+      </div>
+      <div className="flex items-end">
+        <button
+          onClick={handleClearFilters}
+          className="h-10 px-4 bg-[#D8E9E7] text-black rounded focus:outline-none focus:ring-2 focus:ring-black"
+        >
+          <RiCloseLargeLine className="text-2xl text-[#308E87]"/>
+        </button>
       </div>
     </div>
   );

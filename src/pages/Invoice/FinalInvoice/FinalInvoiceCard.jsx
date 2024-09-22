@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { FaFileInvoice } from "react-icons/fa";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -35,7 +34,6 @@ function FinalInvoiceCard({ order_id, onSuccess, invoice }) {
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
     setStatus(newStatus);
-    console.log(newStatus);
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/edit.php",
@@ -156,51 +154,27 @@ function FinalInvoiceCard({ order_id, onSuccess, invoice }) {
                   </div>
 
                   <div className="mt-6">
-                    <div className="border border-gray-200 p-4 rounded-lg space-y-4 dark:border-neutral-700">
-                      <div className="hidden sm:grid sm:grid-cols-5">
-                        <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-                          Charge
+                    <div className="mt-6 border border-gray-200 p-4 rounded-lg space-y-4 dark:border-neutral-700">
+                      <div className="text-lg font-medium text-gray-800 dark:text-neutral-200">
+                        Labour Costs:
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="text-gray-800 dark:text-neutral-200">
+                          Stitching:
                         </div>
-                        <div className="sm:col-span-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
-                          Amount
+                        <div className="text-end font-medium text-gray-800 dark:text-neutral-200">
+                          {currentInvoice?.stiching || 0}
+                        </div>
+                        <div className="text-gray-800 dark:text-neutral-200">
+                          Handwork:
+                        </div>
+                        <div className="text-end font-medium text-gray-800 dark:text-neutral-200">
+                          {currentInvoice?.handwork || 0}
                         </div>
                       </div>
-
-                      <div className="hidden sm:block border-b border-gray-200 dark:border-neutral-700"></div>
-                      {[
-                        { name: "Cutting", value: currentInvoice?.cutting },
-                        { name: "Stitching", value: currentInvoice?.stiching },
-                        { name: "Hand Work", value: currentInvoice?.handwork },
-                        { name: "Measurer", value: currentInvoice?.measurer },
-                        { name: "Checker", value: currentInvoice?.checker },
-                        { name: "Tailor", value: currentInvoice?.tailor },
-                      ].map((charge, idx) => (
-                        <div
-                          className="grid grid-cols-3 sm:grid-cols-5 gap-2 items-center"
-                          key={idx}
-                        >
-                          <div className="col-span-2 sm:col-span-2">
-                            <p className="font-medium text-gray-800 dark:text-neutral-200">
-                              {charge.name}
-                            </p>
-                          </div>
-                          <div className="col-span-1 sm:col-span-3 text-end">
-                            <p className="text-gray-800 dark:text-neutral-200">
-                              ₹{charge.value}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                      <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 items-center">
-                        <div className="col-span-2 sm:col-span-2">
-                          <p className="font-medium text-gray-800 dark:text-neutral-200">
-                            Total Charges
-                          </p>
-                        </div>
-                        <div className="col-span-1 sm:col-span-3 text-end">
-                          <p className="text-gray-800 dark:text-neutral-200">
-                            ₹{chargesTotal}
-                          </p>
+                      <div className="mt-4 border-t border-gray-200 pt-2">
+                        <div className="text-lg font-bold text-gray-800 dark:text-neutral-200 text-end">
+                          Total Labour Costs: ₹{chargesTotal}
                         </div>
                       </div>
                     </div>

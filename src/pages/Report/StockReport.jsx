@@ -1,28 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../../components/ui/table";
 import { CiFilter } from "react-icons/ci";
 import axios from "axios";
 import * as XLSX from "xlsx";
-import UnitModal from "@/components/modal/UnitModal";
 import AddStock from "@/components/modal/AddStock";
 import { toast } from "react-hot-toast";
-import EditStockModal from "@/components/modal/EditStockModal";
-import { BiSolidTrashAlt } from "react-icons/bi";
+
+import Search from "@/components/Search/Search";
+import StockTable from "./StockTable";
 
 function StockReport() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [stockReport, setStockReport] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedStockItem, setSelectedStockItem] = useState("");
+  const [stockItems, setStockItems] = useState([]); 
 
   useEffect(() => {
     fetchStockReport();
@@ -34,6 +26,9 @@ function StockReport() {
         "https://storeconvo.com/php/fetch.php?typ=stock"
       );
       setStockReport(response.data);
+
+      const uniqueItems = [...new Set(response.data.map((stock) => stock.items))];
+      setStockItems(uniqueItems); 
     } catch (error) {
       console.error("Error fetching stock report:", error);
     }
@@ -43,12 +38,8 @@ function StockReport() {
     setIsFilterVisible(!isFilterVisible);
   };
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleSubcategoryFilterChange = (e) => {
-    setSelectedSubcategory(e.target.value);
+  const handleStockItems = (e) => {
+    setSelectedStockItem(e.target.value);
   };
 
   const handleDelete = (stockId) => {
@@ -91,11 +82,11 @@ function StockReport() {
         }
       );
       setStockReport((prevStock) =>
-      prevStock.filter((stock) => stock.stock_id !== stockId)
+        prevStock.filter((stock) => stock.stock_id !== stockId)
       );
       toast.success("Delete successful", { id: toastId });
     } catch (error) {
-      toast.error("Error deleting supplier:", error);
+      toast.error("Error deleting stock:", error);
     }
   };
 
@@ -106,7 +97,13 @@ function StockReport() {
     XLSX.writeFile(workbook, "stock_report.xlsx");
   };
 
-console.log(stockReport);
+  const filteredStock = stockReport
+    .filter((stock) =>
+      stock.items?.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .filter((stock) =>
+      selectedStockItem ? stock.items === selectedStockItem : true
+    );
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -115,16 +112,11 @@ console.log(stockReport);
           <h2 className="font-semibold text-xl text-black">Stock Report</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
             <div className="flex items-center justify-between mb-4 lg:flex-row gap-4 lg:gap-0 flex-col">
-              <div className="flex gap-2">
-                <span>Search</span>
-                <input
-                  type="text"
-                  placeholder="Search by stock..."
-                  className="h-10 border rounded px-4 w-64 bg-gray-50"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
-              </div>
+              <Search
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                name={"stock"}
+              />
               <div className="flex items-center gap-5">
                 <div
                   className="border rounded-md p-2 bg-[#D8E9E7] text-[#308E87]"
@@ -146,23 +138,21 @@ console.log(stockReport);
               <div className="flex flex-wrap gap-4 mb-4">
                 <div className="flex flex-col">
                   <label
-                    htmlFor="subcategory-filter"
+                    htmlFor="stock-item-filter"
                     className="text-sm font-medium"
                   >
-                    Filter by Subcategory
+                    Filter by Stock Items
                   </label>
                   <select
-                    id="subcategory-filter"
-                    className="h-10 border rounded px-4 bg-gray-50"
-                    value={selectedSubcategory}
-                    onChange={handleSubcategoryFilterChange}
+                    id="stock-item-filter"
+                    className="h-10 border rounded px-4 bg-gray-50 focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
+                    value={selectedStockItem}
+                    onChange={handleStockItems}
                   >
                     <option value="">All</option>
-                    {[
-                      ...new Set(stockReport.map((item) => item.subcat_name)),
-                    ].map((subcategory) => (
-                      <option key={subcategory} value={subcategory}>
-                        {subcategory}
+                    {stockItems.map((item, index) => (
+                      <option key={index} value={item}>
+                        {item}
                       </option>
                     ))}
                   </select>
@@ -170,41 +160,11 @@ console.log(stockReport);
               </div>
             )}
 
-            <Table className="w-full">
-              <TableCaption>A list of your stock items.</TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[50px]">SINO</TableHead>
-                  <TableHead>Stock Item</TableHead>
-                  <TableHead>Unit</TableHead>
-                  <TableHead className="text-right">Total Stock</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {stockReport.map((stock, index) => (
-                  <TableRow key={stock.id}>
-                    <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>{stock.items}</TableCell>
-                    <TableCell>{stock.unitname}</TableCell>
-                    <TableCell className="text-right">
-                      {stock.stockvalue || "N/A"}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex justify-center gap-4">
-                        <EditStockModal
-                          stock={stock}
-                          onSuccess={fetchStockReport}
-                        />
-                        <BiSolidTrashAlt
-                          className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
-                          onClick={() => handleDelete(stock.stock_id)}
-                        />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <StockTable
+              filteredStock={filteredStock}
+              fetchStockReport={fetchStockReport}
+              handleDelete={handleDelete}
+            />
           </div>
         </div>
       </div>

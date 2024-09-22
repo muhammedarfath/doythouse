@@ -6,18 +6,24 @@ import logo from "../../assets/logo.jpg";
 import { RiAppsLine, RiSettingsLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import LoadingWrapper from "../Loading/LoadingWrapper";
+import SideModal from "./SideModal";
 
 function Sidebar() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
+  const [isModalOpen, setModalOpen] = useState(false); 
 
-  const { isLoggedIn, role, username } = useSelector((state) => state.auth);
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/login");
     }
   }, [isLoggedIn, navigate]);
+
+  const toggleModal = () => {
+    setModalOpen(!isModalOpen);
+  };
 
   return (
     <>
@@ -76,11 +82,15 @@ function Sidebar() {
             </main>
           </div>
 
-          <div className="fixed cursor-pointer lg:bottom-10 bottom-5 lg:right-10 right-5 bg-[#308E87] p-3 rounded-full shadow-lg animate-spin-slow">
+          <div
+            className="fixed cursor-pointer lg:bottom-10 bottom-5 lg:right-10 right-5 bg-[#308E87] p-3 rounded-full shadow-xl shadow-[#D8E9E7] animate-spin-slow"
+            onClick={toggleModal} // Toggle the modal on click
+          >
             <RiSettingsLine className="text-2xl text-white " />
           </div>
         </div>
       </LoadingWrapper>
+      <SideModal isOpen={isModalOpen} onClose={toggleModal} /> {/* Render the modal */}
     </>
   );
 }

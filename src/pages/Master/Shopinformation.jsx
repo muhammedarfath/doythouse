@@ -15,7 +15,6 @@ function Shopinformation() {
       const response = await axios.get(
         "https://storeconvo.com/php/fetch.php?typ=shop"
       );
-      console.log(response.data);
       setShopInformation(response.data);
     } catch (error) {
       console.error("Error fetching shop details:", error);

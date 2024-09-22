@@ -160,7 +160,7 @@ function AddProduct() {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="w-full mx-auto">
+      <div className="lg:max-w-screen-xl md:max-w-[35rem] max-w-[20rem] mx-auto">
         <div className="flex flex-col gap-11 mt-8">
           <h2 className="font-bold text-xl text-black">Add New Product</h2>
           <div className="bg-white flex rounded-2xl shadow-sm p-4 px-4 md:p-8 mb-6 w-full">
@@ -176,8 +176,6 @@ function AddProduct() {
                     setProductName={setProductName}
                     ProductDescription={ProductDescription}
                     setProductDescription={setProductDescription}
-                    productUserCode={productUserCode}
-                    setProductUserCode={setProductUserCode}
                     unitId={unitId}
                     setUnitId={setUnitId}
                     reorderLevel={reorderLevel}
@@ -204,6 +202,8 @@ function AddProduct() {
                     setCategory={setCategory}
                     subCategory={subCategory}
                     setSubCategory={setSubCategory}
+                    productUserCode={productUserCode}
+                    setProductUserCode={setProductUserCode}
                   />
                 )}
                 {activeSection === "price" && (
@@ -243,7 +243,7 @@ function AddProduct() {
             setActiveSection={setActiveSection}
             activeSection={activeSection}
           />
-          <div className="lg:hidden md:hidden flex justify-end">
+          <div className="lg:hidden md:hidden flex justify-center">
             <button
               onClick={handleSubmit}
               className={`bg-[#308E87] text-white flex items-center font-bold py-2 px-4 rounded ${

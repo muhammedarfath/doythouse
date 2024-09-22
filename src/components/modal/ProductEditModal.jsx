@@ -203,7 +203,7 @@ function ProductEditModal({ product, onSuccess }) {
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="col-span-3 p-2 border rounded"
+                className="col-span-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
 
@@ -216,6 +216,7 @@ function ProductEditModal({ product, onSuccess }) {
                 value={userCode}
                 onChange={(e) => setUserCode(e.target.value)}
                 className="col-span-3"
+                readOnly
               />
             </div>
 
@@ -227,7 +228,7 @@ function ProductEditModal({ product, onSuccess }) {
                 id="unitId"
                 value={unitId}
                 onChange={handleUnitChange}
-                className="col-span-3 border rounded p-2"
+                className="col-span-3 border rounded p-2 focus:outline-none focus:ring-2 focus:ring-black"
               >
                 <option value="">Select Unit</option>
                 {units.map((unit) => (
@@ -318,7 +319,7 @@ function ProductEditModal({ product, onSuccess }) {
                 id="category"
                 value={selectedCategory}
                 onChange={handleCategoryChange}
-                className="col-span-3 border rounded p-2"
+                className="col-span-3 border rounded p-2 focus:outline-none focus:ring-2 focus:ring-black"
               >
                 <option value="">Select Category</option>
                 {categories.map((cat) => (
@@ -337,7 +338,7 @@ function ProductEditModal({ product, onSuccess }) {
                 id="subcategory"
                 value={selectedSubcategory}
                 onChange={handleSubcategoryChange}
-                className="col-span-3 border rounded p-2"
+                className="col-span-3 border rounded p-2 focus:outline-none focus:ring-2 focus:ring-black"
               >
                 <option value="">Select SubCategory</option>
                 {subcategories

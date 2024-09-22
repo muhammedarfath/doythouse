@@ -19,6 +19,7 @@ function AddStock({ onSuccess }) {
   const [isOpen, setIsOpen] = useState(false);
   const [stockItem, setStockItem] = useState("");
   const [stockValue, setStockValue] = useState("");
+  const [stockMrp, setStockMrp] = useState("");
   const [loading, setLoading] = useState(false);
   const [unit, setUnit] = useState([]);
   const [selectedUnit, setSelectedUnit] = useState("");
@@ -131,7 +132,7 @@ function AddStock({ onSuccess }) {
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="stockValue" className="text-right">
-              Total Stock Items
+              Total Quantity
             </Label>
             <Input
               id="stockValue"
@@ -139,6 +140,18 @@ function AddStock({ onSuccess }) {
               placeholder="Enter total stock"
               value={stockValue}
               onChange={(e) => setStockValue(e.target.value)}
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="stockValue" className="text-right">
+              MRP
+            </Label>
+            <Input
+              id="mrp"
+              className="col-span-3"
+              placeholder="Enter stock mrp"
+              value={stockMrp}
+              onChange={(e) => setStockMrp(e.target.value)}
             />
           </div>
         </div>

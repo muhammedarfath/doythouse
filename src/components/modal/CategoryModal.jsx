@@ -15,7 +15,7 @@ import { Label } from "../../components/ui/label";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-function CategoryModal({setCategory}) {
+function CategoryModal({ onchange }) {
   const [categoryName, setCategoryName] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,7 +28,6 @@ function CategoryModal({setCategory}) {
     }
 
     setLoading(true);
-
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_category.php",
@@ -43,17 +42,19 @@ function CategoryModal({setCategory}) {
         }
       );
 
-      if (response.data) { 
-        console.log(response.data);
-        setCategory((prevCate) => [...prevCate, response.data]);
+      console.log("Response:", response);
+
+      if (response.data && response.data.cat_name) {
         toast.success("Category added successfully");
         setCategoryName("");
         setDescription("");
         setIsOpen(false);
+        onchange();
       } else {
         toast.error("Failed to add category");
       }
     } catch (error) {
+      console.error("Error adding category:", error);
       toast.error("Failed to add category");
     } finally {
       setLoading(false);
@@ -82,6 +83,7 @@ function CategoryModal({setCategory}) {
               <Input
                 id="category"
                 value={categoryName}
+                placeholder="Categoty Name"
                 onChange={(e) => setCategoryName(e.target.value)}
                 className="col-span-3"
               />
@@ -93,8 +95,9 @@ function CategoryModal({setCategory}) {
               <textarea
                 id="description"
                 value={description}
+                placeholder="description"
                 onChange={(e) => setDescription(e.target.value)}
-                className="col-span-3 p-2 border rounded"
+                className="col-span-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
           </div>

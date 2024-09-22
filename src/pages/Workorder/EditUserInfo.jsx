@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Input } from "../../../components/ui/input";
-import { Label } from "../../../components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { Filter } from "lucide-react";
 
-function Userinfo({
+function EditUserInfo({
   section1Ref,
   setCustomerName,
   setContactNumber,
@@ -31,79 +31,25 @@ function Userinfo({
   setDesignerPhoneNumber,
   designerPhoneNumber,
 }) {
-  const [orderNumberError, setOrderNumberError] = useState("");
-  const [orderNumberValid, setOrderNumberValid] = useState(true);
 
-  const usedOrderNumbers = new Set();
+    console.log(status,"this is edit status");
+    console.log(categories,"this is edit cat");
+    console.log(selectedCategory,"this is edit selca");
 
-  const generateOrderNumber = () => {
-    let newOrderNumber;
-    do {
-      newOrderNumber = `#${Math.floor(
-        10000 + Math.random() * 90000
-      ).toString()}`;
-    } while (usedOrderNumbers.has(newOrderNumber));
-
-    usedOrderNumbers.add(newOrderNumber);
-    return newOrderNumber;
-  };
-
-  useEffect(() => {
-    setOrderNumber(generateOrderNumber());
-  }, []);
-
-  const handleOrderNumberChange = async (e) => {
-    const newOrderNumber = e.target.value;
-    setOrderNumber(newOrderNumber);
-
-    if (!/^#\d{5}$/.test(newOrderNumber)) {
-      setOrderNumberError(
-        "Order number must start with # followed by 5 digits."
-      );
-      setOrderNumberValid(false);
-      return;
-    }
-
-    setOrderNumberError("");
-    setOrderNumberValid(true);
-
-    try {
-      const response = await axios.post(
-        "https://storeconvo.com/php/fetch_post.php",
-        new URLSearchParams({
-          id: newOrderNumber.substring(1),
-          typ: "checkorderno",
-        })
-      );
-
-      if (response.data === 1) {
-        setOrderNumberError("This order number is already in use.");
-        setOrderNumberValid(false);
-      } else {
-        setOrderNumberError("");
-        setOrderNumberValid(true);
-      }
-    } catch (error) {
-      console.error("API call error:", error);
-      setOrderNumberError("Error checking order number.");
-      setOrderNumberValid(false);
-    }
-  };
-
-  const handleDesignerChange = (e) => {
+    const handleDesignerChange = (e) => {
     const selectedDesignerId = e.target.value;
     setDesignerName(selectedDesignerId);
-  
-    const employee = designers.find((emp) => emp.employee_id === selectedDesignerId);
+
+    const employee = designers.find(
+      (emp) => emp.employee_id === selectedDesignerId
+    );
     console.log(employee);
     if (employee) {
       setDesignerPhoneNumber(employee.employee_phone);
     } else {
-      setDesignerPhoneNumber(""); 
+      setDesignerPhoneNumber("");
     }
   };
-  
-  console.log(designerPhoneNumber);
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
@@ -115,17 +61,12 @@ function Userinfo({
           <Input
             id="order-number"
             value={orderNumber}
-            onChange={handleOrderNumberChange}
-            className={`w-full ${!orderNumberValid ? "border-red-500" : ""}`}
+            className="w-full"
             readOnly
-            required
           />
-          {orderNumberError && (
-            <p className="text-red-500 mr-1 text-sm">{orderNumberError}</p>
-          )}
 
           <Label htmlFor="customerName" className="text-md font-bold">
-          <span className="text-red-500 mr-1">*</span>
+            <span className="text-red-500 mr-1">*</span>
             Customer Name
           </Label>
           <Input
@@ -138,7 +79,7 @@ function Userinfo({
           />
 
           <Label htmlFor="contact-number" className="text-md font-bold">
-          <span className="text-red-500 mr-1">*</span>
+            <span className="text-red-500 mr-1">*</span>
             Contact Number
           </Label>
           <Input
@@ -150,7 +91,7 @@ function Userinfo({
           />
 
           <Label htmlFor="trial-date" className="text-md font-bold">
-          <span className="text-red-500 mr-1">*</span>
+            <span className="text-red-500 mr-1">*</span>
             Trial Date
           </Label>
           <Input
@@ -163,7 +104,7 @@ function Userinfo({
           />
 
           <Label htmlFor="expected-delivery" className="text-md font-bold">
-          <span className="text-red-500 mr-1">*</span>
+            <span className="text-red-500 mr-1">*</span>
             Expected Delivery
           </Label>
           <Input
@@ -178,7 +119,7 @@ function Userinfo({
 
         <div className="flex flex-col gap-4">
           <Label htmlFor="item-category" className="text-md font-bold">
-          <span className="text-red-500 mr-1">*</span>
+            <span className="text-red-500 mr-1">*</span>
             Item Category
           </Label>
           <select
@@ -199,7 +140,7 @@ function Userinfo({
 
           <div className="lg:flex flex flex-col lg:flex-row gap-4">
             <Label htmlFor="designer-name" className="text-md font-bold">
-            <span className="text-red-500 mr-1">*</span>
+              <span className="text-red-500 mr-1">*</span>
               Designer Name
             </Label>
             <select
@@ -217,7 +158,7 @@ function Userinfo({
               ))}
             </select>
             <Label htmlFor="designer-phone" className="text-md font-bold">
-            <span className="text-red-500 mr-1">*</span>
+              <span className="text-red-500 mr-1">*</span>
               Designer Phone
             </Label>
             <Input
@@ -229,7 +170,7 @@ function Userinfo({
           </div>
 
           <Label htmlFor="order-date" className="text-md font-bold">
-          <span className="text-red-500 mr-1">*</span>
+            <span className="text-red-500 mr-1">*</span>
             Order Date
           </Label>
           <Input
@@ -242,7 +183,7 @@ function Userinfo({
           />
 
           <Label htmlFor="emergency" className="text-md font-bold">
-          <span className="text-red-500 mr-1">*</span>
+            <span className="text-red-500 mr-1">*</span>
             Emergency
           </Label>
           <Input
@@ -254,7 +195,7 @@ function Userinfo({
           />
 
           <Label htmlFor="status" className="text-md font-bold">
-          <span className="text-red-500 mr-1">*</span>
+            <span className="text-red-500 mr-1">*</span>
             Status
           </Label>
           <select
@@ -275,4 +216,4 @@ function Userinfo({
   );
 }
 
-export default Userinfo;
+export default EditUserInfo;

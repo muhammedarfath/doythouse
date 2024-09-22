@@ -15,7 +15,7 @@ import { Button } from "../ui/button";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-function EditExpenseModal({ expense,onChange }) {
+function EditExpenseModal({ expense, onChange }) {
   const [open, setOpen] = useState(false);
   const [type, setType] = useState(expense.subtypexpid || "");
   const [subType, setSubType] = useState(expense.expsub_type || "");
@@ -61,15 +61,15 @@ function EditExpenseModal({ expense,onChange }) {
   }, []);
 
   const handleSave = async () => {
-    setLoading(true);    
+    setLoading(true);
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/edit.php",
         new URLSearchParams({
           id: expense.exp_id,
           exp_date: expense.exp_date,
-          exp_type:type,
-          expsub_type:subType,
+          exp_type: type,
+          expsub_type: subType,
           exp_amount: amount,
           exp_employee: selectedEmployee,
           exp_note: note,
@@ -82,9 +82,9 @@ function EditExpenseModal({ expense,onChange }) {
         }
       );
       if (response.status === 200) {
-        toast.success("Expense Edit successfully")
+        toast.success("Expense Edit successfully");
         setOpen(false);
-        onChange()
+        onChange();
       }
     } catch (error) {
       toast.error("Error saving expense:", error);
@@ -92,15 +92,17 @@ function EditExpenseModal({ expense,onChange }) {
       setLoading(false);
     }
   };
-  
+
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <AiFillEdit
-            className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
-            onClick={() => setOpen(true)}
-          />
+          <span>
+            <AiFillEdit
+              className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
+              onClick={() => setOpen(true)}
+            />
+          </span>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[900px]">
           <DialogHeader>
@@ -114,7 +116,7 @@ function EditExpenseModal({ expense,onChange }) {
               </Label>
               <select
                 id="type"
-                className="col-span-3 p-2 border rounded"
+                className="col-span-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
                 value={type}
                 onChange={(e) => setType(e.target.value)}
               >
@@ -127,25 +129,27 @@ function EditExpenseModal({ expense,onChange }) {
               </select>
             </div>
 
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="subType" className="text-right">
+                Sub Expense
+              </Label>
+              <select
+                id="subType"
+                className="col-span-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
+                value={subType}
+                onChange={(e) => setSubType(e.target.value)}
+              >
+                <option value="">Select sub expense</option>
 
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="subType" className="text-right">
-                  Sub Expense
-                </Label>
-                <select
-                  id="subType"
-                  className="col-span-3 p-2 border rounded"
-                  value={subType}
-                  onChange={(e) => setSubType(e.target.value)}
-                >
-                  <option value="">Select sub expense</option>
-                  {subTypes.map((subTypeOption, index) => (
-                    <option key={index} value={subTypeOption.subexp_id}>
-                      {subTypeOption.subexp_name}
+                {subTypes
+                  .filter((subexp) => subexp.exp_id === type)
+                  .map((subexp) => (
+                    <option key={subexp.subexp_id} value={subexp.subexp_id}>
+                      {subexp.subexp_name}
                     </option>
                   ))}
-                </select>
-              </div>
+              </select>
+            </div>
 
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="amount" className="text-right">
@@ -166,7 +170,7 @@ function EditExpenseModal({ expense,onChange }) {
               </Label>
               <select
                 id="employee"
-                className="col-span-3 p-2 border rounded"
+                className="col-span-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
                 value={selectedEmployee}
                 onChange={(e) => setSelectedEmployee(e.target.value)}
               >

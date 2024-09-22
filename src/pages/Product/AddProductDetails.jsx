@@ -1,13 +1,10 @@
 import React from "react";
-import { FaArrowRightLong } from "react-icons/fa6";
 
 function AddProductDetails({
   productname,
   setProductName,
   ProductDescription,
   setProductDescription,
-  productUserCode,
-  setProductUserCode,
   unitId,
   setUnitId,
   reorderLevel,
@@ -32,9 +29,6 @@ function AddProductDetails({
         break;
       case "description":
         setProductDescription(value);
-        break;
-      case "usercode":
-        setProductUserCode(value);
         break;
       case "unit":
         setUnitId(value);
@@ -73,7 +67,7 @@ function AddProductDetails({
             id="product_name"
             value={productname || ""}
             onChange={handleChange}
-            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="Product Name"
             required
           />
@@ -85,25 +79,12 @@ function AddProductDetails({
             id="description"
             value={ProductDescription || ""}
             onChange={handleChange}
-            className="border rounded p-4 w-full bg-[#fff]"
+            className="border rounded p-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="Description"
             required
           />
         </div>
 
-        <div className="md:col-span-1">
-          <label htmlFor="usercode">Product User Code</label>
-          <input
-            type="text"
-            name="usercode"
-            id="usercode"
-            value={productUserCode || ""}
-            onChange={handleChange}
-            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
-            placeholder="Code"
-            required
-          />
-        </div>
         <div className="md:col-span-2">
           <label htmlFor="unit">Product Unit</label>
           <select
@@ -111,7 +92,7 @@ function AddProductDetails({
             name="unit"
             value={unitId}
             onChange={handleChange}
-            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff] appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="h-10 border mt-1 rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
           >
             <option value="">Select Unit</option>
             {units.length > 0 ? (
@@ -135,7 +116,7 @@ function AddProductDetails({
               value={reorderLevel || ""}
               onChange={handleChange}
               placeholder="Re-Level"
-              className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
+              className="transition-all flex items-center h-10 border rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
               required
             />
           </div>
@@ -149,7 +130,7 @@ function AddProductDetails({
               value={hsn || ""}
               onChange={handleChange}
               placeholder="Code"
-              className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
+              className="transition-all flex items-center h-10 border rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
               required
             />
           </div>
@@ -162,7 +143,7 @@ function AddProductDetails({
             id="cgst"
             value={cgst || ""}
             onChange={handleChange}
-            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="CGST"
             required
           />
@@ -175,7 +156,7 @@ function AddProductDetails({
             id="sgst"
             value={sgst || ""}
             onChange={handleChange}
-            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="SGST"
             required
           />
@@ -189,7 +170,7 @@ function AddProductDetails({
               value={salesUnit || ""}
               onChange={handleChange}
               placeholder="Unit"
-              className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
+              className="transition-all flex items-center h-10 border rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
               required
             />
           </div>
@@ -202,7 +183,7 @@ function AddProductDetails({
             id="size"
             value={packSize || ""}
             onChange={handleChange}
-            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+            className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-[#fff] focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="Size"
             required
           />

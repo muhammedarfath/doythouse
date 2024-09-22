@@ -64,7 +64,6 @@ function ExpenseModal({setExpenses,onChange}) {
         const response = await axios.get(
           "https://storeconvo.com/php/fetch.php?typ=employee"
         );
-        console.log(response.data, "this is employee");
         setEmployees(response.data);
       } catch (error) {
         console.error("Error fetching employees:", error);
@@ -73,6 +72,11 @@ function ExpenseModal({setExpenses,onChange}) {
     fetchEmployees();
   }, []);
   const handleAddNewExpenseType = async () => {
+    if (typeof newExpenseType !== "string" || !newExpenseType.trim()) {
+      toast.error("Expense type cannot be empty");
+      return;
+    }
+  
     setLoading(true);
     try {
       const response = await axios.post(
@@ -87,7 +91,7 @@ function ExpenseModal({setExpenses,onChange}) {
         }
       );
       if (response.status === 200) {
-        toast.success("Expense Added")
+        toast.success("Expense Added");
         setNewExpenseType("");
         setShowNewTypeInput(false);
         fetchExpenseTypes();
@@ -98,9 +102,19 @@ function ExpenseModal({setExpenses,onChange}) {
       setLoading(false);
     }
   };
+  
   const handleAddNewSubExpenseType = async () => {
+    if (typeof newSubExpenseType !== "string" || !newSubExpenseType.trim()) {
+      toast.error("Sub expense type cannot be empty");
+      return;
+    }
+  
+    if (!selectedExpense) {
+      toast.error("Please select an expense type");
+      return;
+    }
+  
     setLoading(true);
-
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/add_subexpensetype.php",
@@ -117,18 +131,44 @@ function ExpenseModal({setExpenses,onChange}) {
       if (response.status === 200) {
         toast.success("Sub Expense Added");
         setNewSubExpenseType("");
-        setSelectedExpense("")
+        setSelectedExpense("");
         setShowNewSubTypeInput(false);
         fetchSubExpenseTypes();
       }
     } catch (error) {
-      toast.error("Failed to add expense type");
+      toast.error("Failed to add sub expense type");
     } finally {
       setLoading(false);
     }
   };
-
+  
+  
   const handleSave = async () => {
+    if (!date) {
+      toast.error("Date is required");
+      return;
+    }
+    
+    if (!selectedExpense) {
+      toast.error("Please select an expense type");
+      return;
+    }
+    
+    if (!selectedSubExpense) {
+      toast.error("Please select a sub-expense type");
+      return;
+    }
+  
+    if (!amount || isNaN(amount) || amount <= 0) {
+      toast.error("Please enter a valid amount");
+      return;
+    }
+  
+    if (!selectedEmployee) {
+      toast.error("Please select an employee");
+      return;
+    }
+  
     setLoading(true);
     try {
       const response = await axios.post(
@@ -154,7 +194,7 @@ function ExpenseModal({setExpenses,onChange}) {
         setAmount("");
         setSelectedEmployee("");
         setNote("");
-        onChange()
+        onChange();
       }
     } catch (error) {
       toast.error("Failed to save expense");
@@ -162,7 +202,7 @@ function ExpenseModal({setExpenses,onChange}) {
       setLoading(false);
     }
   };
-
+  
   const handleShowNewTypeInput = () => {
     setShowNewTypeInput(true);
   };

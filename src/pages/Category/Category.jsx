@@ -88,7 +88,7 @@ function Category() {
                 setSearchQuery={setSearchQuery}
                 name={"category"}
               />
-              <CategoryModal setCategory={setCategory} />
+              <CategoryModal setCategory={setCategory} onchange={fetchCategories}/>
             </div>
             <CatTable
               filteredCategories={filteredCategories}

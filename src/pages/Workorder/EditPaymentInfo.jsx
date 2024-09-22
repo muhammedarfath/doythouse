@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-function PaymentInfo({
+function EditPaymentInfo({
   cutting,
   setCutting,
   stitching,
@@ -111,4 +111,4 @@ function PaymentInfo({
   );
 }
 
-export default PaymentInfo;
+export default EditPaymentInfo;

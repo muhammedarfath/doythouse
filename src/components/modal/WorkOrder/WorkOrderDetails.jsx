@@ -1,10 +1,15 @@
 import React from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../../components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../../components/ui/dialog";
 import { AiFillEye } from "react-icons/ai";
 
 function WorkOrderDetails({ cust }) {
   const imageUrl = cust.image ? `https://storeconvo.com/php/uploads/${cust.image}` : '';
-
 
   return (
     <div>
@@ -12,44 +17,68 @@ function WorkOrderDetails({ cust }) {
         <DialogTrigger asChild>
           <AiFillEye className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer" />
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[1200px] max-h-[900px] overflow-scroll lg:mt-0 mt-40">
+        <DialogContent className="sm:max-w-[1200px] max-h-[90vh] overflow-auto lg:mt-0 mt-40">
           <DialogHeader>
-            <DialogTitle>Product Details</DialogTitle>
+            <DialogTitle className="text-xl font-bold">Product Details</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="pt-6">
-              <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:max-w-7xl lg:grid lg:grid-cols-1 lg:gap-x-8 lg:px-8">
-                {imageUrl && (
-                  <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-                    <img
-                      src={imageUrl}
-                      alt="Product Image"
-                      className="h-full w-full object-cover object-center"
-                    />
-                  </div>
-                )}
+          <div className="grid gap-6 py-6">
+            {imageUrl && (
+              <div className="max-w-sm mx-auto">
+                <img
+                  src={imageUrl}
+                  alt="Product Image"
+                  className="w-full h-auto rounded-lg shadow-md"
+                />
+              </div>
+            )}
+            <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h1 className="text-2xl font-semibold text-gray-900">Customer Details</h1>
+              <table className="min-w-full border border-gray-300 mt-4">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="text-left py-2 px-4 border-b border-gray-300">Field</th>
+                    <th className="text-left py-2 px-4 border-b border-gray-300">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="py-2 px-4 border-b border-gray-300">Name</td>
+                    <td className="py-2 px-4 border-b border-gray-300">{cust.cust_name}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4 border-b border-gray-300">Phone</td>
+                    <td className="py-2 px-4 border-b border-gray-300">{cust.cust_phone}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4 border-b border-gray-300">Trial Date</td>
+                    <td className="py-2 px-4 border-b border-gray-300">{cust.cust_trialdate}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4 border-b border-gray-300">Expected Delivery</td>
+                    <td className="py-2 px-4 border-b border-gray-300">{cust.cust_expecteddelivery}</td>
+                  </tr>
+                </tbody>
+              </table>
 
-                <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:max-w-7xl lg:grid lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-                  <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-                    <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                      {cust.cust_name}
-                    </h1>
-                    <p className="text-base text-gray-900">Phone: {cust.cust_phone}</p>
-                    <p className="text-base text-gray-900">Trial Date: {cust.cust_trialdate}</p>
-                    <p className="text-base text-gray-900">Expected Delivery: {cust.cust_expecteddelivery}</p>
-                  </div>
-
-                  <div className="mt-4 flex flex-col gap-10 lg:row-span-3 lg:mt-0">
-                    <h2 className="">Measurements</h2>
-                    <hr />
-                    <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-                      {Object.entries(cust).map(([key, value], idx) => (
-                        <li key={idx} className="text-gray-400">
-                          <span className="text-gray-600">{`${key.replace(/_/g, ' ').toUpperCase()}: ${value}`}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+              <div className="mt-6">
+                <h2 className="text-lg font-semibold">Measurements</h2>
+                <hr className="my-2" />
+                <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {Object.entries(cust).map(([key, value], idx) => (
+                    <React.Fragment key={idx}>
+                      <div className="flex flex-col">
+                        <label className="text-gray-700 font-medium mb-1">
+                          {key.replace(/_/g, ' ').toUpperCase()}:
+                        </label>
+                        <input
+                          type="text"
+                          defaultValue={value}
+                          readOnly
+                          className="w-full border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+                    </React.Fragment>
+                  ))}
                 </div>
               </div>
             </div>

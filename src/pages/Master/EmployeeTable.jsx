@@ -28,7 +28,7 @@ function EmployeeTable({filteredEmployees,handleDelete,fetchEmployees}) {
       <TableBody>
         {filteredEmployees.length > 0 ? (
           filteredEmployees.map((employee, index) => (
-            <TableRow key={employee.id}>
+            <TableRow key={index}>
               <TableCell>
                 <input type="checkbox" />
               </TableCell>
