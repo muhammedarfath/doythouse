@@ -38,6 +38,7 @@ function AddStock({ onSuccess }) {
       } else {
         console.error("Unexpected response format:", response.data);
       }
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching units:", error);
     }
