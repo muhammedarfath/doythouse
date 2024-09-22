@@ -16,7 +16,6 @@ import axios from "axios";
 import { toast } from "react-hot-toast"; 
 
 function EditStockModal({ stock, onSuccess }) {
-   console.log(stock); 
   const [isOpen, setIsOpen] = useState(false);
   const [stockItem, setStockItem] = useState(stock?.items || "");
   const [stockValue, setStockValue] = useState(stock?.stockvalue  || "");
@@ -52,6 +51,7 @@ function EditStockModal({ stock, onSuccess }) {
           items: stockItem,
           unit: selectedUnit,
           stockvalue: stockValue,
+          stockmrp:stockMrp,
           typ: "stock"
         },
         {
@@ -60,6 +60,7 @@ function EditStockModal({ stock, onSuccess }) {
           },
         }
       );
+      console.log(response.data);
       if (response.data) {
         toast.success("Stock edited successfully!");
         setIsOpen(false);
