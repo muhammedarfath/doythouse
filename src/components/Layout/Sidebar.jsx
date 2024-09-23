@@ -25,6 +25,7 @@ function Sidebar() {
     setModalOpen(!isModalOpen);
   };
 
+
   return (
     <>
       <LoadingWrapper>
@@ -78,19 +79,19 @@ function Sidebar() {
           >
             <Header open={open} />
             <main className="flex-1 overflow-y-auto p-4 mt-16">
-              <Outlet />
+              <Outlet context={{ open }}/>
             </main>
           </div>
 
           <div
             className="fixed cursor-pointer lg:bottom-10 bottom-5 lg:right-10 right-5 bg-[#308E87] p-3 rounded-full shadow-xl shadow-[#D8E9E7] animate-spin-slow"
-            onClick={toggleModal} // Toggle the modal on click
+            onClick={toggleModal} 
           >
             <RiSettingsLine className="text-2xl text-white " />
           </div>
         </div>
       </LoadingWrapper>
-      <SideModal isOpen={isModalOpen} onClose={toggleModal} /> {/* Render the modal */}
+      <SideModal isOpen={isModalOpen} onClose={toggleModal} /> 
     </>
   );
 }

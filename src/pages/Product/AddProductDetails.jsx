@@ -121,7 +121,7 @@ function AddProductDetails({
             />
           </div>
         </div>
-        <div className="md:col-span-2">
+        <div className="md:col-span-2 lg:col-span-1">
           <label htmlFor="hsn_code">HSN/ACS Code</label>
           <div className="h-10 bg-[#fff] flex border border-gray-200 rounded items-center mt-1">
             <input
@@ -135,7 +135,7 @@ function AddProductDetails({
             />
           </div>
         </div>
-        <div className="md:col-span-1">
+        <div className="md:col-span-2 lg:col-span-1">
           <label htmlFor="cgst">CGST</label>
           <input
             type="text"
@@ -148,7 +148,7 @@ function AddProductDetails({
             required
           />
         </div>
-        <div className="md:col-span-1">
+        <div className="md:col-span-2 lg:col-span-1">
           <label htmlFor="sgst">SGST</label>
           <input
             type="text"
@@ -161,7 +161,7 @@ function AddProductDetails({
             required
           />
         </div>
-        <div className="md:col-span-2">
+        <div className="md:col-span-2 lg:col-span-1">
           <label htmlFor="sales_unit">Sales Unit</label>
           <div className="h-10 bg-[#fff] flex border border-gray-200 rounded items-center mt-1">
             <input
@@ -175,7 +175,7 @@ function AddProductDetails({
             />
           </div>
         </div>
-        <div className="md:col-span-1">
+        <div className="md:col-span-2 lg:col-span-1">
           <label htmlFor="size">Pack Size</label>
           <input
             type="text"

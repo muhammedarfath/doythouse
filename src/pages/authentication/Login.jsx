@@ -9,6 +9,8 @@ import {
 } from "../../Redux/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Toaster, toast } from "react-hot-toast";
+import { BeatLoader } from "react-spinners"; // Importing a spinner component
 
 function Login() {
   const dispatch = useDispatch();
@@ -22,7 +24,7 @@ function Login() {
 
   const onSubmit = async (data) => {
     dispatch(startLoading());
-  
+
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/login.php",
@@ -36,23 +38,21 @@ function Login() {
           },
         }
       );
-  
+
       console.log("Raw Response:", response.data);
-  
+
       let responseData;
       try {
-        const cleanData = response.data.startsWith('1') 
-          ? response.data.substring(1) 
+        const cleanData = response.data.startsWith("1")
+          ? response.data.substring(1)
           : response.data;
-  
+
         responseData = JSON.parse(cleanData);
       } catch (parseError) {
         console.error("Error parsing JSON:", parseError);
         throw new Error("Invalid JSON format received");
       }
-  
-      console.log("Parsed Response:", responseData);
-  
+
       if (responseData && responseData.uid) {
         dispatch(
           loginSuccess({
@@ -61,23 +61,28 @@ function Login() {
             role: responseData.role,
           })
         );
+        toast.success("Login successful!");
         navigate("/");
       } else {
         dispatch(loginFailure());
+        toast.error(
+          "Login failed: " + (responseData.message || "Unknown error")
+        );
         console.error("Login failed:", responseData.message || "Unknown error");
       }
     } catch (error) {
       dispatch(loginFailure());
-      console.error("Error during login:", error.message || error);
+      toast.error("Username and password incorrect");
     }
   };
-  
-  
+
   return (
     <div
       className="flex items-center justify-center min-h-screen bg-cover bg-center flex-col"
       style={{ backgroundImage: `url(${logo})` }}
     >
+      <Toaster position="top-right" />
+
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white mb-32 bg-opacity-45 backdrop-blur-md p-10 rounded-lg shadow-md w-full max-w-lg"
@@ -121,9 +126,13 @@ function Login() {
 
         <button
           type="submit"
-          className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
+          className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50 flex items-center justify-center"
         >
-          {authState.loading ? "Loading..." : "Login"}
+          {authState.loading ? (
+            <BeatLoader size={10} color="#fff" />
+          ) : (
+            "Login"
+          )}
         </button>
 
         <div className="text-center mt-4">

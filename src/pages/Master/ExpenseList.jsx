@@ -6,8 +6,10 @@ import { toast } from "react-hot-toast";
 import Search from "@/components/Search/Search";
 import ExpenseTable from "./ExpenseTable";
 import ExpenseFilter from "./ExpenseFilter";
+import { useOutletContext } from "react-router-dom";
 
 function ExpenseList() {
+  const { open } = useOutletContext();
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [ExpenseType, setExpenseType] = useState([]);
@@ -151,9 +153,10 @@ function ExpenseList() {
   });
 
 
+
   return (
     <div className="flex items-center justify-center w-full ">
-      <div className="w-full lg:max-w-screen-xl md:max-w-[35rem] max-w-[22rem] mx-auto ">
+      <div className={`w-full lg:max-w-screen-xl ${open ? "md:max-w-[32rem]" : "md:max-w-[40rem]"} max-w-[22rem] mx-auto`}>
         <div className="flex flex-col gap-6 mt-8 ">
           <h2 className="font-semibold text-xl text-black">Expense List</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 lg:w-full">

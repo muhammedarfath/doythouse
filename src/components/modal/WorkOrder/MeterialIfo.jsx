@@ -10,6 +10,8 @@ function MeterialIfo({
   setRows,
   setSelectedStock,
 }) {
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     const fetchStockReport = async () => {
       try {
@@ -33,6 +35,36 @@ function MeterialIfo({
     setRows(updatedRows);
   };
 
+  const handleInputChangeWithValidation = (e, rowIndex, field) => {
+    const { value } = e.target;
+    const updatedRows = [...rows];
+    updatedRows[rowIndex][field] = value;
+
+    if (field === "quantity") {
+      const selectedItem = updatedRows[rowIndex].item;
+      const stockItem = stockReport.find((stock) => stock.stock_id === selectedItem);
+
+      if (stockItem) {
+        const totalMRP = parseInt(value) * parseFloat(stockItem.mrp || 0);
+        updatedRows[rowIndex].mrp = totalMRP.toFixed(2); 
+
+        if (parseInt(value) > stockItem.stockvalue) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            [rowIndex]: `Quantity exceeds available stock (${stockItem.stockvalue})`,
+          }));
+        } else {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            [rowIndex]: "",
+          }));
+        }
+      }
+    }
+
+    setRows(updatedRows);
+  };
+
   return (
     <div className="mb-80 w-full">
       <table className="w-full table-auto border-collapse border border-gray-300">
@@ -50,8 +82,8 @@ function MeterialIfo({
               <td className="border border-gray-300 px-4 py-2">
                 <select
                   id={`item-select-${rowIndex}`}
-                  value={row.item} 
-                  onChange={(e) => handleInputChange(e, rowIndex, "item")}
+                  value={row.item}
+                  onChange={(e) => handleInputChangeWithValidation(e, rowIndex, "item")}
                   className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
                 >
                   <option value="">Select Item</option>
@@ -69,9 +101,12 @@ function MeterialIfo({
                   id={`quantity-${rowIndex}`}
                   placeholder="Enter Quantity"
                   value={row.quantity || ""}
-                  onChange={(e) => handleInputChange(e, rowIndex, "quantity")}
+                  onChange={(e) => handleInputChangeWithValidation(e, rowIndex, "quantity")}
                   className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
                 />
+                {errors[rowIndex] && (
+                  <p className="text-red-500 text-sm mt-1">{errors[rowIndex]}</p>
+                )}
               </td>
 
               <td className="border border-gray-300 px-4 py-2">
@@ -80,8 +115,9 @@ function MeterialIfo({
                   id={`mrp-${rowIndex}`}
                   placeholder="Enter MRP"
                   value={row.mrp || ""}
-                  onChange={(e) => handleInputChange(e, rowIndex, "mrp")}
+                  onChange={(e) => handleInputChangeWithValidation(e, rowIndex, "mrp")}
                   className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+                  readOnly // MRP is auto-calculated, so set it to read-only
                 />
               </td>
 

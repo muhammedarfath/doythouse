@@ -42,8 +42,6 @@ function CategoryModal({ onchange }) {
         }
       );
 
-      console.log("Response:", response);
-
       if (response.data && response.data.cat_name) {
         toast.success("Category added successfully");
         setCategoryName("");

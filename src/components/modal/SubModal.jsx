@@ -15,7 +15,7 @@ import { Button } from "../../components/ui/button";
 import { FiPlus } from "react-icons/fi";
 import toast from "react-hot-toast";
 
-function SubModal({ setSubCategory, onChange }) {
+function SubModal({ onChange }) {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [subCategoryName, setSubCategoryName] = useState("");

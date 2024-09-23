@@ -6,11 +6,13 @@ import CustomerTable from "./CustomerTable";
 import CustomerFilter from "./CustomerFilter";
 import Search from "@/components/Search/Search";
 import { toast } from "react-hot-toast";
+import { useOutletContext } from "react-router-dom";
 
 function CustomerList() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [customer, setCustomer] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const { open } = useOutletContext();
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
@@ -59,8 +61,6 @@ function CustomerList() {
     cust.cust_orderno?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-
-
   const handleDelete = (CustomerId) => {
     toast(
       (t) => (
@@ -89,7 +89,7 @@ function CustomerList() {
   const confirmDelete = async (CustomerId, toastId) => {
     try {
       await axios.post(
-        'https://storeconvo.com/php/delete.php/',
+        "https://storeconvo.com/php/delete.php/",
         {
           id: CustomerId,
           typ: "customer",
@@ -101,7 +101,7 @@ function CustomerList() {
         }
       );
       setCustomer((preCustomer) =>
-      preCustomer.filter((customer) => customer.cust_id !== CustomerId)
+        preCustomer.filter((customer) => customer.cust_id !== CustomerId)
       );
 
       toast.success("Delete successful", { id: toastId });
@@ -113,7 +113,11 @@ function CustomerList() {
 
   return (
     <div className="flex items-center justify-center w-full">
-      <div className="w-full lg:max-w-screen-xl md:max-w-[35rem] max-w-[22rem] mx-auto ">
+      <div
+        className={`w-full lg:max-w-screen-xl ${
+          open ? "md:max-w-[32rem]" : "md:max-w-[40rem]"
+        } max-w-[22rem] mx-auto`}
+      >
         <div className="flex flex-col gap-6 mt-8">
           <h2 className="font-semibold text-xl text-black">Order List</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
@@ -130,7 +134,7 @@ function CustomerList() {
                 >
                   <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
                 </div>
-                <CustomerInformationModal onSuccess={fetchCustomer}/>
+                <CustomerInformationModal onSuccess={fetchCustomer} />
               </div>
             </div>
             <CustomerFilter isFilterVisible={isFilterVisible} />

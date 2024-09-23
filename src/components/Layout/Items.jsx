@@ -9,8 +9,11 @@ import { TbTruck } from "react-icons/tb";
 import { TbReportAnalytics } from "react-icons/tb";
 import { GiThermometerScale } from "react-icons/gi";
 import { TbFileInvoice } from "react-icons/tb";
+import { useSelector } from "react-redux";
 
 function Items({ open }) {
+  const { role } = useSelector((state) => state.auth);
+
   const masterSubItems = [
     {
       label: "Shop Information",
@@ -42,17 +45,9 @@ function Items({ open }) {
 
   const ReportSubItems = [
     {
-      label: "Sales List",
-      path: "/salesreport",
-    },
-    {
       label: "Stock Report",
       path: "/stockreport",
-    },
-    {
-      label: "Tax Report",
-      path: "/taxreport",
-    },
+    }
   ];
 
   const InvoiceItems = [
@@ -60,11 +55,25 @@ function Items({ open }) {
       label: "Pre-Invoice",
       path: "/invoice",
     },
-    {
+  ];
+
+  if (role !== "employee") {
+    InvoiceItems.push({
       label: "Closed-Invoice",
       path: "/finalinvoice",
-    },
-  ];
+    });
+
+    ReportSubItems.push(
+      {
+        label: "Sales List",
+        path: "/salesreport",
+      },
+      {
+        label: "Tax Report",
+        path: "/taxreport",
+      }
+    );
+  }
 
   return (
     <ul

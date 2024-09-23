@@ -15,37 +15,35 @@ function ProductCategory({
   const [subcategories, setSubcategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(category);
   const [selectedSubcategory, setSelectedSubcategory] = useState(subCategory);
-  const [productCount, setProductCount] = useState({}); 
+  const [productCount, setProductCount] = useState({});
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=category"
-        );
-        setCategories(response.data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
     fetchCategories();
   }, []);
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=category"
+      );
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchSubCategories = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=subcategory"
-        );
-        setSubcategories(response.data);
-      } catch (error) {
-        console.error("Error fetching subcategories:", error);
-      }
-    };
-
     fetchSubCategories();
   }, []);
+  const fetchSubCategories = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=subcategory"
+      );
+      setSubcategories(response.data);
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+    }
+  };
 
   const handleCategoryChange = (e) => {
     const newCategory = e.target.value;
@@ -55,15 +53,19 @@ function ProductCategory({
 
     const currentCount = productCount[newCategory] || 0;
 
-    const categoryName = categories.find(cat => cat.cat_id === newCategory)?.cat_name || "";
+    const categoryName =
+      categories.find((cat) => cat.cat_id === newCategory)?.cat_name || "";
     const codePrefix = categoryName.substring(0, 2).toUpperCase();
     const newCount = currentCount + 1;
 
     const finalCount = newCount > 999 ? 1 : newCount;
-    const generatedCode = `${codePrefix}${String(finalCount).padStart(3, '0')}`; 
+    const generatedCode = `${codePrefix}${String(finalCount).padStart(3, "0")}`;
 
-    setProductUserCode(generatedCode); 
-    setProductCount(prevCount => ({ ...prevCount, [newCategory]: finalCount })); 
+    setProductUserCode(generatedCode);
+    setProductCount((prevCount) => ({
+      ...prevCount,
+      [newCategory]: finalCount,
+    }));
   };
 
   const handleSubcategoryChange = (e) => {
@@ -76,7 +78,9 @@ function ProductCategory({
     <div className="lg:col-span-2 border-l-2 border-l-[#ECF3F3] pl-5">
       <div className="grid gap-6 text-sm">
         <div className="flex flex-col gap-4">
-          <label htmlFor="Category" className="font-semibold">Category</label>
+          <label htmlFor="Category" className="font-semibold">
+            Category
+          </label>
           <select
             name="Category"
             id="Category"
@@ -91,11 +95,13 @@ function ProductCategory({
               </option>
             ))}
           </select>
-          <CategoryModal />
+          <CategoryModal onchange={fetchCategories} />
         </div>
 
         <div className="flex flex-col gap-4">
-          <label htmlFor="usercode" className="font-semibold">Product User Code</label>
+          <label htmlFor="usercode" className="font-semibold">
+            Product User Code
+          </label>
           <input
             type="text"
             name="usercode"
@@ -110,7 +116,9 @@ function ProductCategory({
         </div>
 
         <div className="flex flex-col gap-4">
-          <label htmlFor="SubCategory" className="font-semibold">SubCategory</label>
+          <label htmlFor="SubCategory" className="font-semibold">
+            SubCategory
+          </label>
           <select
             name="SubCategory"
             id="SubCategory"
@@ -127,7 +135,7 @@ function ProductCategory({
                 </option>
               ))}
           </select>
-          <SubModal />
+          <SubModal onChange={fetchSubCategories} />
         </div>
       </div>
     </div>

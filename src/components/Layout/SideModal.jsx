@@ -1,6 +1,7 @@
 import React from "react";
 
 function SideModal({ isOpen, onClose }) {
+  
   return (
     <div
       className={`fixed inset-0 flex items-center justify-end mt-24 transition-all duration-300 ${

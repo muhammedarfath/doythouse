@@ -4,10 +4,12 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import Search from "@/components/Search/Search";
 import SubCatTable from "./SubCatTable";
+import { useOutletContext } from "react-router-dom";
 
 function SubCategory() {
   const [subCategory, setSubCategory] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const { open } = useOutletContext();
 
   useEffect(() => {
     fetchSubCategories();
@@ -77,9 +79,10 @@ function SubCategory() {
     subcategory.subcat_name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+
   return (
     <div className="flex items-center justify-center w-full">
-      <div className="w-full lg:max-w-screen-xl md:max-w-[35rem] max-w-[22rem] mx-auto ">
+      <div className={`w-full lg:max-w-screen-xl ${open ? "md:max-w-[32rem]" : "md:max-w-[40rem]"} max-w-[22rem] mx-auto`}>
         <div className="flex flex-col gap-6 mt-8">
           <h2 className="font-semibold text-xl text-black">
             Sub Category List
@@ -92,7 +95,6 @@ function SubCategory() {
                 name={"subcategory"}
               />
               <SubModal
-                setSubCategory={setSubCategory}
                 onChange={fetchSubCategories}
               />
             </div>

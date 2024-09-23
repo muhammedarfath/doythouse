@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { RiShoppingBag3Line, RiStackLine } from "react-icons/ri";
-import { LuImagePlus } from "react-icons/lu";
-import { IoPricetagsOutline } from "react-icons/io5";
 import AddProductDetails from "./AddProductDetails";
 import ProductGallery from "./ProductGallery";
 import ProductCategory from "./ProductCategory";
@@ -26,7 +23,8 @@ function AddProduct() {
   const [sgst, setSgst] = useState("");
   const [salesUnit, setSalesUnit] = useState("");
   const [packSize, setPackSize] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState([]);
+  const [previewUrls, setPreviewUrls] = useState([]);
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [mrp, setMrp] = useState("");
@@ -136,7 +134,7 @@ function AddProduct() {
         setHsn("");
         setCgst("");
         setSgst("");
-        setImage("");
+        setImage([]);
         setSalesUnit("");
         setPackSize("");
         setCategory("");
@@ -160,7 +158,7 @@ function AddProduct() {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="lg:max-w-screen-xl md:max-w-[35rem] max-w-[20rem] mx-auto">
+      <div className="lg:max-w-screen-xl w-full mx-auto">
         <div className="flex flex-col gap-11 mt-8">
           <h2 className="font-bold text-xl text-black">Add New Product</h2>
           <div className="bg-white flex rounded-2xl shadow-sm p-4 px-4 md:p-8 mb-6 w-full">
@@ -194,7 +192,12 @@ function AddProduct() {
                   />
                 )}
                 {activeSection === "gallery" && (
-                  <ProductGallery image={image} setImage={setImage} />
+                  <ProductGallery
+                    image={image}
+                    setImage={setImage}
+                    previewUrls={previewUrls}
+                    setPreviewUrls={setPreviewUrls}
+                  />
                 )}
                 {activeSection === "category" && (
                   <ProductCategory

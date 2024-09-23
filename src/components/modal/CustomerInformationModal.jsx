@@ -226,11 +226,14 @@ function CustomerInformationModal({ onSuccess }) {
     formData.append("date_in", dateIn);
     formData.append("completed_date", completedDate);
 
-    rows.forEach((row, index) => {
-      formData.append(`items[${index}][item]`, row.item);
-      formData.append(`items[${index}][quantity]`, row.quantity);
-      formData.append(`items[${index}][mrp]`, row.mrp);
-    });
+    // rows.forEach((row, index) => {
+    //   formData.append(`items[${index}][item]`, row.item);
+    //   formData.append(`items[${index}][quantity]`, row.quantity);
+    //   formData.append(`items[${index}][mrp]`, row.mrp);
+    // });
+
+    // formData.append(rows)
+    // console.log(rows);
 
     formData.append("cutting1", cuttingPrice);
     formData.append("stiching1", stitchingPrice);
