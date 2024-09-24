@@ -9,6 +9,8 @@ function MeterialIfo({
   rows,
   setRows,
   setSelectedStock,
+  setInputValues,
+  inputValues
 }) {
   const [errors, setErrors] = useState({});
 
@@ -37,9 +39,13 @@ function MeterialIfo({
 
   const handleInputChangeWithValidation = (e, rowIndex, field) => {
     const { value } = e.target;
+
     const updatedRows = [...rows];
     updatedRows[rowIndex][field] = value;
-
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [field]: value,
+    }));
     if (field === "quantity") {
       const selectedItem = updatedRows[rowIndex].item;
       const stockItem = stockReport.find((stock) => stock.stock_id === selectedItem);

@@ -97,12 +97,13 @@ function CustomerInformationModal({ onSuccess }) {
   const [selectedStock, setSelectedStock] = useState("");
   const [designers, setDesigners] = useState([]);
   const [designerPhoneNumber, setDesignerPhoneNumber] = useState("");
+  const [inputValues, setInputValues] = useState([]);
 
   useEffect(() => {
     // Set orderDate to current date in YYYY-MM-DD format
-    const currentDate = new Date().toISOString().split('T')[0];
+    const currentDate = new Date().toISOString().split("T")[0];
     setOrderDate(currentDate);
-}, []);
+  }, []);
 
   useEffect(() => {
     fetchEmployees();
@@ -147,7 +148,6 @@ function CustomerInformationModal({ onSuccess }) {
   };
 
   const handleSubmit = async (e) => {
-    
     e.preventDefault();
     if (
       !customerName ||
@@ -157,7 +157,7 @@ function CustomerInformationModal({ onSuccess }) {
       !category ||
       !designerName ||
       !orderNumber ||
-      !orderDate || 
+      !orderDate ||
       !designerPhoneNumber ||
       !emergency ||
       !status
@@ -227,12 +227,7 @@ function CustomerInformationModal({ onSuccess }) {
     formData.append("date_in", dateIn);
     formData.append("completed_date", completedDate);
 
-    rows.forEach((row, index) => {
-      formData.append(`stock_values[${index}][item]`, row.item);
-      formData.append(`stock_values[${index}][quantity]`, row.quantity);
-      formData.append(`stock_values[${index}][mrp]`, row.mrp);
-    });
-
+    formData.append("stock_values", JSON.stringify(inputValues));
 
 
     formData.append("cutting1", cuttingPrice);
@@ -242,9 +237,9 @@ function CustomerInformationModal({ onSuccess }) {
     formData.append("checker1", checkerPrice);
     formData.append("total1", total);
 
-    // formData.forEach((value, key) => {
-    //   console.log(`${key}:`, value);
-    // });
+    formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
+    });
 
     try {
       const response = await axios.post(
@@ -506,6 +501,8 @@ function CustomerInformationModal({ onSuccess }) {
               setRows={setRows}
               selectedStock={selectedStock}
               setSelectedStock={setSelectedStock}
+              inputValues={inputValues}
+              setInputValues={setInputValues}
             />
           )}
           {activeSection === "paymentInformation" && (
