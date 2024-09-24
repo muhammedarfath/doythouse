@@ -77,7 +77,6 @@ function CustomerInformationModal({ onSuccess }) {
   const [note, setNote] = useState("");
   const [categories, setCategories] = useState([]);
   const [stockReport, setStockReport] = useState([]);
-  const [rows, setRows] = useState([{ item: "", quantity: "", mrp: "" }]);
   const section1Ref = useRef();
   const section2Ref = useRef();
   const section3Ref = useRef();
@@ -497,8 +496,6 @@ function CustomerInformationModal({ onSuccess }) {
               stockReport={stockReport}
               setStockReport={setStockReport}
               handleInputChange={handleInputChange}
-              rows={rows}
-              setRows={setRows}
               selectedStock={selectedStock}
               setSelectedStock={setSelectedStock}
               inputValues={inputValues}
