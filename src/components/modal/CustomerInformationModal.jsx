@@ -147,6 +147,7 @@ function CustomerInformationModal({ onSuccess }) {
   };
 
   const handleSubmit = async (e) => {
+    
     e.preventDefault();
     if (
       !customerName ||
@@ -226,14 +227,13 @@ function CustomerInformationModal({ onSuccess }) {
     formData.append("date_in", dateIn);
     formData.append("completed_date", completedDate);
 
-    // rows.forEach((row, index) => {
-    //   formData.append(`items[${index}][item]`, row.item);
-    //   formData.append(`items[${index}][quantity]`, row.quantity);
-    //   formData.append(`items[${index}][mrp]`, row.mrp);
-    // });
+    rows.forEach((row, index) => {
+      formData.append(`stock_values[${index}][item]`, row.item);
+      formData.append(`stock_values[${index}][quantity]`, row.quantity);
+      formData.append(`stock_values[${index}][mrp]`, row.mrp);
+    });
 
-    // formData.append(rows)
-    // console.log(rows);
+
 
     formData.append("cutting1", cuttingPrice);
     formData.append("stiching1", stitchingPrice);
@@ -242,9 +242,9 @@ function CustomerInformationModal({ onSuccess }) {
     formData.append("checker1", checkerPrice);
     formData.append("total1", total);
 
-    formData.forEach((value, key) => {
-      console.log(`${key}:`, value);
-    });
+    // formData.forEach((value, key) => {
+    //   console.log(`${key}:`, value);
+    // });
 
     try {
       const response = await axios.post(
@@ -257,10 +257,10 @@ function CustomerInformationModal({ onSuccess }) {
         }
       );
       console.log(response.data);
-      if (response.status === 200) {
+      if (response.data) {
         toast.success("Customer added successfully");
-        setOpen(false);
-        resetFormFields();
+        // setOpen(false);
+        // resetFormFields();
         onSuccess();
       }
     } catch (error) {
@@ -271,64 +271,64 @@ function CustomerInformationModal({ onSuccess }) {
     }
   };
 
-  const resetFormFields = () => {
-    setCustomerName("");
-    setContactNumber("");
-    setTrialDate("");
-    setExpectedDelivery("");
-    setCategory("");
-    setDesignerName("");
-    setOrderNumber("");
-    setOrderDate("");
-    setEmergency("");
-    setYokeLength("");
-    setYokeRound("");
-    setFullLength("");
-    setUpperBust("");
-    setBust("");
-    setUnderBust("");
-    setMidWaist("");
-    setHip("");
-    setShoulder("");
-    setShoulderWidth("");
-    setSlitLength("");
-    setSlitRound("");
-    setSleeveType("");
-    setSleeveLength("");
-    setWrist("");
-    setThreeFourth("");
-    setElbow("");
-    setArmRound("");
-    setNeck("");
-    setFrontNeck("");
-    setBackNeck("");
-    setCollarRound("");
-    setTuckPoint("");
-    setPointToPoint("");
-    setSkirtFullLength("");
-    setSeat("");
-    setThigh("");
-    setKnee("");
-    setCalf("");
-    setBottomRound("");
-    setPad(false);
-    setZip(false);
-    setBackOpen(false);
-    setFrontOpen(false);
-    setImage(null);
-    setCutting("");
-    setStitching("");
-    setHandWork("");
-    setMeasurer("");
-    setChecker("");
-    setTailor("");
-    setDateIn("");
-    setCompletedDate("");
-    setTotalPrice("");
-    setAdvancedPrice("");
-    setBalancePrice("");
-    setNote("");
-  };
+  // const resetFormFields = () => {
+  //   setCustomerName("");
+  //   setContactNumber("");
+  //   setTrialDate("");
+  //   setExpectedDelivery("");
+  //   setCategory("");
+  //   setDesignerName("");
+  //   setOrderNumber("");
+  //   setOrderDate("");
+  //   setEmergency("");
+  //   setYokeLength("");
+  //   setYokeRound("");
+  //   setFullLength("");
+  //   setUpperBust("");
+  //   setBust("");
+  //   setUnderBust("");
+  //   setMidWaist("");
+  //   setHip("");
+  //   setShoulder("");
+  //   setShoulderWidth("");
+  //   setSlitLength("");
+  //   setSlitRound("");
+  //   setSleeveType("");
+  //   setSleeveLength("");
+  //   setWrist("");
+  //   setThreeFourth("");
+  //   setElbow("");
+  //   setArmRound("");
+  //   setNeck("");
+  //   setFrontNeck("");
+  //   setBackNeck("");
+  //   setCollarRound("");
+  //   setTuckPoint("");
+  //   setPointToPoint("");
+  //   setSkirtFullLength("");
+  //   setSeat("");
+  //   setThigh("");
+  //   setKnee("");
+  //   setCalf("");
+  //   setBottomRound("");
+  //   setPad(false);
+  //   setZip(false);
+  //   setBackOpen(false);
+  //   setFrontOpen(false);
+  //   setImage(null);
+  //   setCutting("");
+  //   setStitching("");
+  //   setHandWork("");
+  //   setMeasurer("");
+  //   setChecker("");
+  //   setTailor("");
+  //   setDateIn("");
+  //   setCompletedDate("");
+  //   setTotalPrice("");
+  //   setAdvancedPrice("");
+  //   setBalancePrice("");
+  //   setNote("");
+  // };
 
   const handleCheckboxChange = (setter) => (e) => {
     setter(e.target.checked);
