@@ -26,7 +26,7 @@ import WorkOrderHeader from "./WorkOrder/WorkOrderHeader";
 import MeasurmentImg from "./WorkOrder/MeasurmentImg";
 
 function EditCustomerDetailsModal({ customer, onSuccess }) {
-  console.log(customer);
+  console.log(customer,"THIS IS CUSTOMER");
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState("");
   const [activeSection, setActiveSection] = useState("userInformation");
@@ -105,7 +105,9 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
   const [note, setNote] = useState(customer.note || "");
   const [categories, setCategories] = useState([]);
   const [stockReport, setStockReport] = useState([]);
+
   const [rows, setRows] = useState([{ item: "", quantity: "", mrp: "" }]);
+
   const section1Ref = useRef();
   const section2Ref = useRef();
   const section3Ref = useRef();

@@ -33,6 +33,8 @@ function CustomerList() {
     }
   };
 
+
+
   const handleChangeStatus = async (e, customerId) => {
     const newStatus = e.target.value;
     try {
@@ -52,8 +54,7 @@ function CustomerList() {
       console.log(response.data);
       fetchCustomer();
     } catch (error) {
-      console.error("Error deleting expense:", error);
-      toast.error("Failed to delete expense", { id: toastId });
+      toast.error("Failed to delete expense");
     }
   };
 

@@ -12,6 +12,7 @@ import {
   import { BiSolidTrashAlt } from "react-icons/bi";
 
 function StockTable({ filteredStock, fetchStockReport, handleDelete }) {
+  console.log(filteredStock);
   return (
     <Table className="w-full">
       <TableCaption>A list of your stock items.</TableCaption>
@@ -39,7 +40,7 @@ function StockTable({ filteredStock, fetchStockReport, handleDelete }) {
                   <EditStockModal stock={stock} onSuccess={fetchStockReport} />
                   <BiSolidTrashAlt
                     className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
-                    onClick={() => handleDelete(stock.id)} 
+                    onClick={() => handleDelete(stock.stock_id)} 
                   />
                 </div>
               </TableCell>

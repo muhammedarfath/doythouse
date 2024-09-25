@@ -87,7 +87,6 @@ function CustomerInformationModal({ onSuccess }) {
   const [handWork, setHandWork] = useState("");
   const [measurer, setMeasurer] = useState("");
   const [checker, setChecker] = useState("");
-  const [tailor, setTailor] = useState("");
   const [cuttingPrice, setCuttingPrice] = useState("");
   const [stitchingPrice, setStitchingPrice] = useState("");
   const [handWorkPrice, setHandWorkPrice] = useState("");
@@ -97,6 +96,10 @@ function CustomerInformationModal({ onSuccess }) {
   const [designers, setDesigners] = useState([]);
   const [designerPhoneNumber, setDesignerPhoneNumber] = useState("");
   const [inputValues, setInputValues] = useState([]);
+  const [totalMRP, setTotalMRP] = useState(0);
+  const [cgst, setCgst] = useState("");
+  const [sgst, setSgst] = useState("");
+  const [totalBill, setTotalBill] = useState("");
 
   useEffect(() => {
     // Set orderDate to current date in YYYY-MM-DD format
@@ -228,7 +231,6 @@ function CustomerInformationModal({ onSuccess }) {
 
     formData.append("stock_values", JSON.stringify(inputValues));
 
-
     formData.append("cutting1", cuttingPrice);
     formData.append("stiching1", stitchingPrice);
     formData.append("handwork1", handWorkPrice);
@@ -236,6 +238,14 @@ function CustomerInformationModal({ onSuccess }) {
     formData.append("checker1", checkerPrice);
     formData.append("total1", total);
 
+    formData.append("totalprice", totalBill);
+    formData.append("advanceprice", advancedPrice);
+    formData.append("balanceprice", balancePrice);
+    formData.append("note", note);
+    formData.append("cgst", cgst);
+    formData.append("sgst", sgst);
+    formData.append("materialprice", totalMRP);
+    
     formData.forEach((value, key) => {
       console.log(`${key}:`, value);
     });
@@ -488,6 +498,14 @@ function CustomerInformationModal({ onSuccess }) {
                 setBalancePrice={setBalancePrice}
                 discount={discount}
                 setDiscount={setDiscount}
+                cgst={cgst}
+                setCgst={setCgst}
+                sgst={sgst}
+                setSgst={setSgst}
+                totalBill={totalBill}
+                setTotalBill={setTotalBill}
+                totalMRP={totalMRP}
+                total={total}
               />
             </div>
           )}
@@ -500,6 +518,9 @@ function CustomerInformationModal({ onSuccess }) {
               setSelectedStock={setSelectedStock}
               inputValues={inputValues}
               setInputValues={setInputValues}
+              totalMRP={totalMRP}
+              setTotalMRP={setTotalMRP}
+
             />
           )}
           {activeSection === "paymentInformation" && (

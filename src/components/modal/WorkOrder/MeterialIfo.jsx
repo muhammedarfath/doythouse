@@ -5,10 +5,10 @@ import axios from "axios";
 function MeterialIfo({
   stockReport,
   setStockReport,
-  handleInputChange,
-  setSelectedStock,
   setInputValues,
-  inputValues
+  inputValues,
+  totalMRP,
+  setTotalMRP
 }) {
   const [errors, setErrors] = useState({});
 
@@ -24,34 +24,53 @@ function MeterialIfo({
       }
     };
     fetchStockReport();
+   
   }, []);
 
+  
+
+  useEffect(() => {
+    const total = Object.values(inputValues)
+      .reduce((sum, value) => {
+        const mrp = parseFloat(value.split(", ")[1] || 0);
+        return sum + mrp;
+      }, 0)
+      .toFixed(2);
+
+    setTotalMRP(total);
+  }, [inputValues]);
+
+
+
+
   const addRow = () => {
-    setInputValues((prevValues) => [
+    setInputValues((prevValues) => ({
       ...prevValues,
-      { stock_id: "", quantity: "", mrp: "" }
-    ]);
+      "": "" 
+    }));
   };
 
   const removeRow = (stock_id) => {
-    const updatedValues = inputValues.filter((row) => row.stock_id !== stock_id);
+    const updatedValues = { ...inputValues };
+    delete updatedValues[stock_id];
     setInputValues(updatedValues);
   };
 
   const handleInputChangeWithValidation = (e, stock_id, field) => {
     const { value } = e.target;
+    const updatedValues = { ...inputValues };
 
-    const updatedValues = inputValues.map((row) =>
-      row.stock_id === stock_id ? { ...row, [field]: value } : row
-    );
-    setInputValues(updatedValues);
-
-    if (field === "quantity") {
-      const stockItem = stockReport.find((stock) => stock.stock_id === stock_id);
+    if (field === "stock_id") {
+      const newStockId = value;
+      updatedValues[newStockId] = updatedValues[stock_id];
+      delete updatedValues[stock_id];
+    } else if (field === "quantity") {
+      const selectedItem = stock_id;
+      const stockItem = stockReport.find((stock) => stock.stock_id === selectedItem);
 
       if (stockItem) {
         const totalMRP = parseInt(value) * parseFloat(stockItem.mrp || 0);
-        updatedValues.find(row => row.stock_id === stock_id).mrp = totalMRP.toFixed(2);
+        updatedValues[stock_id] = `${value}, ${totalMRP.toFixed(2)}`;
 
         if (parseInt(value) > stockItem.stockvalue) {
           setErrors((prevErrors) => ({
@@ -66,6 +85,8 @@ function MeterialIfo({
         }
       }
     }
+
+    setInputValues(updatedValues);
   };
 
   return (
@@ -80,13 +101,12 @@ function MeterialIfo({
           </tr>
         </thead>
         <tbody>
-          {inputValues.map((row) => (
-            <tr key={row.stock_id || Math.random()}>
+          {Object.keys(inputValues).map((stock_id) => (
+            <tr key={stock_id}>
               <td className="border border-gray-300 px-4 py-2">
                 <select
-                  id={`item-select-${row.stock_id}`}
-                  value={row.stock_id}
-                  onChange={(e) => handleInputChangeWithValidation(e, row.stock_id, "stock_id")}
+                  value={stock_id}
+                  onChange={(e) => handleInputChangeWithValidation(e, stock_id, "stock_id")}
                   className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
                 >
                   <option value="">Select Item</option>
@@ -101,32 +121,29 @@ function MeterialIfo({
               <td className="border border-gray-300 px-4 py-2">
                 <Input
                   type="number"
-                  id={`quantity-${row.stock_id}`}
                   placeholder="Enter Quantity"
-                  value={row.quantity || ""}
-                  onChange={(e) => handleInputChangeWithValidation(e, row.stock_id, "quantity")}
+                  value={inputValues[stock_id]?.split(", ")[0] || ""}
+                  onChange={(e) => handleInputChangeWithValidation(e, stock_id, "quantity")}
                   className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
                 />
-                {errors[row.stock_id] && (
-                  <p className="text-red-500 text-sm mt-1">{errors[row.stock_id]}</p>
+                {errors[stock_id] && (
+                  <p className="text-red-500 text-sm mt-1">{errors[stock_id]}</p>
                 )}
               </td>
 
               <td className="border border-gray-300 px-4 py-2">
                 <Input
-                  type="number"
-                  id={`mrp-${row.stock_id}`}
-                  placeholder="Enter MRP"
-                  value={row.mrp || ""}
+                  type="text"
+                  value={inputValues[stock_id]?.split(", ")[1] || ""}
                   className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-                  readOnly 
+                  readOnly
                 />
               </td>
 
               <td className="border border-gray-300 px-4 py-2 text-center">
                 <button
                   type="button"
-                  onClick={() => removeRow(row.stock_id)}
+                  onClick={() => removeRow(stock_id)}
                   className="px-3 py-2 bg-[#308E87] text-white rounded-md hover:bg-[#27766F] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#308E87] transition-all duration-150"
                 >
                   Remove Row
@@ -134,6 +151,13 @@ function MeterialIfo({
               </td>
             </tr>
           ))}
+
+          <tr>
+            <td className="border border-gray-300 px-4 py-2 font-bold">Total</td>
+            <td className="border border-gray-300 px-4 py-2"></td>
+            <td className="border border-gray-300 px-4 py-2 font-bold">{totalMRP}</td>
+            <td className="border border-gray-300 px-4 py-2"></td>
+          </tr>
         </tbody>
       </table>
 

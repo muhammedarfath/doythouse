@@ -14,6 +14,7 @@ function Invoice() {
   useEffect(() => {
     fetchInvoices();
   }, []);
+
   const fetchInvoices = async () => {
     try {
       const response = await axios.get(
@@ -74,6 +75,7 @@ function Invoice() {
       toast.error("Failed to delete product", { id: toastId });
     }
   };
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className={`w-full lg:max-w-screen-xl ${open ? "md:max-w-[32rem]" : "md:max-w-[40rem]"} max-w-[22rem] mx-auto`}>

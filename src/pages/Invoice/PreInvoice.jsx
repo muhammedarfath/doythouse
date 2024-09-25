@@ -13,19 +13,19 @@ function PreInvoice({ order_id, onSuccess, invoice }) {
       const response = await axios.get(
         `https://storeconvo.com/php/fetch.php?typ=invoicedetails&id=${order_id}`
       );
-
       const invoiceData =
         Array.isArray(response.data) && response.data.length > 0
           ? response.data[0]
           : {};
 
       setCurrentInvoice(invoiceData);
-      console.log("Invoice Data:", invoiceData);
       setOpen(true);
     } catch (error) {
       console.error("Error fetching invoice data:", error);
     }
   };
+
+
 
   const handlePrint = () => {
     window.print();
@@ -34,7 +34,6 @@ function PreInvoice({ order_id, onSuccess, invoice }) {
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
     setStatus(newStatus);
-    console.log(newStatus);
     try {
       const response = await axios.post(
         "https://storeconvo.com/php/edit.php",

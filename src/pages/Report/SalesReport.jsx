@@ -20,20 +20,19 @@ function SalesReport() {
   const { open } = useOutletContext();
 
   useEffect(() => {
-    const fetchSalesReport = async () => {
-      try {
-        const response = await axios.get(
-          "https://storeconvo.com/php/fetch.php?typ=sales"
-        );
-        setSalesReport(response.data);
-      } catch (error) {
-        console.error("Error fetching sales report:", error);
-      }
-    };
-    fetchSalesReport();
+    fetchInvoices();
   }, []);
 
-
+  const fetchInvoices = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=invoice"
+      );
+      setSalesReport(response.data);
+    } catch (error) {
+      console.error("Error fetching invoices:", error);
+    }
+  };
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
@@ -42,15 +41,29 @@ function SalesReport() {
   const downloadExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(salesReport);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sal Report");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sales Report");
     XLSX.writeFile(workbook, "sales_report.xlsx");
   };
 
+  const calculateProfit = (netTotal, cogs) => {
+    return netTotal - cogs;
+  };
 
+  const calculateCredit = (netTotal, amountPaid) => {
+    return netTotal - amountPaid;
+  };
+
+  const filteredInvoices = salesReport.filter(
+    (entry) => entry.status === "closed"
+  );
 
   return (
     <div className="flex items-center justify-center w-full">
-      <div className={`w-full lg:max-w-screen-xl ${open ? "md:max-w-[32rem]" : "md:max-w-[40rem]"} max-w-[22rem] mx-auto`}>
+      <div
+        className={`w-full lg:max-w-screen-xl ${
+          open ? "md:max-w-[32rem]" : "md:max-w-[40rem]"
+        } max-w-[22rem] mx-auto`}
+      >
         <div className="flex flex-col gap-6 mt-8">
           <h2 className="font-semibold text-xl text-black">Sales Report</h2>
           <div className="bg-white flex gap-5 flex-col rounded-2xl shadow-sm p-4 md:p-8 w-full">
@@ -101,22 +114,6 @@ function SalesReport() {
                     className="h-10 border rounded px-4 bg-gray-50"
                   />
                 </div>
-                <div className="flex flex-col">
-                  <label
-                    htmlFor="sort-by-employee"
-                    className="text-sm font-medium"
-                  >
-                    Sort by Employee
-                  </label>
-                  <select
-                    id="sort-by-employee"
-                    className="h-10 border rounded px-4 bg-gray-50"
-                  >
-                    <option value="">Select Employee</option>
-                    <option value="John Doe">John Doe</option>
-                    <option value="Jane Smith">Jane Smith</option>
-                  </select>
-                </div>
               </div>
             )}
 
@@ -130,35 +127,40 @@ function SalesReport() {
                   <TableHead>Invoice Number</TableHead>
                   <TableHead>Customer</TableHead>
                   <TableHead className="text-right">GST Amount</TableHead>
-                  <TableHead className="text-right">Discount</TableHead>
+                  <TableHead className="text-right">COGS (Cost of Goods Sold)</TableHead>
                   <TableHead className="text-right">Net Total</TableHead>
                   <TableHead className="text-right">Credit</TableHead>
                   <TableHead className="text-right">Profit</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {salesReport.map((sale, index) => (
-                  <TableRow key={sale.id}>
-                    <TableCell>
-                      <input type="checkbox" />
-                    </TableCell>
-                    <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>{sale.cust_expecteddelivery}</TableCell>
-                    <TableCell>{sale.invoice_no}</TableCell>
-                    <TableCell>{sale.cust_name}</TableCell>
-                    <TableCell className="text-right">
-                      {sale.gstamount}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {sale.discount}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {sale.nettotal}
-                    </TableCell>
-                    <TableCell className="text-right">{sale.credit}</TableCell>
-                    <TableCell className="text-right">{sale.profit}</TableCell>
-                  </TableRow>
-                ))}
+                {filteredInvoices.map((sale, index) => {
+                  const profit = calculateProfit(sale.nettotal, sale.cogs);
+                  const credit = calculateCredit(sale.nettotal, sale.amountPaid);
+
+                  return (
+                    <TableRow key={sale.id}>
+                      <TableCell>
+                        <input type="checkbox" />
+                      </TableCell>
+                      <TableCell className="font-medium">{index + 1}</TableCell>
+                      <TableCell>{sale.cust_expecteddelivery}</TableCell>
+                      <TableCell>{sale.invoice_no}</TableCell>
+                      <TableCell>{sale.cust_name}</TableCell>
+                      <TableCell className="text-right">
+                        {sale.gstamount}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {sale.cogs}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {sale.nettotal}
+                      </TableCell>
+                      <TableCell className="text-right">{credit}</TableCell>
+                      <TableCell className="text-right">{profit}</TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </div>
