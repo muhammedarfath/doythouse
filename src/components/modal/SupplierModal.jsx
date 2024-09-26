@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Dialog,
@@ -14,6 +14,7 @@ import { Label } from "../../components/ui/label";
 import { Button } from "../../components/ui/button";
 import { FiPlus } from "react-icons/fi";
 import { toast } from "react-hot-toast";
+import { FiCheckCircle } from "react-icons/fi"; 
 
 function SupplierModal({ setSupplier }) {
   const [supplierName, setSupplierName] = useState("");
@@ -32,6 +33,13 @@ function SupplierModal({ setSupplier }) {
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  useEffect(() => {
+    const credited = parseFloat(creditedMoney) || 0;
+    const paid = parseFloat(paidMoney) || 0;
+    const balance = credited - paid;
+    setBalancedMoney(balance >= 0 ? balance : 0); 
+  }, [creditedMoney, paidMoney]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -48,7 +56,7 @@ function SupplierModal({ setSupplier }) {
           supplier_phone: phone,
           supplier_pin: pincode,
           supplier_gst: gstNumber,
-          supplier_state: "clt",
+          supplier_state: state,
           supplier_creditedmoney: creditedMoney,
           supplier_paidmoney: paidMoney,
           supplier_balancedmoney: balancedMoney,
@@ -59,11 +67,26 @@ function SupplierModal({ setSupplier }) {
           },
         }
       );
-      console.log(response.data);
       if (response.data) {
         toast.success("Supplier added successfully");
-        setIsOpen(false);
         setSupplier((prevSupplier) => [...prevSupplier, response.data]);
+  
+        // Clear the form fields after successful submission
+        setSupplierName("");
+        setEmail("");
+        setContactPerson("");
+        setAddress("");
+        setMobile1("");
+        setMobile2("");
+        setPhone("");
+        setPincode("");
+        setGstNumber("");
+        setState("");
+        setCreditedMoney("");
+        setPaidMoney("");
+        setBalancedMoney("");
+  
+        setIsOpen(false); 
       } else {
         toast.error("Failed to add supplier");
       }
@@ -73,7 +96,7 @@ function SupplierModal({ setSupplier }) {
       setLoading(false);
     }
   };
-
+  
   return (
     <div>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -90,7 +113,6 @@ function SupplierModal({ setSupplier }) {
           </DialogHeader>
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4 py-4">
-              {/* Supplier Name */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="supplierName" className="text-right">
                   Supplier Name
@@ -102,7 +124,6 @@ function SupplierModal({ setSupplier }) {
                   className="col-span-3"
                 />
               </div>
-              {/* Email ID */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="email" className="text-right">
                   Email ID
@@ -115,7 +136,6 @@ function SupplierModal({ setSupplier }) {
                   className="col-span-3"
                 />
               </div>
-              {/* Contact Person Name */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="contactPerson" className="text-right">
                   Contact Person Name
@@ -127,7 +147,6 @@ function SupplierModal({ setSupplier }) {
                   className="col-span-3"
                 />
               </div>
-              {/* Address */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="address" className="text-right">
                   Address
@@ -139,7 +158,6 @@ function SupplierModal({ setSupplier }) {
                   className="col-span-3"
                 />
               </div>
-              {/* Mobile Number 1 */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="mobile1" className="text-right">
                   Mobile Number 1
@@ -152,7 +170,6 @@ function SupplierModal({ setSupplier }) {
                   className="col-span-3"
                 />
               </div>
-              {/* Mobile Number 2 */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="mobile2" className="text-right">
                   Mobile Number 2
@@ -165,7 +182,6 @@ function SupplierModal({ setSupplier }) {
                   className="col-span-3"
                 />
               </div>
-              {/* Phone */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="phone" className="text-right">
                   Phone
@@ -178,7 +194,6 @@ function SupplierModal({ setSupplier }) {
                   className="col-span-3"
                 />
               </div>
-              {/* Pincode */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="pincode" className="text-right">
                   Pincode
@@ -190,7 +205,6 @@ function SupplierModal({ setSupplier }) {
                   className="col-span-3"
                 />
               </div>
-              {/* GST Number */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="gstNumber" className="text-right">
                   GST Number
@@ -202,24 +216,17 @@ function SupplierModal({ setSupplier }) {
                   className="col-span-3"
                 />
               </div>
-              {/* State */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="state" className="text-right">
                   State
                 </Label>
-                <select
+                <Input
                   id="state"
                   value={state}
                   onChange={(e) => setState(e.target.value)}
-                  className="col-span-3 p-2 border rounded"
-                >
-                  <option value="">Select a state</option>
-                  <option value="state1">State 1</option>
-                  <option value="state2">State 2</option>
-                  <option value="state3">State 3</option>
-                </select>
+                  className="col-span-3"
+                />
               </div>
-              {/* Credited Money */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="creditedMoney" className="text-right">
                   Credited Money
@@ -232,7 +239,6 @@ function SupplierModal({ setSupplier }) {
                   className="col-span-3"
                 />
               </div>
-              {/* Paid Money */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="paidMoney" className="text-right">
                   Paid Money
@@ -253,17 +259,17 @@ function SupplierModal({ setSupplier }) {
                   id="balancedMoney"
                   type="number"
                   value={balancedMoney}
-                  onChange={(e) => setBalancedMoney(e.target.value)}
+                  readOnly
                   className="col-span-3"
                 />
+                {balancedMoney === 0 && (
+                  <FiCheckCircle className="text-green-500 text-2xl ml-2" />
+                )}
               </div>
             </div>
             <DialogFooter>
-              <Button
-                className="bg-[#308E87] hover:bg-[#308E87] text-white"
-                type="submit"
-              >
-                Save Details
+              <Button type="submit" disabled={loading} className="bg-[#308E87] hover:bg-[#308E87">
+                {loading ? "Adding Supplier..." : "Add Supplier"}
               </Button>
             </DialogFooter>
           </form>

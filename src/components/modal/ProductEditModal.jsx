@@ -138,7 +138,7 @@ function ProductEditModal({ product, onSuccess }) {
           },
         }
       );
-
+      console.log(response.data);
       if (response.status === 200) {
         toast.success("Product Edit Successful");
         setOpen(false);

@@ -102,7 +102,6 @@ function CustomerInformationModal({ onSuccess }) {
   const [totalBill, setTotalBill] = useState("");
 
   useEffect(() => {
-    // Set orderDate to current date in YYYY-MM-DD format
     const currentDate = new Date().toISOString().split("T")[0];
     setOrderDate(currentDate);
   }, []);
@@ -245,10 +244,6 @@ function CustomerInformationModal({ onSuccess }) {
     formData.append("cgst", cgst);
     formData.append("sgst", sgst);
     formData.append("materialprice", totalMRP);
-    
-    formData.forEach((value, key) => {
-      console.log(`${key}:`, value);
-    });
 
     try {
       const response = await axios.post(
@@ -263,8 +258,8 @@ function CustomerInformationModal({ onSuccess }) {
       console.log(response.data);
       if (response.data) {
         toast.success("Customer added successfully");
-        // setOpen(false);
-        // resetFormFields();
+        setOpen(false);
+        resetFormFields();
         onSuccess();
       }
     } catch (error) {
@@ -275,64 +270,64 @@ function CustomerInformationModal({ onSuccess }) {
     }
   };
 
-  // const resetFormFields = () => {
-  //   setCustomerName("");
-  //   setContactNumber("");
-  //   setTrialDate("");
-  //   setExpectedDelivery("");
-  //   setCategory("");
-  //   setDesignerName("");
-  //   setOrderNumber("");
-  //   setOrderDate("");
-  //   setEmergency("");
-  //   setYokeLength("");
-  //   setYokeRound("");
-  //   setFullLength("");
-  //   setUpperBust("");
-  //   setBust("");
-  //   setUnderBust("");
-  //   setMidWaist("");
-  //   setHip("");
-  //   setShoulder("");
-  //   setShoulderWidth("");
-  //   setSlitLength("");
-  //   setSlitRound("");
-  //   setSleeveType("");
-  //   setSleeveLength("");
-  //   setWrist("");
-  //   setThreeFourth("");
-  //   setElbow("");
-  //   setArmRound("");
-  //   setNeck("");
-  //   setFrontNeck("");
-  //   setBackNeck("");
-  //   setCollarRound("");
-  //   setTuckPoint("");
-  //   setPointToPoint("");
-  //   setSkirtFullLength("");
-  //   setSeat("");
-  //   setThigh("");
-  //   setKnee("");
-  //   setCalf("");
-  //   setBottomRound("");
-  //   setPad(false);
-  //   setZip(false);
-  //   setBackOpen(false);
-  //   setFrontOpen(false);
-  //   setImage(null);
-  //   setCutting("");
-  //   setStitching("");
-  //   setHandWork("");
-  //   setMeasurer("");
-  //   setChecker("");
-  //   setTailor("");
-  //   setDateIn("");
-  //   setCompletedDate("");
-  //   setTotalPrice("");
-  //   setAdvancedPrice("");
-  //   setBalancePrice("");
-  //   setNote("");
-  // };
+  const resetFormFields = () => {
+    setCustomerName("");
+    setContactNumber("");
+    setTrialDate("");
+    setExpectedDelivery("");
+    setCategory("");
+    setDesignerName("");
+    setOrderNumber("");
+    setOrderDate("");
+    setEmergency("");
+    setYokeLength("");
+    setYokeRound("");
+    setFullLength("");
+    setUpperBust("");
+    setBust("");
+    setUnderBust("");
+    setMidWaist("");
+    setHip("");
+    setShoulder("");
+    setShoulderWidth("");
+    setSlitLength("");
+    setSlitRound("");
+    setSleeveType("");
+    setSleeveLength("");
+    setWrist("");
+    setThreeFourth("");
+    setElbow("");
+    setArmRound("");
+    setNeck("");
+    setFrontNeck("");
+    setBackNeck("");
+    setCollarRound("");
+    setTuckPoint("");
+    setPointToPoint("");
+    setSkirtFullLength("");
+    setSeat("");
+    setThigh("");
+    setKnee("");
+    setCalf("");
+    setBottomRound("");
+    setPad(false);
+    setZip(false);
+    setBackOpen(false);
+    setFrontOpen(false);
+    setImage(null);
+    setCutting("");
+    setStitching("");
+    setHandWork("");
+    setMeasurer("");
+    setChecker("");
+    setTailor("");
+    setDateIn("");
+    setCompletedDate("");
+    setTotalPrice("");
+    setAdvancedPrice("");
+    setBalancePrice("");
+    setNote("");
+  };
 
   const handleCheckboxChange = (setter) => (e) => {
     setter(e.target.checked);
@@ -520,7 +515,6 @@ function CustomerInformationModal({ onSuccess }) {
               setInputValues={setInputValues}
               totalMRP={totalMRP}
               setTotalMRP={setTotalMRP}
-
             />
           )}
           {activeSection === "paymentInformation" && (

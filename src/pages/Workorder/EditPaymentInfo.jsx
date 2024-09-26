@@ -102,7 +102,7 @@ function EditPaymentInfo({
         <Input
           id="total"
           type="text"
-          value={total.toFixed(2)}
+          value={total}
           className="flex-1 border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           readOnly
         />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import {
   Table,
@@ -10,64 +10,35 @@ import {
   TableRow,
 } from "../../components/ui/table";
 import { CiFilter } from "react-icons/ci";
-
-const salesTaxData = [
-  {
-    id: 1,
-    invoiceNo: "INV-1001",
-    date: "2024-08-01",
-    customerName: "John Doe",
-    phoneNumber: "9876543210",
-    taxValue12: 1200,
-    cgst6: 600,
-    sgst6: 600,
-    taxValue5: 500,
-    cgst2_5: 250,
-    sgst2_5: 250,
-    netTotal: 15500,
-  },
-  {
-    id: 2,
-    invoiceNo: "INV-1002",
-    date: "2024-08-02",
-    customerName: "Jane Smith",
-    phoneNumber: "9876543222",
-    taxValue12: 2400,
-    cgst6: 1200,
-    sgst6: 1200,
-    taxValue5: 1000,
-    cgst2_5: 500,
-    sgst2_5: 500,
-    netTotal: 25500,
-  },
-];
+import { useOutletContext } from "react-router-dom";
+import axios from "axios";
 
 function TaxReport() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [reportType, setReportType] = useState("sales");
-  const [taxData, setTaxData] = useState(salesTaxData);
+  const [TaxReport, setTaxReport] = useState([]);
+  const { open } = useOutletContext();
+
+  useEffect(() => {
+    fetchTax();
+  }, []);
+
+  const fetchTax = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=tax"
+      );
+      setTaxReport(response.data);
+    } catch (error) {
+      console.error("Error fetching invoices:", error);
+    }
+  };
+
+  console.log(TaxReport);
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
-
-  const handleReportTypeChange = (e) => {
-    const selectedType = e.target.value;
-    setReportType(selectedType);
-    // Adjust logic if there are other report types, currently showing sales data.
-    if (selectedType === "sales") {
-      setTaxData(salesTaxData);
-    }
-  };
-
-  // Calculate total tax values and net total
-  const totalTaxValue12 = taxData.reduce((total, item) => total + item.taxValue12, 0);
-  const totalCgst6 = taxData.reduce((total, item) => total + item.cgst6, 0);
-  const totalSgst6 = taxData.reduce((total, item) => total + item.sgst6, 0);
-  const totalTaxValue5 = taxData.reduce((total, item) => total + item.taxValue5, 0);
-  const totalCgst2_5 = taxData.reduce((total, item) => total + item.cgst2_5, 0);
-  const totalSgst2_5 = taxData.reduce((total, item) => total + item.sgst2_5, 0);
-  const totalNetTotal = taxData.reduce((total, item) => total + item.netTotal, 0);
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -83,7 +54,6 @@ function TaxReport() {
                 <select
                   id="report-type"
                   value={reportType}
-                  onChange={handleReportTypeChange}
                   className="h-10 border rounded px-4 bg-gray-50"
                 >
                   <option value="sales">Sales Tax Report</option>
@@ -137,49 +107,25 @@ function TaxReport() {
                   <TableHead>Date</TableHead>
                   <TableHead>Customer Name</TableHead>
                   <TableHead>Phone Number</TableHead>
-                  <TableHead className="text-right">12% GST</TableHead>
-                  <TableHead className="text-right">5% GST</TableHead>
+                  <TableHead className="text-right">SGST</TableHead>
+                  <TableHead className="text-right">CGST</TableHead>
                   <TableHead className="text-right">Net Total</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {taxData.map((tax, index) => (
-                  <TableRow key={tax.id}>
+                {TaxReport.map((tax, index) => (
+                  <TableRow key={tax.tax_id}>
                     <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>{tax.invoiceNo}</TableCell>
+                    <TableCell>{tax.invoice_no}</TableCell>
                     <TableCell>{tax.date}</TableCell>
-                    <TableCell>{tax.customerName}</TableCell>
-                    <TableCell>{tax.phoneNumber}</TableCell>
-                    <TableCell className="text-right">
-                      <div>CGST: ₹{tax.cgst6.toLocaleString()}</div>
-                      <div>SGST: ₹{tax.sgst6.toLocaleString()}</div>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div>CGST: ₹{tax.cgst2_5.toLocaleString()}</div>
-                      <div>SGST: ₹{tax.sgst2_5.toLocaleString()}</div>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      ₹{tax.netTotal.toLocaleString()}
-                    </TableCell>
+                    <TableCell>{tax.customername}</TableCell>
+                    <TableCell>{tax.phone}</TableCell>
+                    <TableCell className="text-right">₹{tax.sgst}</TableCell>
+                    <TableCell className="text-right">₹{tax.cgst}</TableCell>
+                    <TableCell className="text-right">₹{tax.nettotal}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
-              <tfoot>
-                <TableRow>
-                  <TableCell colSpan={5} className="font-semibold text-right">
-                    Total:
-                  </TableCell>
-                  <TableCell className="text-right font-semibold">
-                    CGST: ₹{totalCgst6.toLocaleString()}<br />SGST: ₹{totalSgst6.toLocaleString()}
-                  </TableCell>
-                  <TableCell className="text-right font-semibold">
-                    CGST: ₹{totalCgst2_5.toLocaleString()}<br />SGST: ₹{totalSgst2_5.toLocaleString()}
-                  </TableCell>
-                  <TableCell className="text-right font-semibold">
-                    ₹{totalNetTotal.toLocaleString()}
-                  </TableCell>
-                </TableRow>
-              </tfoot>
             </Table>
           </div>
         </div>

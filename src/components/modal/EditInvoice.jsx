@@ -28,6 +28,7 @@ function EditInvoice({ entry, onSuccess }) {
     fetchOrderDetails();
   }, []);
 
+
   const fetchOrderDetails = async () => {
     try {
       const response = await axios.post(
@@ -47,6 +48,13 @@ function EditInvoice({ entry, onSuccess }) {
   const handleSave = async (e) => {
     e.preventDefault(); 
     setLoading(true);
+
+     console.log(entry.invoice_id);
+     console.log(address);
+     console.log(cashMode);
+     console.log(productName);
+     
+
 
     try {
       const response = await axios.post(

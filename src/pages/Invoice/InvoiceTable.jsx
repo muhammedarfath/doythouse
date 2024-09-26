@@ -13,7 +13,6 @@ import {
 import PreInvoice from "./PreInvoice";
 
 function InvoiceTable({ invoice, handleDelete, fetchInvoices }) {
-  const filteredInvoices = invoice.filter(entry => entry.status === "open" || entry.status === "pending");
 
   return (
     <Table className="w-full">
@@ -30,7 +29,7 @@ function InvoiceTable({ invoice, handleDelete, fetchInvoices }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {filteredInvoices.map((entry, index) => (
+        {invoice.map((entry, index) => (
           <TableRow key={index}>
             <TableCell>{index + 1}</TableCell>
             <TableCell className="font-medium">{entry.cust_orderno}</TableCell>

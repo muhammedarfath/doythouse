@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -19,15 +19,50 @@ function EditMeasurmentThird({
   setDateIn,
   completedDate,
   setCompletedDate,
-  totalPrice,
   advancedPrice,
   setAdvancedPrice,
-  setTotalPrice,
   balancePrice,
   setBalancePrice,
-  discount,
-  setDiscount,
+  cgst,
+  setCgst,
+  sgst,
+  setSgst,
+  totalBill,
+  setTotalBill,
+  totalMRP,
+  total,
+  setTotalMRP,
 }) {
+  useEffect(() => {
+    const materialAndLabourTotal = parseFloat(totalMRP) + parseFloat(total);
+
+    let gstPercentage = 0;
+    if (materialAndLabourTotal > 1000) {
+      gstPercentage = 12;
+    } else {
+      gstPercentage = 5;
+    }
+
+    const cgstValue = (gstPercentage / 2 / 100) * materialAndLabourTotal;
+    const sgstValue = (gstPercentage / 2 / 100) * materialAndLabourTotal;
+    const totalWithGST = materialAndLabourTotal + cgstValue + sgstValue;
+
+    setCgst(cgstValue.toFixed(2));
+    setSgst(sgstValue.toFixed(2));
+    setTotalBill(totalWithGST.toFixed(2));
+
+    const balance = totalWithGST - parseFloat(advancedPrice || 0);
+    setBalancePrice(balance.toFixed(2));
+  }, [
+    totalMRP,
+    total,
+    advancedPrice,
+    setCgst,
+    setSgst,
+    setTotalBill,
+    setBalancePrice,
+  ]);
+
   return (
     <div className="border-t border-gray-300 my-6 pt-4">
       <div className="text-lg font-semibold mb-4">Additional Information:</div>
@@ -139,28 +174,82 @@ function EditMeasurmentThird({
             />
           </div>
         </div>
-        {/* <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
           <div className="text-lg font-semibold mb-4">Payment Information:</div>
+
           <div>
             <Label htmlFor="total-price" className="text-md font-bold">
-              Total Price
+              Material Price
             </Label>
             <Input
               id="total-price"
               type="text"
-              value={totalPrice}
-              onChange={(e) => setTotalPrice(e.target.value)}
+              value={totalMRP}
               className="w-full"
-              placeholder="Enter total price"
+              readOnly
             />
           </div>
 
           <div>
-            <Label htmlFor="advanced-price" className="text-md font-bold">
+            <Label htmlFor="labour-price" className="text-md font-bold">
+              Labour Price
+            </Label>
+            <Input
+              id="labour-price"
+              type="text"
+              value={total}
+              className="w-full"
+              readOnly
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="cgst-price" className="text-md font-bold">
+              CGST
+            </Label>
+            <Input
+              id="cgst-price"
+              type="text"
+              value={cgst}
+              className="w-full"
+              readOnly
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="sgst-price" className="text-md font-bold">
+              SGST
+            </Label>
+            <Input
+              id="sgst-price"
+              type="text"
+              value={sgst}
+              className="w-full"
+              readOnly
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="total" className="text-md font-bold">
+              Total Price
+            </Label>
+            <Input
+              id="total"
+              type="text"
+              value={totalBill}
+              className="w-full"
+              readOnly
+            />
+          </div>
+
+          <hr />
+
+          <div>
+            <Label htmlFor="discount-price" className="text-md font-bold">
               Advanced Price
             </Label>
             <Input
-              id="advanced-price"
+              id="discount-price"
               type="text"
               value={advancedPrice}
               onChange={(e) => setAdvancedPrice(e.target.value)}
@@ -177,23 +266,8 @@ function EditMeasurmentThird({
               id="balance-price"
               type="text"
               value={balancePrice}
-              onChange={(e) => setBalancePrice(e.target.value)}
               className="w-full"
-              placeholder="Enter balance price"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="discount-price" className="text-md font-bold">
-              Discount Price
-            </Label>
-            <Input
-              id="discount-price"
-              type="text"
-              value={discount}
-              onChange={(e) => setDiscount(e.target.value)}
-              className="w-full"
-              placeholder="Enter discount price"
+              readOnly
             />
           </div>
 
@@ -210,7 +284,7 @@ function EditMeasurmentThird({
               placeholder="Add any additional notes here..."
             />
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );

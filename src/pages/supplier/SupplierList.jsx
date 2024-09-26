@@ -84,6 +84,10 @@ function SupplierList() {
     }
   };
 
+  const filteredSupplier = suppliers.filter((sup) =>
+  sup.supplier_mobile1?.toLowerCase().includes(searchQuery.toLowerCase())
+);
+
   return (
     <div className="flex items-center justify-center w-full">
       <div
@@ -118,7 +122,7 @@ function SupplierList() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {suppliers.map((supplier, index) => (
+                {filteredSupplier.map((supplier, index) => (
                   <TableRow key={index}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell className="font-medium">

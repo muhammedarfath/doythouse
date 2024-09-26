@@ -5,11 +5,27 @@ import axios from "axios";
 function EditMeterialIfo({
   stockReport,
   setStockReport,
-  handleInputChange,
-  rows,
-  setRows,
-  setSelectedStock,
+  setInputValues,
+  inputValues,
+  totalMRP,
+  setTotalMRP
 }) {
+  const [errors, setErrors] = useState({});
+
+  const parseInputValues = (inputValues) => {
+    const parsedValues = {};
+    const items = inputValues.split(",");
+
+    items.forEach((item) => {
+      const [stock_id, quantity, mrp] = item.split("="); 
+      parsedValues[stock_id] = { quantity, mrp };
+    });
+
+    return parsedValues;
+  };
+
+  const parsedInputValues = parseInputValues(inputValues);
+
   useEffect(() => {
     const fetchStockReport = async () => {
       try {
@@ -24,13 +40,70 @@ function EditMeterialIfo({
     fetchStockReport();
   }, []);
 
+  useEffect(() => {
+    const total = Object.values(parsedInputValues)
+      .reduce((sum, value) => {
+        const mrp = parseFloat(value.mrp || 0);
+        return sum + mrp;
+      }, 0)
+      .toFixed(2);
+
+    setTotalMRP(total);
+  }, [inputValues]);
+
   const addRow = () => {
-    setRows([...rows, { item: "", quantity: "", mrp: "" }]);
+    setInputValues((prevValues) => `${prevValues},=,=`); // Add a new empty row
   };
 
-  const removeRow = (index) => {
-    const updatedRows = rows.filter((_, rowIndex) => rowIndex !== index);
-    setRows(updatedRows);
+  const removeRow = (stock_id) => {
+    const updatedValues = Object.keys(parsedInputValues)
+      .filter((id) => id !== stock_id)
+      .map((id) => `${id}=${parsedInputValues[id].quantity}=${parsedInputValues[id].mrp}`)
+      .join(",");
+    
+    setInputValues(updatedValues);
+  };
+
+  const handleInputChangeWithValidation = (e, stock_id, field) => {
+    const { value } = e.target;
+    const updatedValues = { ...parsedInputValues };
+
+    if (field === "stock_id") {
+      const newStockId = value;
+      updatedValues[newStockId] = updatedValues[stock_id];
+      delete updatedValues[stock_id];
+    } else if (field === "quantity") {
+      const selectedItem = stock_id;
+      const stockItem = stockReport.find(
+        (stock) => stock.stock_id === selectedItem
+      );
+
+      if (stockItem) {
+        const totalMRP = parseInt(value) * parseFloat(stockItem.mrp || 0);
+        updatedValues[stock_id] = {
+          quantity: value,
+          mrp: totalMRP.toFixed(2),
+        };
+
+        if (parseInt(value) > stockItem.stockvalue) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            [stock_id]: `Quantity exceeds available stock (${stockItem.stockvalue})`,
+          }));
+        } else {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            [stock_id]: "",
+          }));
+        }
+      }
+    }
+
+    const newInputValues = Object.keys(updatedValues)
+      .map((id) => `${id}=${updatedValues[id].quantity}=${updatedValues[id].mrp}`)
+      .join(",");
+
+    setInputValues(newInputValues);
   };
 
   return (
@@ -45,13 +118,14 @@ function EditMeterialIfo({
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, rowIndex) => (
-            <tr key={rowIndex}>
+          {Object.keys(parsedInputValues).map((stock_id) => (
+            <tr key={stock_id}>
               <td className="border border-gray-300 px-4 py-2">
                 <select
-                  id={`item-select-${rowIndex}`}
-                  value={row.item} 
-                  onChange={(e) => handleInputChange(e, rowIndex, "item")}
+                  value={stock_id}
+                  onChange={(e) =>
+                    handleInputChangeWithValidation(e, stock_id, "stock_id")
+                  }
                   className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
                 >
                   <option value="">Select Item</option>
@@ -66,29 +140,33 @@ function EditMeterialIfo({
               <td className="border border-gray-300 px-4 py-2">
                 <Input
                   type="number"
-                  id={`quantity-${rowIndex}`}
                   placeholder="Enter Quantity"
-                  value={row.quantity || ""}
-                  onChange={(e) => handleInputChange(e, rowIndex, "quantity")}
+                  value={parsedInputValues[stock_id]?.quantity || ""}
+                  onChange={(e) =>
+                    handleInputChangeWithValidation(e, stock_id, "quantity")
+                  }
                   className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
                 />
+                {errors[stock_id] && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors[stock_id]}
+                  </p>
+                )}
               </td>
 
               <td className="border border-gray-300 px-4 py-2">
                 <Input
-                  type="number"
-                  id={`mrp-${rowIndex}`}
-                  placeholder="Enter MRP"
-                  value={row.mrp || ""}
-                  onChange={(e) => handleInputChange(e, rowIndex, "mrp")}
+                  type="text"
+                  value={parsedInputValues[stock_id]?.mrp || ""}
                   className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+                  readOnly
                 />
               </td>
 
               <td className="border border-gray-300 px-4 py-2 text-center">
                 <button
                   type="button"
-                  onClick={() => removeRow(rowIndex)}
+                  onClick={() => removeRow(stock_id)}
                   className="px-3 py-2 bg-[#308E87] text-white rounded-md hover:bg-[#27766F] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#308E87] transition-all duration-150"
                 >
                   Remove Row
@@ -96,6 +174,17 @@ function EditMeterialIfo({
               </td>
             </tr>
           ))}
+
+          <tr>
+            <td className="border border-gray-300 px-4 py-2 font-bold">
+              Total
+            </td>
+            <td className="border border-gray-300 px-4 py-2"></td>
+            <td className="border border-gray-300 px-4 py-2 font-bold">
+              {totalMRP}
+            </td>
+            <td className="border border-gray-300 px-4 py-2"></td>
+          </tr>
         </tbody>
       </table>
 

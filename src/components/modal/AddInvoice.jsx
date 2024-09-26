@@ -15,7 +15,7 @@ import { Label } from "../../components/ui/label";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-function AddInvoice() {
+function AddInvoice({ onchange }) {
   const [workOrder, setWorkOrder] = useState("");
   const [address, setAddress] = useState("");
   const [productName, setProductName] = useState("");
@@ -42,17 +42,16 @@ function AddInvoice() {
     }
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const response = await axios.post(
       "https://storeconvo.com/php/add_invoice.php",
       new URLSearchParams({
-        order_no: workOrder, 
-        address: address, 
-        product_id: productName, 
-        cash_option: cashMode
+        order_no: workOrder,
+        address: address,
+        product_id: productName,
+        cash_option: cashMode,
       }),
       {
         headers: {
@@ -60,9 +59,14 @@ function AddInvoice() {
         },
       }
     );
-    console.log(response.data);
     if (response.status === 200) {
       toast.success("Invoice added successfully");
+      onchange();
+      setIsOpen(false);
+      setWorkOrder("");
+      setAddress("");
+      setProductName("");
+      setCashMode("");
     } else {
       toast.error("Failed to add invoice");
     }
@@ -92,7 +96,7 @@ function AddInvoice() {
                   id="workOrder"
                   value={workOrder}
                   onChange={(e) => setWorkOrder(e.target.value)}
-                  className="col-span-3 p-2 border rounded"
+                  className="col-span-3 p-2 border rounded focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
                 >
                   <option value="">Select Work Order</option>
                   {workOrders.map((order) => (
@@ -135,7 +139,7 @@ function AddInvoice() {
                   id="cashMode"
                   value={cashMode}
                   onChange={(e) => setCashMode(e.target.value)}
-                  className="col-span-3 p-2 border rounded"
+                  className="col-span-3 p-2 border rounded focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
                 >
                   <option value="">Select Cash Mode</option>
                   <option value="cash">Cash</option>

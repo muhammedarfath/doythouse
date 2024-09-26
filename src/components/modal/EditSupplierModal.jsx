@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,6 +12,7 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Button } from "../../components/ui/button";
 import { AiFillEdit } from "react-icons/ai";
+import { FaCheckCircle } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
@@ -31,7 +32,13 @@ function EditSupplierModal({ supplier, onSuccess }) {
   const [state, setState] = useState(supplier.supplier_state || "");
   const [creditedMoney, setCreditedMoney] = useState(supplier.supplier_creditedmoney || "");
   const [paidMoney, setPaidMoney] = useState(supplier.supplier_paidmoney || "");
-  const [balancedMoney, setBalancedMoney] = useState(supplier.supplier_balancedmoney || "");
+  const [balancedMoney, setBalancedMoney] = useState(supplier.supplier_balancedmoney || 0);
+
+  // Automatically calculate the balanced money whenever credited or paid money changes
+  useEffect(() => {
+    const balance = creditedMoney - paidMoney;
+    setBalancedMoney(balance >= 0 ? balance : 0); // Ensure balance isn't negative
+  }, [creditedMoney, paidMoney]);
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -40,7 +47,7 @@ function EditSupplierModal({ supplier, onSuccess }) {
       const response = await axios.post(
         "https://storeconvo.com/php/edit.php/",
         {
-          id:supplier.supplier_id,
+          id: supplier.supplier_id,
           supplier_name: supplierName,
           supplier_email: email,
           supplier_contactperson: contactPerson,
@@ -74,7 +81,6 @@ function EditSupplierModal({ supplier, onSuccess }) {
       setLoading(false);
     }
   };
-
 
   return (
     <div>
@@ -200,17 +206,12 @@ function EditSupplierModal({ supplier, onSuccess }) {
                 <Label htmlFor="state" className="text-right">
                   State
                 </Label>
-                <select
+                <Input
                   id="state"
                   value={state}
                   onChange={(e) => setState(e.target.value)}
-                  className="col-span-3 p-2 border rounded"
-                >
-                  <option value="">Select a state</option>
-                  <option value="state1">State 1</option>
-                  <option value="state2">State 2</option>
-                  <option value="state3">State 3</option>
-                </select>
+                  className="col-span-3"
+                />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="creditedMoney" className="text-right">
@@ -240,17 +241,27 @@ function EditSupplierModal({ supplier, onSuccess }) {
                 <Label htmlFor="balancedMoney" className="text-right">
                   Balanced Money
                 </Label>
-                <Input
-                  id="balancedMoney"
-                  type="number"
-                  value={balancedMoney}
-                  onChange={(e) => setBalancedMoney(e.target.value)}
-                  className="col-span-3"
-                />
+                <div className="col-span-3 flex items-center">
+                  <Input
+                    id="balancedMoney"
+                    type="number"
+                    value={balancedMoney}
+                    onChange={(e) => setBalancedMoney(e.target.value)}
+                    className="col-span-3"
+                    readOnly
+                  />
+                  {balancedMoney === 0 && (
+                    <FaCheckCircle className="text-green-500 text-2xl ml-2" />
+                  )}
+                </div>
               </div>
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setOpen(false)}
+              >
                 Cancel
               </Button>
               <Button type="submit" disabled={loading}>

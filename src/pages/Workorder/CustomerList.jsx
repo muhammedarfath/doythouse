@@ -14,6 +14,7 @@ function CustomerList() {
   const [searchQuery, setSearchQuery] = useState("");
   const { open } = useOutletContext();
 
+
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
@@ -32,8 +33,6 @@ function CustomerList() {
       console.error("Error fetching Customers:", error);
     }
   };
-
-
 
   const handleChangeStatus = async (e, customerId) => {
     const newStatus = e.target.value;

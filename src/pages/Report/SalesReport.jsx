@@ -26,7 +26,7 @@ function SalesReport() {
   const fetchInvoices = async () => {
     try {
       const response = await axios.get(
-        "https://storeconvo.com/php/fetch.php?typ=invoice"
+        "https://storeconvo.com/php/fetch.php?typ=sales1"
       );
       setSalesReport(response.data);
     } catch (error) {
@@ -34,6 +34,7 @@ function SalesReport() {
     }
   };
 
+  console.log(salesReport);
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
@@ -52,10 +53,6 @@ function SalesReport() {
   const calculateCredit = (netTotal, amountPaid) => {
     return netTotal - amountPaid;
   };
-
-  const filteredInvoices = salesReport.filter(
-    (entry) => entry.status === "closed"
-  );
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -134,19 +131,16 @@ function SalesReport() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredInvoices.map((sale, index) => {
-                  const profit = calculateProfit(sale.nettotal, sale.cogs);
-                  const credit = calculateCredit(sale.nettotal, sale.amountPaid);
-
+                {salesReport.map((sale, index) => {
                   return (
                     <TableRow key={sale.id}>
                       <TableCell>
                         <input type="checkbox" />
                       </TableCell>
                       <TableCell className="font-medium">{index + 1}</TableCell>
-                      <TableCell>{sale.cust_expecteddelivery}</TableCell>
+                      <TableCell>{sale.sales_date}</TableCell>
                       <TableCell>{sale.invoice_no}</TableCell>
-                      <TableCell>{sale.cust_name}</TableCell>
+                      <TableCell>{sale.customer}</TableCell>
                       <TableCell className="text-right">
                         {sale.gstamount}
                       </TableCell>
@@ -156,8 +150,8 @@ function SalesReport() {
                       <TableCell className="text-right">
                         {sale.nettotal}
                       </TableCell>
-                      <TableCell className="text-right">{credit}</TableCell>
-                      <TableCell className="text-right">{profit}</TableCell>
+                      <TableCell className="text-right">{sale.credit}</TableCell>
+                      <TableCell className="text-right">{sale.profit}</TableCell>
                     </TableRow>
                   );
                 })}

@@ -13,7 +13,6 @@ import {
 import FinalInvoiceCard from "./FinalInvoiceCard";
 
 function FinalInvoice({ invoice,fetchInvoices }) {
-  const filteredInvoices = invoice.filter(entry => entry.status === "closed");
 
   return (
     <Table className="w-full">
@@ -30,7 +29,7 @@ function FinalInvoice({ invoice,fetchInvoices }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {filteredInvoices.map((entry, index) => (
+        {invoice.map((entry, index) => (
           <TableRow key={index}>
             <TableCell>{index + 1}</TableCell>
             <TableCell className="font-medium">{entry.cust_orderno}</TableCell>
@@ -41,10 +40,6 @@ function FinalInvoice({ invoice,fetchInvoices }) {
             <TableCell className="text-center">
               <div className="flex justify-center gap-4">
                 <FinalInvoiceCard order_id={entry.cust_orderno} onSuccess={fetchInvoices} invoice={entry}/>
-                <BiSolidTrashAlt
-                  onClick={() => handleDelete(entry.invoice_id)}
-                  className="text-[#495057] text-xl transition-transform transform hover:scale-110 cursor-pointer"
-                />
               </div>
             </TableCell>
           </TableRow>

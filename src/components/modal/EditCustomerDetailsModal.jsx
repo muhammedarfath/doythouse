@@ -1,18 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "../../components/ui/button";
-import { FiPlus } from "react-icons/fi";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog";
-import { Input } from "../../components/ui/input";
-import { Label } from "../../components/ui/label";
-import { IoMdArrowRoundForward } from "react-icons/io";
 import { AiFillEdit } from "react-icons/ai";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -26,9 +19,9 @@ import WorkOrderHeader from "./WorkOrder/WorkOrderHeader";
 import MeasurmentImg from "./WorkOrder/MeasurmentImg";
 
 function EditCustomerDetailsModal({ customer, onSuccess }) {
-  console.log(customer,"THIS IS CUSTOMER");
+  const [inputValues, setInputValues] = useState(customer.cm_stockused || "");
   const [loading, setLoading] = useState(false);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(customer.cust_itemcategory);
   const [activeSection, setActiveSection] = useState("userInformation");
   const [customerName, setCustomerName] = useState(customer.cust_name || "");
   const [contactNumber, setContactNumber] = useState(customer.cust_phone || "");
@@ -43,7 +36,9 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
   const [orderDate, setOrderDate] = useState(customer.cust_orderdate || "");
   const [emergency, setEmergency] = useState(customer.cust_emergency || "");
   const [status, setStatus] = useState(customer.status || "");
-  const [selectedCategory, setSelectedCategory] = useState(customer.cust_itemcategory);
+  const [selectedCategory, setSelectedCategory] = useState(
+    customer.cust_itemcategory
+  );
   const [yokeLength, setYokeLength] = useState(customer.yoke_length || "");
   const [yokeRound, setYokeRound] = useState(customer.yoke_round || "");
   const [fullLength, setFullLength] = useState(customer.full_length || "");
@@ -68,8 +63,8 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
   const [armRound, setArmRound] = useState(customer.arm_round || "");
   const [armHole, setArmHole] = useState(customer.arm_hole || "");
   const [neck, setNeck] = useState(customer.neck || "");
-  const [frontNeck, setFrontNeck] = useState(customer.front_neck || "");
-  const [backNeck, setBackNeck] = useState(customer.back_neck || "");
+  const [frontNeck, setFrontNeck] = useState(customer.fn || "");
+  const [backNeck, setBackNeck] = useState(customer.bn || "");
   const [collarRound, setCollarRound] = useState(customer.collor_round || "");
   const [tuckPoint, setTuckPoint] = useState(customer.tuck_point || "");
   const [pointToPoint, setPointToPoint] = useState(
@@ -90,13 +85,13 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
   const [backOpen, setBackOpen] = useState(customer.back_open === "true");
   const [frontOpen, setFrontOpen] = useState(customer.front_open === "true");
   const [image, setImage] = useState(customer.image || "");
-  const [dateIn, setDateIn] = useState(customer.date_in || "");
+  const [dateIn, setDateIn] = useState(customer.cadate_in || "");
   const [completedDate, setCompletedDate] = useState(
-    customer.completed_date || ""
+    customer.cacompleted_date || ""
   );
   const [totalPrice, setTotalPrice] = useState(customer.total || "");
   const [advancedPrice, setAdvancedPrice] = useState(
-    customer.advanced_price || ""
+    customer.advanceprice || ""
   );
   const [balancePrice, setBalancePrice] = useState(
     customer.balance_price || ""
@@ -106,33 +101,30 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
   const [categories, setCategories] = useState([]);
   const [stockReport, setStockReport] = useState([]);
 
-  const [rows, setRows] = useState([{ item: "", quantity: "", mrp: "" }]);
-
   const section1Ref = useRef();
   const section2Ref = useRef();
   const section3Ref = useRef();
   const [open, setOpen] = useState(false);
-  const [total, setTotal] = useState(0);
-  const [cutting, setCutting] = useState(customer.cutting || "");
-  const [stitching, setStitching] = useState(customer.stiching || "");
-  const [handWork, setHandWork] = useState(customer.handwork || "");
-  const [measurer, setMeasurer] = useState(customer.measurer || "");
-  const [checker, setChecker] = useState(customer.checker || "");
-  const [cuttingPrice, setCuttingPrice] = useState(customer.cuttingPrice || "");
-  const [stitchingPrice, setStitchingPrice] = useState(
-    customer.stitchingPrice || ""
-  );
-  const [handWorkPrice, setHandWorkPrice] = useState(
-    customer.handWorkPrice || ""
-  );
-  const [measurerPrice, setMeasurerPrice] = useState(
-    customer.measurerPrice || ""
-  );
-  const [checkerPrice, setCheckerPrice] = useState(customer.checkerPrice || "");
+  const [total, setTotal] = useState(customer.total || "");
+
+  const [cutting, setCutting] = useState(customer.cacutting || "");
+  const [stitching, setStitching] = useState(customer.castiching || "");
+  const [handWork, setHandWork] = useState(customer.cahandwork || "");
+  const [measurer, setMeasurer] = useState(customer.cameasurer || "");
+  const [checker, setChecker] = useState(customer.cachecker || "");
+
+  const [cuttingPrice, setCuttingPrice] = useState(customer.cutting || "");
+  const [stitchingPrice, setStitchingPrice] = useState(customer.stiching || "");
+  const [handWorkPrice, setHandWorkPrice] = useState(customer.handwork || "");
+  const [measurerPrice, setMeasurerPrice] = useState(customer.measurer || "");
+  const [checkerPrice, setCheckerPrice] = useState(customer.checker || "");
   const [selectedStock, setSelectedStock] = useState("");
   const [designers, setDesigners] = useState([]);
   const [designerPhoneNumber, setDesignerPhoneNumber] = useState("");
-
+  const [totalMRP, setTotalMRP] = useState(customer.materialprice || "");
+  const [cgst, setCgst] = useState("");
+  const [sgst, setSgst] = useState("");
+  const [totalBill, setTotalBill] = useState("");
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -162,7 +154,6 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
 
     fetchCategories();
   }, []);
-  
 
   const handleInputChange = (e, index, field) => {
     const updatedRows = [...rows];
@@ -176,27 +167,13 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
     setCategory(newCategory);
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      !customerName ||
-      !contactNumber ||
-      !trialDate ||
-      !expectedDelivery ||
-      !category ||
-      !designerName ||
-      !orderNumber ||
-      !orderDate ||
-      !designerPhoneNumber ||
-      !emergency ||
-      !status
-    ) {
-      toast.error("Please fill in all mandatory fields.");
-      return;
-    }
 
     const formData = new FormData();
 
+    formData.append("id", customer.cust_id);
     formData.append("cust_name", customerName);
     formData.append("cust_phone", contactNumber);
     formData.append("cust_trialdate", trialDate);
@@ -204,7 +181,6 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
     formData.append("cust_itemcategory", category);
     formData.append("cust_designername", designerName);
     formData.append("cust_designername", designerPhoneNumber);
-    formData.append("cust_orderno", orderNumber);
     formData.append("cust_orderdate", orderDate);
     formData.append("cust_emergency", emergency);
     formData.append("status", status);
@@ -232,22 +208,25 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
     formData.append("sleeve_type", sleeveType);
     formData.append("wrist", wrist);
     formData.append("three_fourth", threeFourth);
+    formData.append("elbow", elbow);
+    formData.append("arm_round", armRound);
 
-    formData.append("skirt_full_length", skirtFullLength);
-    formData.append("skirt_seat", seat);
-    formData.append("skirt_knee", knee);
-    formData.append("skirt_thigh", thigh);
-    formData.append("skirt_calf", calf);
-    formData.append("skirt_bottom_round", bottomRound);
+    // formData.append("skirt_full_length", skirtFullLength);
+    // formData.append("skirt_seat", seat);
+    // formData.append("skirt_knee", knee);
+    // formData.append("skirt_thigh", thigh);
+    // formData.append("skirt_calf", calf);
+    // formData.append("skirt_bottom_round", bottomRound);
 
-    formData.append("pad", pad);
-    formData.append("zip", zip);
-    formData.append("back_open", backOpen);
-    formData.append("front_open", frontOpen);
+    // formData.append("pad", pad);
+    // formData.append("zip", zip);
+    // formData.append("back_open", backOpen);
+    // formData.append("front_open", frontOpen);
 
-    if (image) {
-      formData.append("image", image);
-    }
+    // if (image) {
+    //   formData.append("image", image);
+    // }
+
     formData.append("cutting", cutting);
     formData.append("stiching", stitching);
     formData.append("handwork", handWork);
@@ -256,27 +235,19 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
     formData.append("date_in", dateIn);
     formData.append("completed_date", completedDate);
 
-    rows.forEach((row, index) => {
-      formData.append(`items[${index}][item]`, row.item);
-      formData.append(`items[${index}][quantity]`, row.quantity);
-      formData.append(`items[${index}][mrp]`, row.mrp);
-    });
+    formData.append("stock_values",inputValues);
+
 
     formData.append("cutting1", cuttingPrice);
     formData.append("stiching1", stitchingPrice);
     formData.append("handwork1", handWorkPrice);
     formData.append("measurer1", measurerPrice);
     formData.append("checker1", checkerPrice);
-    formData.append("tailor1", tailorPrice);
     formData.append("total1", total);
-
-    formData.forEach((value, key) => {
-      console.log(`${key}:`, value);
-    });
 
     try {
       const response = await axios.post(
-        "https://storeconvo.com/php/edit.php",
+        "https://storeconvo.com/php/edit_customer.php",
         formData,
         {
           headers: {
@@ -292,7 +263,6 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
       }
     } catch (error) {
       toast.error("Error editing customer:", error);
-      alert("Failed to edit customer");
     } finally {
       setLoading(false);
     }
@@ -461,6 +431,15 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
                 setBalancePrice={setBalancePrice}
                 discount={discount}
                 setDiscount={setDiscount}
+                cgst={cgst}
+                setCgst={setCgst}
+                sgst={sgst}
+                setSgst={setSgst}
+                totalBill={totalBill}
+                setTotalBill={setTotalBill}
+                totalMRP={totalMRP}
+                total={total}
+                setTotalMRP={setTotalMRP}
               />
             </div>
           )}
@@ -469,10 +448,12 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
               stockReport={stockReport}
               setStockReport={setStockReport}
               handleInputChange={handleInputChange}
-              rows={rows}
-              setRows={setRows}
               selectedStock={selectedStock}
               setSelectedStock={setSelectedStock}
+              inputValues={inputValues}
+              setInputValues={setInputValues}
+              totalMRP={totalMRP}
+              setTotalMRP={setTotalMRP}
             />
           )}
           {activeSection === "paymentInformation" && (

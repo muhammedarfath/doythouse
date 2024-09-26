@@ -32,10 +32,6 @@ function EditUserInfo({
   designerPhoneNumber,
 }) {
 
-    console.log(status,"this is edit status");
-    console.log(categories,"this is edit cat");
-    console.log(selectedCategory,"this is edit selca");
-
     const handleDesignerChange = (e) => {
     const selectedDesignerId = e.target.value;
     setDesignerName(selectedDesignerId);
@@ -199,17 +195,17 @@ function EditUserInfo({
             Status
           </Label>
           <select
-            id="status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="w-full p-2 border rounded"
-            required
-          >
-            <option value="">Select Status</option>
-            <option value="Delivered">Delivered</option>
-            <option value="Pending">Pending</option>
-            <option value="Completed">Completed</option>
-          </select>
+              id="status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="w-full p-2 border rounded"
+            >
+              <option value="">Select an option</option>
+              <option value="pending">Pending</option>
+              <option value="completed">Completed</option>
+              <option value="delivered">Delivered</option>
+            </select>
+
         </div>
       </div>
     </div>
