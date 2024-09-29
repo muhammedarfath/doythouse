@@ -450,7 +450,7 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
               handleInputChange={handleInputChange}
               selectedStock={selectedStock}
               setSelectedStock={setSelectedStock}
-              inputValues={inputValues}
+              inputValue={inputValues}
               setInputValues={setInputValues}
               totalMRP={totalMRP}
               setTotalMRP={setTotalMRP}
