@@ -237,8 +237,8 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
     formData.append("completed_date", completedDate);
 
     formData.append("stock_values",inputValues);
-    formData.append("quantity_differences",JSON.stringify(quantityDifferences));
-    
+    const formattedQuantityDifferences = JSON.stringify(quantityDifferences).replace(/"(\d+)":/g, '$1:');
+    formData.append("quantity_differences", formattedQuantityDifferences);    
 
 
     formData.append("cutting1", cuttingPrice);
