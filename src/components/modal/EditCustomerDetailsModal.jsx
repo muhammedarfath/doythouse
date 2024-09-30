@@ -237,8 +237,10 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
     formData.append("completed_date", completedDate);
 
     formData.append("stock_values",inputValues);
-    const formattedQuantityDifferences = JSON.stringify(quantityDifferences).replace(/"(\d+)":/g, '$1:');
-    formData.append("quantity_differences", formattedQuantityDifferences);    
+    const formattedStockValues = Object.entries(quantityDifferences)
+    .map(([key, value]) => `${key}=${value}`)
+    .join(',');
+    formData.append("stock_values", formattedStockValues);
 
 
     formData.append("cutting1", cuttingPrice);
