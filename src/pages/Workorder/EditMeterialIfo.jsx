@@ -10,25 +10,12 @@ function EditMeterialIfo({
   totalMRP,
   setTotalMRP,
   setQuantityDifferences,
-  quantityDifferences
+  quantityDifferences,
 }) {
   const [errors, setErrors] = useState({});
   const [previousQuantities, setPreviousQuantities] = useState({});
   const [initialQuantities, setInitialQuantities] = useState({});
   const inputValues = inputValue;
-
-  useEffect(() => {
-    const total = Object.values(parsedInputValues)
-      .reduce((sum, value) => {
-        const mrp = parseFloat(value.mrp || 0);
-        return sum + mrp;
-      }, 0)
-      .toFixed(2);
-
-    setTotalMRP(total); 
-  }, [inputValues]);
-
-
 
   const parseInputValues = (inputValues) => {
     const parsedValues = {};
@@ -45,7 +32,6 @@ function EditMeterialIfo({
   const parsedInputValues = parseInputValues(inputValues);
 
   useEffect(() => {
-    // Set initial quantities on first load
     setInitialQuantities(parseInputValues(inputValues));
 
     const fetchStockReport = async () => {
@@ -72,27 +58,6 @@ function EditMeterialIfo({
     setTotalMRP(total);
   }, [inputValues]);
 
-  const addRow = () => {
-    // Your implementation for adding a new row
-  };
-
-  const removeRow = (stock_id) => {
-    const updatedValues = Object.keys(parsedInputValues)
-      .filter((id) => id !== stock_id)
-      .map(
-        (id) =>
-          `${id}=${parsedInputValues[id].quantity}=${parsedInputValues[id].mrp}`
-      )
-      .join(",");
-
-    setInputValues(updatedValues);
-    setPreviousQuantities((prev) => {
-      const newPrev = { ...prev };
-      delete newPrev[stock_id];
-      return newPrev;
-    });
-  };
-
   const handleQuantityChange = (updatedValues) => {
     const newInputValues = Object.keys(updatedValues)
       .map((id) => {
@@ -108,23 +73,27 @@ function EditMeterialIfo({
 
   const handleInputChangeWithValidation = (e, stock_id, field) => {
     const { value } = e.target;
-    const updatedValues = { ...parsedInputValues }; // Copy of parsedInputValues
+    const updatedValues = { ...parsedInputValues };
+    if (field === "stock_id") {
+      const newStockId = value;
+      updatedValues[newStockId] = updatedValues[stock_id];
+      delete updatedValues[stock_id];
 
-    if (field === "quantity") {
-      const initialQuantity = initialQuantities[stock_id]?.quantity || "0"; // Fallback to '0' if undefined
+      const newInputValues = handleQuantityChange(updatedValues);
+      setInputValues(newInputValues);
+    } else if (field === "quantity") {
+      const initialQuantity = initialQuantities[stock_id]?.quantity || "0";
       const quantityValue = parseInt(value);
 
       if (isNaN(quantityValue) || quantityValue < 0) {
-        return; // Ignore invalid inputs
+        return;
       }
 
-      // Update previous quantities
       setPreviousQuantities((prev) => ({
         ...prev,
         [stock_id]: initialQuantity,
       }));
 
-      // Check if quantity exceeds available stock and set errors accordingly
       const stockItem = stockReport.find(
         (stock) => stock.stock_id === stock_id
       );
@@ -143,13 +112,11 @@ function EditMeterialIfo({
         }
       }
 
-      // Update the input values for this stock_id
       updatedValues[stock_id] = {
         quantity: quantityValue.toString(),
         mrp: updatedValues[stock_id].mrp,
       };
 
-      // Update quantityDifferences to reflect the change
       setQuantityDifferences((prev) => ({
         ...prev,
         [stock_id]: quantityValue - parseInt(initialQuantity),
@@ -164,10 +131,7 @@ function EditMeterialIfo({
     const currentQuantity =
       parseInt(parsedInputValues[stock_id]?.quantity || "0") + 1;
 
-    // Check stock availability before incrementing
-    const stockItem = stockReport.find(
-      (stock) => stock.stock_id === stock_id
-    );
+    const stockItem = stockReport.find((stock) => stock.stock_id === stock_id);
     if (stockItem && currentQuantity > stockItem.stockvalue) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -183,16 +147,12 @@ function EditMeterialIfo({
 
     const updatedValues = { ...parsedInputValues };
     updatedValues[stock_id].quantity = currentQuantity.toString();
-
-    // Update MRP based on current quantity
-    updatedValues[stock_id].mrp = (
-      stockItem?.mrp * currentQuantity
-    ).toString();
-
-    // Update quantityDifferences to reflect the change
+    updatedValues[stock_id].mrp = (stockItem?.mrp * currentQuantity).toString();
     setQuantityDifferences((prev) => ({
       ...prev,
-      [stock_id]: currentQuantity - parseInt(initialQuantities[stock_id]?.quantity || "0"),
+      [stock_id]:
+        currentQuantity -
+        parseInt(initialQuantities[stock_id]?.quantity || "0"),
     }));
 
     const newInputValues = handleQuantityChange(updatedValues);
@@ -205,30 +165,44 @@ function EditMeterialIfo({
       parseInt(parsedInputValues[stock_id]?.quantity || "0") - 1
     );
 
-    // Check stock availability before decrementing
-    const stockItem = stockReport.find(
-      (stock) => stock.stock_id === stock_id
-    );
+    const stockItem = stockReport.find((stock) => stock.stock_id === stock_id);
     if (currentQuantity < 0) return; // Prevent negative quantity
 
     const updatedValues = { ...parsedInputValues };
     updatedValues[stock_id].quantity = currentQuantity.toString();
 
-    // Update MRP based on current quantity
-    updatedValues[stock_id].mrp = (
-      stockItem?.mrp * currentQuantity
-    ).toString();
+    updatedValues[stock_id].mrp = (stockItem?.mrp * currentQuantity).toString();
 
-    // Update quantityDifferences to reflect the change
     setQuantityDifferences((prev) => ({
       ...prev,
-      [stock_id]: currentQuantity - parseInt(initialQuantities[stock_id]?.quantity || "0"),
+      [stock_id]:
+        currentQuantity -
+        parseInt(initialQuantities[stock_id]?.quantity || "0"),
     }));
 
     const newInputValues = handleQuantityChange(updatedValues);
     setInputValues(newInputValues);
   };
 
+  const addRow = () => {
+    const newStockId = `new${Object.keys(parsedInputValues).length + 1}`;
+    const updatedValues = {
+      ...parsedInputValues,
+      [newStockId]: { quantity: "0", mrp: "0.00" },
+    };
+
+    const newInputValues = Object.keys(updatedValues)
+      .map(
+        (id) => `${id}=${updatedValues[id].quantity}=${updatedValues[id].mrp}`
+      )
+      .join(",");
+
+    setInputValues(newInputValues);
+    setQuantityDifferences((prev) => ({
+      ...prev,
+      [newStockId]: 0,
+    }));
+  };
 
   return (
     <div className="mb-80 w-full">
@@ -260,7 +234,7 @@ function EditMeterialIfo({
                   ))}
                 </select>
               </td>
-  
+
               <td className="border border-gray-300 px-4 py-2 flex items-center">
                 <button
                   type="button"
@@ -280,17 +254,20 @@ function EditMeterialIfo({
                     />
                   </svg>
                 </button>
-  
+
                 <Input
+                  className="w-16"
+                  placeholder="Quantity"
                   type="number"
-                  value={parsedInputValues[stock_id]?.quantity || "0"}
+                  id={`quantity-${stock_id}`}
+                  value={parsedInputValues[stock_id]?.quantity || ""}
                   onChange={(e) =>
                     handleInputChangeWithValidation(e, stock_id, "quantity")
                   }
-                  className="w-16 text-center"
-                  min="0"
+                  disabled={!stock_id}
+                  required
                 />
-  
+
                 <button
                   type="button"
                   onClick={() => handleIncrement(stock_id)}
@@ -304,56 +281,64 @@ function EditMeterialIfo({
                   >
                     <path
                       fillRule="evenodd"
-                      d="M10 3a1 1 0 011 1v6h6a1 1 0 110 2h-6v6a1 1 0 11-2 0v-6H4a1 1 0 110-2h6V4a1 1 0 011-1z"
+                      d="M10 5a1 1 0 011 1v4h4a1 1 0 110 2h-4v4a1 1 0 11-2 0v-4H5a1 1 0 110-2h4V6a1 1 0 011-1z"
                       clipRule="evenodd"
                     />
                   </svg>
                 </button>
                 {errors[stock_id] && (
-                  <span className="text-red-500 text-xs">
+                  <p className="text-red-500 text-sm mt-1">
                     {errors[stock_id]}
-                  </span>
+                  </p>
                 )}
               </td>
-  
+
               <td className="border border-gray-300 px-4 py-2">
-                {parsedInputValues[stock_id]?.mrp || "0.00"}
-              </td>
-  
-              <td className="border border-gray-300 px-4 py-2">
-                <button
-                  onClick={() => removeRow(stock_id)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  Remove
-                </button>
+                <Input
+                  className="w-24"
+                  placeholder="MRP"
+                  type="text"
+                  id={`mrp-${stock_id}`}
+                  value={parsedInputValues[stock_id]?.mrp || ""}
+                />
               </td>
             </tr>
           ))}
-          
-          {/* Row for Total MRP */}
-          <tr className="font-bold">
-            <td className="border border-gray-300 px-4 py-2" colSpan="2">Total MRP</td>
-            <td className="border border-gray-300 px-4 py-2">
-              {totalMRP || "0.00"}
-            </td>
-            <td className="border border-gray-300 px-4 py-2"></td>
-          </tr>
         </tbody>
+        <tr className="font-bold">
+          <td className="border border-gray-300 px-4 py-2" colSpan="2">
+            Total MRP
+          </td>
+          <td className="border border-gray-300 px-4 py-2">
+            {totalMRP || "0.00"}
+          </td>
+          <td className="border border-gray-300 px-4 py-2"></td>
+        </tr>
       </table>
-  
-      <div className="mt-4">
+
+      <div className="mt-4 flex justify-end">
         <button
+          type="button"
           onClick={addRow}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+          className="flex items-center justify-center px-4 py-2 bg-[#308E87] text-white rounded-md hover:bg-[#27766F] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#308E87] transition-all duration-150"
         >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+              clipRule="evenodd"
+            />
+          </svg>
           Add Row
         </button>
       </div>
     </div>
   );
-  
-  
 }
 
 export default EditMeterialIfo;

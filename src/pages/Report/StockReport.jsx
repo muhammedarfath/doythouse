@@ -120,12 +120,12 @@ function StockReport() {
                 name={"stock"}
               />
               <div className="flex items-center gap-5">
-                <div
+                {/* <div
                   className="border rounded-md p-2 bg-[#D8E9E7] text-[#308E87]"
                   onClick={toggleFilter}
                 >
                   <CiFilter className="text-2xl cursor-pointer hover:animate-shake" />
-                </div>
+                </div> */}
                 <AddStock onSuccess={fetchStockReport} />
                 <Button
                   className="bg-[#308E87] hover:bg-[#308E87]"
@@ -136,7 +136,7 @@ function StockReport() {
               </div>
             </div>
 
-            {isFilterVisible && (
+            {/* {isFilterVisible && (
               <div className="flex flex-wrap gap-4 mb-4">
                 <div className="flex flex-col">
                   <label
@@ -160,7 +160,7 @@ function StockReport() {
                   </select>
                 </div>
               </div>
-            )}
+            )} */}
 
             <StockTable
               filteredStock={filteredStock}

@@ -46,7 +46,7 @@ function SubModal({ onChange }) {
       toast.error("SGST is required.");
       return false;
     }
-    return true; // All validations passed
+    return true; 
   };
 
   const handleSave = async () => {

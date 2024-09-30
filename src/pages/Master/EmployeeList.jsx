@@ -55,7 +55,7 @@ function EmployeeList() {
 
   const confirmDelete = async (employeeId, toastId) => {
     try {
-      await axios.post(
+      const response = await axios.post(
         `https://storeconvo.com/php/delete.php/`,
         {
           id: employeeId,
@@ -67,6 +67,7 @@ function EmployeeList() {
           },
         }
       );
+      console.log(response);
       setEmployees((prevEmployees) =>
         prevEmployees.filter((employee) => employee.employee_id !== employeeId)
       );
@@ -93,7 +94,7 @@ function EmployeeList() {
                 setSearchQuery={setSearchQuery}
                 name={"name"}
               />
-              <EmployeeModal setEmployees={setEmployees} />
+              <EmployeeModal onchnage={fetchEmployees} />
             </div>
             <EmployeeTable
               filteredEmployees={filteredEmployees}

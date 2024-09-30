@@ -135,6 +135,7 @@ function AddProduct() {
         setCgst("");
         setSgst("");
         setImage([]);
+        setPreviewUrls([])
         setSalesUnit("");
         setPackSize("");
         setCategory("");

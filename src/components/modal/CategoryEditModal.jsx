@@ -91,7 +91,7 @@ function CategoryEditModal({ category,onSuccess }) {
                 id="description"
                 value={catDescription}
                 onChange={(e) => setCatDescription(e.target.value)}
-                className="col-span-3 p-2 border rounded"
+                className="col-span-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
           </div>

@@ -15,7 +15,7 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { toast } from "react-hot-toast";
 
-function EmployeeModal({ setEmployees }) {
+function EmployeeModal({ onchnage }) {
   const [name, setName] = useState("");
   const [department, setDepartment] = useState("");
   const [mobile, setMobile] = useState("");
@@ -76,8 +76,8 @@ function EmployeeModal({ setEmployees }) {
       );
       if (response.status === 200) {
         toast.success("Employee added successfully");
-        setEmployees((prevEmployees) => [...prevEmployees, response.data]);
         setIsOpen(false);
+        onchnage();
         setName("");
         setDepartment("");
         setMobile("");

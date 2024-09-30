@@ -13,13 +13,13 @@ import { AiFillEdit } from "react-icons/ai";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import axios from "axios";
-import { toast } from "react-hot-toast"; 
+import { toast } from "react-hot-toast";
 
 function EditStockModal({ stock, onSuccess }) {
   const [isOpen, setIsOpen] = useState(false);
   const [stockItem, setStockItem] = useState(stock?.items || "");
-  const [stockValue, setStockValue] = useState(stock?.stockvalue  || "");
-  const [stockMrp, setStockMrp] = useState(stock?.mrp|| "");
+  const [stockValue, setStockValue] = useState(stock?.stockvalue || "");
+  const [stockMrp, setStockMrp] = useState(stock?.mrp || "");
   const [loading, setLoading] = useState(false);
   const [unit, setUnit] = useState([]);
   const [selectedUnit, setSelectedUnit] = useState(stock?.unit || "");
@@ -30,7 +30,9 @@ function EditStockModal({ stock, onSuccess }) {
 
   const fetchUnits = async () => {
     try {
-      const response = await axios.get("https://storeconvo.com/php/fetch.php?typ=unit");
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=unit"
+      );
       if (Array.isArray(response.data)) {
         setUnit(response.data);
       } else {
@@ -51,8 +53,8 @@ function EditStockModal({ stock, onSuccess }) {
           items: stockItem,
           unit: selectedUnit,
           stockvalue: stockValue,
-          stockmrp:stockMrp,
-          typ: "stock"
+          stockmrp: stockMrp,
+          typ: "stock",
         },
         {
           headers: {
@@ -64,7 +66,7 @@ function EditStockModal({ stock, onSuccess }) {
       if (response.data) {
         toast.success("Stock edited successfully!");
         setIsOpen(false);
-        if (onSuccess) onSuccess(); 
+        if (onSuccess) onSuccess();
       } else {
         toast.error("Something went wrong");
       }
@@ -110,22 +112,24 @@ function EditStockModal({ stock, onSuccess }) {
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="unit" className="text-right">
-              SubCategory
+              Unit
             </Label>
             <select
               id="unit"
-              className="col-span-3 h-10 border mt-1 rounded px-4 w-full bg-white"
+              className="col-span-3 h-10 border mt-1 rounded px-4 w-full bg-white focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               value={selectedUnit}
               onChange={handleUnitChange}
             >
-              <option value="">Choose Subcategory</option>
-              {unit.length > 0
-                ? unit.map((u) => (
-                    <option key={u.unitid} value={u.unitid}>
-                      {u.unitname}
-                    </option>
-                  ))
-                : <option value="">No units available</option>}
+              <option value="">Choose Unit</option>
+              {unit.length > 0 ? (
+                unit.map((u) => (
+                  <option key={u.unitid} value={u.unitid}>
+                    {u.unitname}
+                  </option>
+                ))
+              ) : (
+                <option value="">No units available</option>
+              )}
             </select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">

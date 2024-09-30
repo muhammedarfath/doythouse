@@ -204,6 +204,8 @@ function CustomerInformationModal({ onSuccess }) {
     formData.append("sleeve_type", sleeveType);
     formData.append("wrist", wrist);
     formData.append("three_fourth", threeFourth);
+    formData.append("elbow", elbow);
+    formData.append("arm_round", armRound);
 
     formData.append("skirt_full_length", skirtFullLength);
     formData.append("skirt_seat", seat);

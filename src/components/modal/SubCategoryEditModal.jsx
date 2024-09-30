@@ -103,7 +103,7 @@ function SubCategoryEditModal({ subcategory,onSuccess }) {
                 id="category"
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="col-span-3 p-2 border rounded"
+                className="col-span-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
               >
                 <option value="">Select a category</option>
                 {categories.map((cat) => (

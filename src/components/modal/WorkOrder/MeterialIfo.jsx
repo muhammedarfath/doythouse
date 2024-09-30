@@ -126,9 +126,9 @@ function MeterialIfo({
                   onChange={(e) => handleInputChangeWithValidation(e, stock_id, "quantity")}
                   className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
                 />
-                {errors[stock_id] && (
-                  <p className="text-red-500 text-sm mt-1">{errors[stock_id]}</p>
-                )}
+                  {errors[stock_id] && (
+                    <p className="text-red-500 text-sm mt-1">{errors[stock_id]}</p>
+                  )}
               </td>
 
               <td className="border border-gray-300 px-4 py-2">

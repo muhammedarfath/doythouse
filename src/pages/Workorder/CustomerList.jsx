@@ -13,8 +13,14 @@ function CustomerList() {
   const [customer, setCustomer] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const { open } = useOutletContext();
-
-
+  const [employees, setEmployees] = useState([]);
+  const [filters, setFilters] = useState({
+    fromDate: "",
+    toDate: "",
+    employeeName: "",
+    status: "",
+  });
+  
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
@@ -31,6 +37,21 @@ function CustomerList() {
       setCustomer(response.data);
     } catch (error) {
       console.error("Error fetching Customers:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+
+  const fetchEmployees = async () => {
+    try {
+      const response = await axios.get(
+        "https://storeconvo.com/php/fetch.php?typ=employee"
+      );
+      setEmployees(response.data);
+    } catch (error) {
+      console.error("Error fetching employees:", error);
     }
   };
 
@@ -57,9 +78,28 @@ function CustomerList() {
     }
   };
 
-  const filteredCustomers = customer.filter((cust) =>
-    cust.cust_orderno?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredCustomers = customer.filter((cust) => {
+    const matchesSearch = cust.cust_orderno
+      ?.toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
+    const matchesEmployee = filters.employeeName
+      ? cust.employee_name === filters.employeeName
+      : true;
+
+    const matchesStatus = filters.status
+      ? cust.status === filters.status
+      : true;
+
+    const matchesDateRange =
+      (!filters.fromDate ||
+        new Date(cust.date) >= new Date(filters.fromDate)) &&
+      (!filters.toDate || new Date(cust.date) <= new Date(filters.toDate));
+
+    return (
+      matchesSearch && matchesEmployee && matchesStatus && matchesDateRange
+    );
+  });
 
   const handleDelete = (CustomerId) => {
     toast(
@@ -137,7 +177,12 @@ function CustomerList() {
                 <CustomerInformationModal onSuccess={fetchCustomer} />
               </div>
             </div>
-            <CustomerFilter isFilterVisible={isFilterVisible} />
+            <CustomerFilter
+              isFilterVisible={isFilterVisible}
+              employees={employees}
+              filters={filters}
+              setFilters={setFilters}
+            />{" "}
             <CustomerTable
               fetchCustomer={fetchCustomer}
               handleChangeStatus={handleChangeStatus}

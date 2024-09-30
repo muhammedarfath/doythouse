@@ -71,6 +71,10 @@ function AddStock({ onSuccess }) {
         toast.success("Stock added successfully!");
         setIsOpen(false);
         onSuccess();
+        setStockItem("")
+        setSelectedUnit("")
+        setStockValue("")
+        setStockMrp("")
       } else {
         toast.error("Something went wrong");
       }
@@ -116,7 +120,7 @@ function AddStock({ onSuccess }) {
             <select
               name="unit"
               id="unit"
-              className="h-10 border mt-1 rounded px-4 w-full bg-[#fff]"
+              className="h-10 border mt-1 rounded px-4 w-full bg-[#fff] focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               value={selectedUnit}
               onChange={handlUnitChange}
             >
