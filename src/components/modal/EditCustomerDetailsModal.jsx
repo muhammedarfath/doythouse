@@ -240,7 +240,7 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
     const formattedStockValues = Object.entries(quantityDifferences)
     .map(([key, value]) => `${key}=${value}`)
     .join(',');
-    formData.append("stock_values", formattedStockValues);
+    formData.append("quantity_differences", formattedStockValues);    
 
 
     formData.append("cutting1", cuttingPrice);
