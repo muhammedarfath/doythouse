@@ -9,11 +9,12 @@ function EditMeterialIfo({
   inputValue,
   totalMRP,
   setTotalMRP,
+  setQuantityDifferences,
+  quantityDifferences
 }) {
   const [errors, setErrors] = useState({});
   const [previousQuantities, setPreviousQuantities] = useState({});
   const [initialQuantities, setInitialQuantities] = useState({});
-  const [quantityDifferences, setQuantityDifferences] = useState({}); // Declare quantityDifferences state
   const inputValues = inputValue;
 
   useEffect(() => {
@@ -24,7 +25,7 @@ function EditMeterialIfo({
       }, 0)
       .toFixed(2);
 
-    setTotalMRP(total); // Update the total MRP in the parent component
+    setTotalMRP(total); 
   }, [inputValues]);
 
 
@@ -228,9 +229,6 @@ function EditMeterialIfo({
     setInputValues(newInputValues);
   };
 
-
-  console.log(quantityDifferences);
-  console.log(inputValue);
 
   return (
     <div className="mb-80 w-full">

@@ -19,6 +19,7 @@ import WorkOrderHeader from "./WorkOrder/WorkOrderHeader";
 import MeasurmentImg from "./WorkOrder/MeasurmentImg";
 
 function EditCustomerDetailsModal({ customer, onSuccess }) {
+  const [quantityDifferences, setQuantityDifferences] = useState({}); 
   const [inputValues, setInputValues] = useState(customer.cm_stockused || "");
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState(customer.cust_itemcategory);
@@ -236,6 +237,8 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
     formData.append("completed_date", completedDate);
 
     formData.append("stock_values",inputValues);
+    formData.append("quantity_differences",quantityDifferences);
+    
 
 
     formData.append("cutting1", cuttingPrice);
@@ -454,6 +457,8 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
               setInputValues={setInputValues}
               totalMRP={totalMRP}
               setTotalMRP={setTotalMRP}
+              quantityDifferences={quantityDifferences}
+              setQuantityDifferences={setQuantityDifferences}
             />
           )}
           {activeSection === "paymentInformation" && (
