@@ -69,7 +69,6 @@ function Invoice() {
       setInvoice((prevInvoice) =>
         prevInvoice.filter((invoice) => invoice.invoice_id !== InvoiceId)
       );
-
       toast.success("Delete successful", { id: toastId });
     } catch (error) {
       console.error("Error deleting product:", error);

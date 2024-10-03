@@ -25,12 +25,15 @@ function PreInvoice({ order_id, onSuccess, invoice }) {
     }
   };
 
+  console.log(currentInvoice, "current");
+  console.log(invoice);
+
   const handlePrint = () => {
     window.print();
   };
 
   const handleStatusChange = async (e) => {
-    console.log(order_id,"order id");
+    console.log(order_id, "order id");
     const newStatus = e.target.value;
     setStatus(newStatus);
     try {
@@ -47,7 +50,6 @@ function PreInvoice({ order_id, onSuccess, invoice }) {
           },
         }
       );
-      console.log(response.data);
       onSuccess();
     } catch (error) {
       console.error("Error updating status:", error);
@@ -76,7 +78,12 @@ function PreInvoice({ order_id, onSuccess, invoice }) {
     Number(currentInvoice?.checker || 0) +
     Number(currentInvoice?.tailor || 0);
 
-  const finalTotal = chargesTotal + 300;
+  const finalTotal = chargesTotal + currentInvoice?.materialprice;
+
+  const taxTotal = 
+   Number(currentInvoice?.cgst || 0) +
+   Number(currentInvoice?.sgst || 0) 
+
 
   return (
     <div>
@@ -176,7 +183,7 @@ function PreInvoice({ order_id, onSuccess, invoice }) {
                     <div className="text-lg font-medium text-gray-800 dark:text-neutral-200">
                       Labour Costs:
                     </div>
-                    <div className="grid grid-cols-2 gap-1">
+                    {/* <div className="grid grid-cols-2 gap-1">
                       <div className="text-gray-800 dark:text-neutral-200">
                         Stitching:
                       </div>
@@ -189,12 +196,13 @@ function PreInvoice({ order_id, onSuccess, invoice }) {
                       <div className="text-end font-medium text-gray-800 dark:text-neutral-200">
                         {currentInvoice?.handwork || 0}
                       </div>
+
+                    </div> */}
+                    {/* <div className="mt-4 border-t border-gray-200 pt-2"> */}
+                    <div className="text-lg font-bold text-gray-800 dark:text-neutral-200 text-end">
+                      Total Labour Costs: ₹{chargesTotal}
                     </div>
-                    <div className="mt-4 border-t border-gray-200 pt-2">
-                      <div className="text-lg font-bold text-gray-800 dark:text-neutral-200 text-end">
-                        Total Labour Costs: ₹{chargesTotal}
-                      </div>
-                    </div>
+                    {/* </div> */}
                   </div>
 
                   <div className="mt-2 border border-gray-200 p-4 rounded-lg space-y-4 dark:border-neutral-700">
@@ -202,7 +210,7 @@ function PreInvoice({ order_id, onSuccess, invoice }) {
                       Material Costs Total:
                     </div>
                     <div className="text-end font-medium text-gray-800 dark:text-neutral-200">
-                      300
+                      Total Material Costs: ₹{currentInvoice?.materialprice}
                     </div>
                   </div>
 
@@ -221,7 +229,7 @@ function PreInvoice({ order_id, onSuccess, invoice }) {
                           Total:
                         </dt>
                         <dd class="col-span-2 text-gray-500 dark:text-neutral-500">
-                          ₹2750.00
+                          ₹{finalTotal}
                         </dd>
                       </dl>
                       <dl class="grid sm:grid-cols-5 gap-x-3">
@@ -229,7 +237,7 @@ function PreInvoice({ order_id, onSuccess, invoice }) {
                           Tax:
                         </dt>
                         <dd class="col-span-2 text-gray-500 dark:text-neutral-500">
-                          ₹39.00
+                          ₹{taxTotal}
                         </dd>
                       </dl>
                       <dl class="grid sm:grid-cols-5 gap-x-3">
@@ -237,7 +245,7 @@ function PreInvoice({ order_id, onSuccess, invoice }) {
                           Amount paid:
                         </dt>
                         <dd class="col-span-2 text-gray-500 dark:text-neutral-500">
-                          ₹2789.00
+                          ₹{currentInvoice?.advanceprice}
                         </dd>
                       </dl>
                       <dl class="grid sm:grid-cols-5 gap-x-3">
@@ -245,7 +253,7 @@ function PreInvoice({ order_id, onSuccess, invoice }) {
                           Due balance:
                         </dt>
                         <dd class="col-span-2 text-gray-500 dark:text-neutral-500">
-                          ₹0.00
+                          ₹{currentInvoice?.balanceprice}
                         </dd>
                       </dl>
                     </div>

@@ -384,7 +384,7 @@ function CustomerInformationModal({ onSuccess }) {
                 designerPhoneNumber={designerPhoneNumber}
                 setDesignerPhoneNumber={setDesignerPhoneNumber}
               />
-              <div className="border-t  border-gray-300 my-6 pt-4 lg:flex md:flex gap-8">
+              <div className="border-t border-gray-300 my-6 pt-4 lg:flex md:flex gap-8">
                 <MeasurmentFirst
                   section2Ref={section2Ref}
                   yokeLength={yokeLength}
