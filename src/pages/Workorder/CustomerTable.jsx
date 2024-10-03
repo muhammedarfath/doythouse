@@ -12,7 +12,12 @@ import { BiSolidTrashAlt } from "react-icons/bi";
 import EditCustomerDetailsModal from "../../components/modal/EditCustomerDetailsModal";
 import WorkOrderDetails from "@/components/modal/WorkOrder/WorkOrderDetails";
 
-function CustomerTable({ customer, fetchCustomer, handleChangeStatus,handleDelete }) {
+function CustomerTable({
+  customer,
+  fetchCustomer,
+  handleChangeStatus,
+  handleDelete,
+}) {
   return (
     <Table className="w-full">
       <TableCaption>A list of your orders.</TableCaption>
@@ -29,7 +34,7 @@ function CustomerTable({ customer, fetchCustomer, handleChangeStatus,handleDelet
         </TableRow>
       </TableHeader>
       <TableBody>
-        {customer.length === 0 ? ( 
+        {customer.length === 0 ? (
           <TableRow>
             <TableCell colSpan={9} className="text-center">
               No Data Available
@@ -45,7 +50,7 @@ function CustomerTable({ customer, fetchCustomer, handleChangeStatus,handleDelet
               <TableCell>{cust.cust_orderno}</TableCell>
               <TableCell>{cust.cust_name}</TableCell>
               <TableCell>{cust.cust_expecteddelivery}</TableCell>
-              <TableCell>{cust.cust_itemcategory}</TableCell>
+              <TableCell>{cust.cat_name}</TableCell>
               <TableCell>
                 <select
                   value={cust.status}
@@ -59,7 +64,7 @@ function CustomerTable({ customer, fetchCustomer, handleChangeStatus,handleDelet
               </TableCell>
               <TableCell className="text-center">
                 <div className="flex justify-center gap-3">
-                  <WorkOrderDetails cust={cust}/>
+                  <WorkOrderDetails cust={cust} />
                   <EditCustomerDetailsModal
                     customer={cust}
                     onSuccess={fetchCustomer}

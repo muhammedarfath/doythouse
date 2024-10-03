@@ -260,7 +260,7 @@ function Userinfo({
             id="status"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
             required
           >
             <option value="">Select Status</option>

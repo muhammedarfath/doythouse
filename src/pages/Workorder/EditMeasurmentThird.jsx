@@ -32,6 +32,7 @@ function EditMeasurmentThird({
   totalMRP,
   total,
   setTotalMRP,
+  section2Ref,
 }) {
   useEffect(() => {
     const materialAndLabourTotal = parseFloat(totalMRP) + parseFloat(total);
@@ -174,7 +175,7 @@ function EditMeasurmentThird({
             />
           </div>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4" ref={section2Ref}>
           <div className="text-lg font-semibold mb-4">Payment Information:</div>
 
           <div>

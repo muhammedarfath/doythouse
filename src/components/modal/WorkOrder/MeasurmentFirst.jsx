@@ -65,7 +65,7 @@ function MeasurmentFirst({
                 value={yokeLength}
                 onChange={(e) => setYokeLength(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -76,7 +76,7 @@ function MeasurmentFirst({
                 value={yokeRound}
                 onChange={(e) => setYokeRound(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -87,7 +87,7 @@ function MeasurmentFirst({
                 value={fullLength}
                 onChange={(e) => setFullLength(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -98,7 +98,7 @@ function MeasurmentFirst({
                 value={upperBust}
                 onChange={(e) => setUpperBust(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -109,7 +109,7 @@ function MeasurmentFirst({
                 value={bust}
                 onChange={(e) => setBust(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -120,7 +120,7 @@ function MeasurmentFirst({
                 value={underBust}
                 onChange={(e) => setUnderBust(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -131,7 +131,7 @@ function MeasurmentFirst({
                 value={midWaist}
                 onChange={(e) => setMidWaist(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -142,7 +142,7 @@ function MeasurmentFirst({
                 value={hip}
                 onChange={(e) => setHip(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -153,7 +153,7 @@ function MeasurmentFirst({
                 value={shoulder}
                 onChange={(e) => setShoulder(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -164,7 +164,7 @@ function MeasurmentFirst({
                 value={shoulderWidth}
                 onChange={(e) => setShoulderWidth(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -175,7 +175,7 @@ function MeasurmentFirst({
                 value={slitLength}
                 onChange={(e) => setSlitLength(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -186,7 +186,7 @@ function MeasurmentFirst({
                 value={slitRound}
                 onChange={(e) => setSlitRound(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -197,7 +197,7 @@ function MeasurmentFirst({
                 value={sleeveType}
                 onChange={(e) => setSleeveType(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -208,7 +208,7 @@ function MeasurmentFirst({
                 value={sleeveLength}
                 onChange={(e) => setSleeveLength(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -219,7 +219,7 @@ function MeasurmentFirst({
                 value={wrist}
                 onChange={(e) => setWrist(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -230,7 +230,7 @@ function MeasurmentFirst({
                 value={threeFourth}
                 onChange={(e) => setThreeFourth(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -241,7 +241,7 @@ function MeasurmentFirst({
                 value={elbow}
                 onChange={(e) => setElbow(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -252,7 +252,7 @@ function MeasurmentFirst({
                 value={armRound}
                 onChange={(e) => setArmRound(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -263,7 +263,7 @@ function MeasurmentFirst({
                 value={armHole}
                 onChange={(e) => setArmHole(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -274,7 +274,7 @@ function MeasurmentFirst({
                 value={neck}
                 onChange={(e) => setNeck(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -285,7 +285,7 @@ function MeasurmentFirst({
                 value={frontNeck}
                 onChange={(e) => setFrontNeck(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -296,7 +296,7 @@ function MeasurmentFirst({
                 value={backNeck}
                 onChange={(e) => setBackNeck(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -307,7 +307,7 @@ function MeasurmentFirst({
                 value={collarRound}
                 onChange={(e) => setCollarRound(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -318,7 +318,7 @@ function MeasurmentFirst({
                 value={tuckPoint}
                 onChange={(e) => setTuckPoint(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>
@@ -329,7 +329,7 @@ function MeasurmentFirst({
                 value={pointToPoint}
                 onChange={(e) => setPointToPoint(e.target.value)}
                 type="text"
-                className="md:p-6 lg:p-2 p-2 border w-full"
+                className="md:p-6 lg:p-2 p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               />
             </td>
           </tr>

@@ -44,6 +44,9 @@ function CustomerList() {
     fetchEmployees();
   }, []);
 
+
+  console.log(customer);
+
   const fetchEmployees = async () => {
     try {
       const response = await axios.get(
@@ -71,7 +74,6 @@ function CustomerList() {
           },
         }
       );
-      console.log(response.data);
       fetchCustomer();
     } catch (error) {
       toast.error("Failed to delete expense");
@@ -150,6 +152,8 @@ function CustomerList() {
       toast.error("Failed to delete product", { id: toastId });
     }
   };
+
+
 
   return (
     <div className="flex items-center justify-center w-full">

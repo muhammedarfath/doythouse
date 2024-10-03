@@ -48,8 +48,8 @@ function EditUserInfo({
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6" ref={section1Ref}>
+    <div className="p-4 sm:p-6 lg:p-8" ref={section1Ref}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="flex flex-col gap-3">
           <Label htmlFor="order-number" className="text-md font-bold">
             Work-Order Number

@@ -44,7 +44,7 @@ function MeasurmentSecond({
                   value={skirtFullLength}
                   onChange={(e) => setSkirtFullLength(e.target.value)}
                   type="text"
-                  className="p-2 border w-full"
+                  className="p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
                 />
               </td>
             </tr>
@@ -55,7 +55,7 @@ function MeasurmentSecond({
                   value={seat}
                   onChange={(e) => setSeat(e.target.value)}
                   type="text"
-                  className="p-2 border w-full"
+                  className="p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
                 />
               </td>
             </tr>
@@ -66,7 +66,7 @@ function MeasurmentSecond({
                   value={thigh}
                   onChange={(e) => setThigh(e.target.value)}
                   type="text"
-                  className="p-2 border w-full"
+                  className="p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
                 />
               </td>
             </tr>
@@ -77,7 +77,7 @@ function MeasurmentSecond({
                   type="text"
                   value={knee}
                   onChange={(e) => setKnee(e.target.value)}
-                  className="p-2 border w-full"
+                  className="p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
                 />
               </td>
             </tr>
@@ -88,7 +88,7 @@ function MeasurmentSecond({
                   type="text"
                   value={calf}
                   onChange={(e) => setCalf(e.target.value)}
-                  className="p-2 border w-full"
+                  className="p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
                 />
               </td>
             </tr>
@@ -99,7 +99,7 @@ function MeasurmentSecond({
                   type="text"
                   value={bottomRound}
                   onChange={(e) => setBottomRound(e.target.value)}
-                  className="p-2 border w-full"
+                  className="p-2 border w-full focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
                 />
               </td>
             </tr>

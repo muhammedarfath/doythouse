@@ -76,7 +76,7 @@ function MeasurmentThird({
               id="cutting"
               value={cutting}
               onChange={(e) => setCutting(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
             >
               <option value="">Select an option</option>
               <option value="yes">Yes</option>
@@ -92,7 +92,7 @@ function MeasurmentThird({
               id="stitching"
               value={stitching}
               onChange={(e) => setStitching(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
             >
               <option value="">Select an option</option>
               <option value="yes">Yes</option>
@@ -108,7 +108,7 @@ function MeasurmentThird({
               id="hand-work"
               value={handWork}
               onChange={(e) => setHandWork(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
             >
               <option value="">Select an option</option>
               <option value="yes">Yes</option>
@@ -124,7 +124,7 @@ function MeasurmentThird({
               id="measurer"
               value={measurer}
               onChange={(e) => setMeasurer(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
             >
               <option value="">Select an option</option>
               <option value="yes">Yes</option>
@@ -140,7 +140,7 @@ function MeasurmentThird({
               id="checker"
               value={checker}
               onChange={(e) => setChecker(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
             >
               <option value="">Select an option</option>
               <option value="yes">Yes</option>
@@ -279,7 +279,7 @@ function MeasurmentThird({
               id="note"
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
               rows="4"
               placeholder="Add any additional notes here..."
             />

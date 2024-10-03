@@ -17,9 +17,11 @@ import EditMeterialIfo from "@/pages/Workorder/EditMeterialIfo";
 import EditPaymentInfo from "@/pages/Workorder/EditPaymentInfo";
 import WorkOrderHeader from "./WorkOrder/WorkOrderHeader";
 import MeasurmentImg from "./WorkOrder/MeasurmentImg";
+import { useReactToPrint } from "react-to-print";
+
 
 function EditCustomerDetailsModal({ customer, onSuccess }) {
-  const [quantityDifferences, setQuantityDifferences] = useState({}); 
+  const [quantityDifferences, setQuantityDifferences] = useState({});
   const [inputValues, setInputValues] = useState(customer.cm_stockused || "");
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState(customer.cust_itemcategory);
@@ -101,10 +103,6 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
   const [note, setNote] = useState(customer.note || "");
   const [categories, setCategories] = useState([]);
   const [stockReport, setStockReport] = useState([]);
-
-  const section1Ref = useRef();
-  const section2Ref = useRef();
-  const section3Ref = useRef();
   const [open, setOpen] = useState(false);
   const [total, setTotal] = useState(customer.total || "");
 
@@ -121,7 +119,7 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
   const [checkerPrice, setCheckerPrice] = useState(customer.checker || "");
   const [selectedStock, setSelectedStock] = useState("");
   const [designers, setDesigners] = useState([]);
-  const [designerPhoneNumber, setDesignerPhoneNumber] = useState("");
+  const [designerPhoneNumber, setDesignerPhoneNumber] = useState(customer.cust_designerphone || "");
   const [totalMRP, setTotalMRP] = useState(customer.materialprice || "");
   const [cgst, setCgst] = useState("");
   const [sgst, setSgst] = useState("");
@@ -168,7 +166,6 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
     setCategory(newCategory);
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -212,21 +209,21 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
     formData.append("elbow", elbow);
     formData.append("arm_round", armRound);
 
-    // formData.append("skirt_full_length", skirtFullLength);
-    // formData.append("skirt_seat", seat);
-    // formData.append("skirt_knee", knee);
-    // formData.append("skirt_thigh", thigh);
-    // formData.append("skirt_calf", calf);
-    // formData.append("skirt_bottom_round", bottomRound);
+    formData.append("skirt_full_length", skirtFullLength);
+    formData.append("skirt_seat", seat);
+    formData.append("skirt_knee", knee);
+    formData.append("skirt_thigh", thigh);
+    formData.append("skirt_calf", calf);
+    formData.append("skirt_bottom_round", bottomRound);
 
-    // formData.append("pad", pad);
-    // formData.append("zip", zip);
-    // formData.append("back_open", backOpen);
-    // formData.append("front_open", frontOpen);
+    formData.append("pad", pad);
+    formData.append("zip", zip);
+    formData.append("back_open", backOpen);
+    formData.append("front_open", frontOpen);
 
-    // if (image) {
-    //   formData.append("image", image);
-    // }
+    if (image) {
+      formData.append("image", image);
+    }
 
     formData.append("cutting", cutting);
     formData.append("stiching", stitching);
@@ -236,12 +233,11 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
     formData.append("date_in", dateIn);
     formData.append("completed_date", completedDate);
 
-    formData.append("stock_values",inputValues);
+    formData.append("stock_values", inputValues);
     const formattedStockValues = Object.entries(quantityDifferences)
-    .map(([key, value]) => `${key}=${value}`)
-    .join(',');
-    formData.append("quantity_differences", formattedStockValues);    
-
+      .map(([key, value]) => `${key}=${value}`)
+      .join(",");
+    formData.append("quantity_differences", formattedStockValues);
 
     formData.append("cutting1", cuttingPrice);
     formData.append("stiching1", stitchingPrice);
@@ -281,6 +277,31 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
     setImage(e.target.files[0]);
   };
 
+
+  const section1Ref = useRef(); 
+  const section2Ref = useRef(); 
+
+  const handlePrint2 = useReactToPrint({
+    content: () => section2Ref.current,  
+    pageStyle: `
+      @page {
+        size: auto;
+        margin: 20mm;
+      }
+    `,  
+  });
+
+
+  const handlePrint = useReactToPrint({
+    content: () => section1Ref.current,  
+    pageStyle: `
+      @page {
+        size: auto;
+        margin: 20mm;
+      }
+    `,  
+  });
+
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -298,7 +319,7 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
             setActiveSection={setActiveSection}
           />
           {activeSection === "userInformation" && (
-            <div>
+            <div >
               <EditUserInfo
                 section1Ref={section1Ref}
                 setCustomerName={setCustomerName}
@@ -327,8 +348,7 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
                 setDesignerPhoneNumber={setDesignerPhoneNumber}
               />
               <div className="border-t  border-gray-300 my-6 pt-4 lg:flex md:flex gap-8">
-                <EditMeasurmentFirst
-                  section2Ref={section2Ref}
+                <EditMeasurmentFirst 
                   yokeLength={yokeLength}
                   setYokeLength={setYokeLength}
                   yokeRound={yokeRound}
@@ -384,7 +404,6 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
                 />
 
                 <EditMeasurmentSecond
-                  section3Ref={section3Ref}
                   skirtFullLength={skirtFullLength}
                   setSkirtFullLength={setSkirtFullLength}
                   seat={seat}
@@ -412,6 +431,7 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
               </div>
 
               <EditMeasurmentThird
+                section2Ref={section2Ref}
                 cutting={cutting}
                 setCutting={setCutting}
                 stitching={stitching}
@@ -486,6 +506,20 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
               onClick={handleSubmit}
             >
               Save Changes
+            </Button>
+            <Button
+              type="print"
+              className="bg-[#308E87] hover:bg-[#308E87]"
+              onClick={handlePrint}
+            >
+              User Info Print
+            </Button>
+            <Button
+              type="print"
+              className="bg-[#308E87] hover:bg-[#308E87]"
+              onClick={handlePrint2}
+            >
+              Payment Info Print
             </Button>
           </DialogFooter>
         </DialogContent>

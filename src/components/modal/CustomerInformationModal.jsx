@@ -175,7 +175,7 @@ function CustomerInformationModal({ onSuccess }) {
     formData.append("cust_expecteddelivery", expectedDelivery);
     formData.append("cust_itemcategory", category);
     formData.append("cust_designername", designerName);
-    formData.append("cust_designername", designerPhoneNumber);
+    formData.append("cust_designerphone", designerPhoneNumber);
     formData.append("cust_orderno", orderNumber);
     formData.append("cust_orderdate", orderDate);
     formData.append("cust_emergency", emergency);
@@ -266,7 +266,6 @@ function CustomerInformationModal({ onSuccess }) {
       }
     } catch (error) {
       toast.error("Error adding customer:", error);
-      alert("Failed to add customer");
     } finally {
       setLoading(false);
     }

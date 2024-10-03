@@ -39,7 +39,7 @@ function CustomerFilter({
               name="fromDate"
               value={filters.fromDate}
               onChange={handleInputChange}
-              className="h-10 border rounded px-4 bg-gray-50"
+              className="h-10 border rounded px-4 bg-gray-50 focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
             />
           </div>
           <div className="flex flex-col">
@@ -52,7 +52,7 @@ function CustomerFilter({
               name="toDate"
               value={filters.toDate}
               onChange={handleInputChange}
-              className="h-10 border rounded px-4 bg-gray-50"
+              className="h-10 border rounded px-4 bg-gray-50 focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
             />
           </div>
           <div className="flex flex-col">
@@ -64,7 +64,7 @@ function CustomerFilter({
               name="employeeName"
               value={filters.employeeName}
               onChange={handleInputChange}
-              className="h-10 border rounded px-4 bg-gray-50"
+              className="h-10 border rounded px-4 bg-gray-50 focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
             >
               <option value="">Select Employee</option>
               {employees.map((employee) => (
@@ -83,7 +83,7 @@ function CustomerFilter({
               name="status"
               value={filters.status}
               onChange={handleInputChange}
-              className="h-10 border rounded px-4 bg-gray-50"
+              className="h-10 border rounded px-4 bg-gray-50 focus:ring-2 focus:ring-[#000] focus:ring-offset-0 outline-none"
             >
               <option value="">Select Status</option>
               <option value="Pending">Pending</option>
