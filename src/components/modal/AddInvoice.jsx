@@ -72,6 +72,11 @@ function AddInvoice({ onchange }) {
     }
   };
 
+
+  console.log(workOrders);
+
+
+
   return (
     <div>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

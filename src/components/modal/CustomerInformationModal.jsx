@@ -257,7 +257,6 @@ function CustomerInformationModal({ onSuccess }) {
           },
         }
       );
-      console.log(response.data);
       if (response.data) {
         toast.success("Customer added successfully");
         setOpen(false);
@@ -265,7 +264,7 @@ function CustomerInformationModal({ onSuccess }) {
         onSuccess();
       }
     } catch (error) {
-      toast.error("Error adding customer:", error);
+      toast.error("network error:", error);
     } finally {
       setLoading(false);
     }
