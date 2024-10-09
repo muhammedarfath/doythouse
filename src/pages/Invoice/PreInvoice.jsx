@@ -25,9 +25,6 @@ function PreInvoice({ order_id, onSuccess, invoice }) {
     }
   };
 
-  console.log(currentInvoice, "current");
-  console.log(invoice);
-
   const handlePrint = () => {
     window.print();
   };

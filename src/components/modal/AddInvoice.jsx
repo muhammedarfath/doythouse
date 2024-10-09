@@ -73,7 +73,6 @@ function AddInvoice({ onchange }) {
   };
 
 
-  console.log(workOrders);
 
 
 

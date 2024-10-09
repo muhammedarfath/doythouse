@@ -19,6 +19,55 @@ import MeasurmentImg from "./WorkOrder/MeasurmentImg";
 import WorkOrderHeader from "./WorkOrder/WorkOrderHeader";
 
 function CustomerInformationModal({ onSuccess }) {
+  const [currentInvoiceData, setCurrentInvoiceData] = useState(null);
+  const [workOrders, setWorkOrders] = useState([]);
+  const [workOrder, setWorkOrder] = useState("");
+
+  useEffect(() => {
+    fetchOrderDetails();
+  }, []);
+
+  const fetchOrderDetails = async () => {
+    try {
+      const response = await axios.post(
+        "https://storeconvo.com/php/fetch.php?typ=orderlist"
+      );
+      if (response.data) {
+        setWorkOrders(response.data);
+      } else {
+        console.log("somthing went wrong");
+      }
+    } catch {
+      console.log("somthing went wrong");
+    }
+  };
+
+
+  const handleWorkOrderChange = async (e) => {
+    const selectedOrder = e.target.value;
+    setWorkOrder(selectedOrder);
+
+    if (selectedOrder) {
+      try {
+        const response = await axios.get(
+          `https://storeconvo.com/php/fetch.php?typ=invoicedetails&id=${selectedOrder}`
+        );
+        const invoiceData =
+          Array.isArray(response.data) && response.data.length > 0
+            ? response.data[0]
+            : {};
+
+        setCurrentInvoiceData(invoiceData);
+      } catch (error) {
+        console.error("Error fetching invoice data:", error);
+      }
+    } else {
+      setCurrentInvoiceData(null);
+      setCustomerName("");
+    }
+  };
+
+
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState("");
   const [activeSection, setActiveSection] = useState("userInformation");
@@ -100,6 +149,86 @@ function CustomerInformationModal({ onSuccess }) {
   const [cgst, setCgst] = useState("");
   const [sgst, setSgst] = useState("");
   const [totalBill, setTotalBill] = useState("");
+
+  console.log(currentInvoiceData);
+
+
+  useEffect(() => {
+    if (currentInvoiceData) {
+      setCustomerName(currentInvoiceData.cust_name || "");
+      setContactNumber(currentInvoiceData.cust_phone || "");
+      setTrialDate(currentInvoiceData.cust_trialdate || "");
+      setExpectedDelivery(currentInvoiceData.cust_expecteddelivery || "");
+      setDesignerName(currentInvoiceData.cust_designername || "");
+      setOrderDate(currentInvoiceData.order_date || "");
+      setEmergency(currentInvoiceData.cust_emergency || "");
+      setStatus(currentInvoiceData.status || "");
+      setYokeLength(currentInvoiceData.yoke_length || "");
+      setYokeRound(currentInvoiceData.yoke_round || "");
+      setFullLength(currentInvoiceData.full_length || "");
+      setUpperBust(currentInvoiceData.upper_bust || "");
+      setBust(currentInvoiceData.bust || "");
+      setUnderBust(currentInvoiceData.under_bust || "");
+      setMidWaist(currentInvoiceData.mid_waist || "");
+      setHip(currentInvoiceData.hip || "");
+      setShoulder(currentInvoiceData.shoulder || "");
+      setShoulderWidth(currentInvoiceData.shoulder_wide || "");
+      setSlitLength(currentInvoiceData.slit_length || "");
+      setSlitRound(currentInvoiceData.slit_round || "");
+      setSleeveType(currentInvoiceData.sleeve_type || "");
+      setSleeveLength(currentInvoiceData.sleeve_length || "");
+      setWrist(currentInvoiceData.wrist || "");
+      setThreeFourth(currentInvoiceData.three_fourth || "");
+      setElbow(currentInvoiceData.elbow || "");
+      setArmRound(currentInvoiceData.arm_round || "");
+      setArmHole(currentInvoiceData.arm_hole || "");
+      setNeck(currentInvoiceData.neck || "");
+      setFrontNeck(currentInvoiceData.fn || "");
+      setBackNeck(currentInvoiceData.bn || "");
+      setCollarRound(currentInvoiceData.collor_round || "");
+      setTuckPoint(currentInvoiceData.tuck_point || "");
+      setPointToPoint(currentInvoiceData.point_to_point || "");
+      setSkirtFullLength(currentInvoiceData.skirt_full_length || "");
+      setSeat(currentInvoiceData.skirt_seat || "");
+      setThigh(currentInvoiceData.skirt_thigh || "");
+      setKnee(currentInvoiceData.skirt_knee || "");
+      setCalf(currentInvoiceData.skirt_calf || "");
+      setBottomRound(currentInvoiceData.skirt_bottom_round || "");
+      setPad(currentInvoiceData.pad || false);
+      setZip(currentInvoiceData.zip || false);
+      setBackOpen(currentInvoiceData.back_open || false);
+      setFrontOpen(currentInvoiceData.front_open || false);
+      setImage(currentInvoiceData.image || "");
+      setDateIn(currentInvoiceData.date_in || "");
+      setCompletedDate(currentInvoiceData.completed_date || "");
+      setTotalPrice(currentInvoiceData.total_price || "");
+      setAdvancedPrice(currentInvoiceData.advanced_price || "");
+      setBalancePrice(currentInvoiceData.balance_price || "");
+      setDiscount(currentInvoiceData.discount || "");
+      setNote(currentInvoiceData.note || "");
+      setCategories(currentInvoiceData.categories || []);
+      setSelectedCategory(currentInvoiceData.cust_itemcategory)
+      setStockReport(currentInvoiceData.stock_report || []);
+      setCutting(currentInvoiceData.cacutting || "");
+      setStitching(currentInvoiceData.stitching || "");
+      setHandWork(currentInvoiceData.hand_work || "");
+      setMeasurer(currentInvoiceData.measurer || "");
+      setChecker(currentInvoiceData.checker || "");
+      setCuttingPrice(currentInvoiceData.cutting_price || "");
+      setStitchingPrice(currentInvoiceData.stitching_price || "");
+      setHandWorkPrice(currentInvoiceData.hand_work_price || "");
+      setMeasurerPrice(currentInvoiceData.measurer_price || "");
+      setCheckerPrice(currentInvoiceData.checker_price || "");
+      setSelectedStock(currentInvoiceData.selected_stock || "");
+      setDesigners(currentInvoiceData.designers || []);
+      setDesignerPhoneNumber(currentInvoiceData.cust_designerphone || "");
+      setInputValues(currentInvoiceData.input_values || []);
+      setTotalMRP(currentInvoiceData.total_mrp || 0);
+      setCgst(currentInvoiceData.cgst || "");
+      setSgst(currentInvoiceData.sgst || "");
+      setTotalBill(currentInvoiceData.total_bill || "");
+    }
+  }, [currentInvoiceData]);
 
   useEffect(() => {
     const currentDate = new Date().toISOString().split("T")[0];
@@ -353,6 +482,9 @@ function CustomerInformationModal({ onSuccess }) {
           <WorkOrderHeader
             activeSection={activeSection}
             setActiveSection={setActiveSection}
+            workOrders={workOrders}
+            setWorkOrder={setWorkOrder}
+            handleWorkOrderChange={handleWorkOrderChange}
           />
           {activeSection === "userInformation" && (
             <div>
@@ -382,6 +514,7 @@ function CustomerInformationModal({ onSuccess }) {
                 status={status}
                 designerPhoneNumber={designerPhoneNumber}
                 setDesignerPhoneNumber={setDesignerPhoneNumber}
+                currentInvoicedata={currentInvoiceData}
               />
               <div className="border-t border-gray-300 my-6 pt-4 lg:flex md:flex gap-8">
                 <MeasurmentFirst

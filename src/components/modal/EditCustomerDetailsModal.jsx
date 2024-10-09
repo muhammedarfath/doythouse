@@ -15,12 +15,13 @@ import EditMeasurmentSecond from "./WorkOrder/EditMeasurmentSecond";
 import EditMeasurmentThird from "@/pages/Workorder/EditMeasurmentThird";
 import EditMeterialIfo from "@/pages/Workorder/EditMeterialIfo";
 import EditPaymentInfo from "@/pages/Workorder/EditPaymentInfo";
-import WorkOrderHeader from "./WorkOrder/WorkOrderHeader";
 import MeasurmentImg from "./WorkOrder/MeasurmentImg";
 import { useReactToPrint } from "react-to-print";
+import EditWorkOrderHeader from "./WorkOrder/EditWorkOrderHeader";
 
 
 function EditCustomerDetailsModal({ customer, onSuccess }) {
+  console.log(customer);
   const [quantityDifferences, setQuantityDifferences] = useState({});
   const [inputValues, setInputValues] = useState(customer.cm_stockused || "");
   const [loading, setLoading] = useState(false);
@@ -314,7 +315,7 @@ function EditCustomerDetailsModal({ customer, onSuccess }) {
           </span>
         </DialogTrigger>
         <DialogContent className="lg:max-w-[90%] overflow-auto lg:max-h-[90%] h-full  mt-3 sm:max-w-[900px]">
-          <WorkOrderHeader
+          <EditWorkOrderHeader
             activeSection={activeSection}
             setActiveSection={setActiveSection}
           />
