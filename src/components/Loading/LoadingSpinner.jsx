@@ -35,7 +35,7 @@ function Loading() {
       <div className="p-6 rounded-md max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
         <div className="flex flex-col items-center justify-center">
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6">
-            DOYT HOUSE
+            Shop Name
           </h1>
           <div className="flex items-center">
             <>

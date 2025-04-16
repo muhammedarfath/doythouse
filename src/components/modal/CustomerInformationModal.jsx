@@ -52,11 +52,11 @@ function CustomerInformationModal({ onSuccess }) {
         const response = await axios.get(
           `https://storeconvo.com/php/fetch.php?typ=invoicedetails&id=${selectedOrder}`
         );
+
         const invoiceData =
           Array.isArray(response.data) && response.data.length > 0
             ? response.data[0]
             : {};
-
         setCurrentInvoiceData(invoiceData);
       } catch (error) {
         console.error("Error fetching invoice data:", error);
@@ -150,9 +150,7 @@ function CustomerInformationModal({ onSuccess }) {
   const [sgst, setSgst] = useState("");
   const [totalBill, setTotalBill] = useState("");
 
-  console.log(currentInvoiceData);
-
-
+console.log(currentInvoiceData);
   useEffect(() => {
     if (currentInvoiceData) {
       setCustomerName(currentInvoiceData.cust_name || "");
@@ -160,7 +158,6 @@ function CustomerInformationModal({ onSuccess }) {
       setTrialDate(currentInvoiceData.cust_trialdate || "");
       setExpectedDelivery(currentInvoiceData.cust_expecteddelivery || "");
       setDesignerName(currentInvoiceData.cust_designername || "");
-      setOrderDate(currentInvoiceData.order_date || "");
       setEmergency(currentInvoiceData.cust_emergency || "");
       setStatus(currentInvoiceData.status || "");
       setYokeLength(currentInvoiceData.yoke_length || "");
@@ -206,7 +203,7 @@ function CustomerInformationModal({ onSuccess }) {
       setBalancePrice(currentInvoiceData.balance_price || "");
       setDiscount(currentInvoiceData.discount || "");
       setNote(currentInvoiceData.note || "");
-      setCategories(currentInvoiceData.categories || []);
+      setCategory(currentInvoiceData.cust_itemcategory || "")
       setSelectedCategory(currentInvoiceData.cust_itemcategory)
       setStockReport(currentInvoiceData.stock_report || []);
       setCutting(currentInvoiceData.cacutting || "");
@@ -214,13 +211,12 @@ function CustomerInformationModal({ onSuccess }) {
       setHandWork(currentInvoiceData.hand_work || "");
       setMeasurer(currentInvoiceData.measurer || "");
       setChecker(currentInvoiceData.checker || "");
-      setCuttingPrice(currentInvoiceData.cutting_price || "");
-      setStitchingPrice(currentInvoiceData.stitching_price || "");
-      setHandWorkPrice(currentInvoiceData.hand_work_price || "");
-      setMeasurerPrice(currentInvoiceData.measurer_price || "");
-      setCheckerPrice(currentInvoiceData.checker_price || "");
+      setCuttingPrice(currentInvoiceData.cutting || "");
+      setStitchingPrice(currentInvoiceData.stiching || "");
+      setHandWorkPrice(currentInvoiceData.handwork || "");
+      setMeasurerPrice(currentInvoiceData.measurer || "");
+      setCheckerPrice(currentInvoiceData.checker || "");
       setSelectedStock(currentInvoiceData.selected_stock || "");
-      setDesigners(currentInvoiceData.designers || []);
       setDesignerPhoneNumber(currentInvoiceData.cust_designerphone || "");
       setInputValues(currentInvoiceData.input_values || []);
       setTotalMRP(currentInvoiceData.total_mrp || 0);
@@ -280,21 +276,22 @@ function CustomerInformationModal({ onSuccess }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
-      !customerName ||
-      !contactNumber ||
-      !trialDate ||
-      !expectedDelivery ||
-      !category ||
-      !designerName ||
-      !orderNumber ||
-      !orderDate ||
-      !designerPhoneNumber ||
-      !emergency ||
-      !status
+      !customerName.trim() ||
+      !contactNumber.trim() ||
+      !trialDate.trim() ||
+      !expectedDelivery.trim() ||
+      !category.trim() ||
+      !designerName.trim() ||
+      !orderNumber.trim() ||
+      !orderDate.trim() ||
+      !designerPhoneNumber.trim() ||
+      !emergency.trim() ||
+      !status.trim()
     ) {
       toast.error("Please fill in all mandatory fields.");
       return;
     }
+    
 
     const formData = new FormData();
 
@@ -375,6 +372,12 @@ function CustomerInformationModal({ onSuccess }) {
     formData.append("cgst", cgst);
     formData.append("sgst", sgst);
     formData.append("materialprice", totalMRP);
+
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
 
     try {
       const response = await axios.post(

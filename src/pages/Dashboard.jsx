@@ -1,4 +1,3 @@
-"use client"
 
 import {
   Area,
@@ -32,7 +31,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "../components/ui/chart"
+
 import { Separator } from "../components/ui/separator"
+
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useEffect, useState } from "react"

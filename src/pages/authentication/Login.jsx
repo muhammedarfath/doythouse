@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import logo from "../../assets/logo.jpg";
+import logo from "../../assets/Big_phone_with_cart.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   startLoading,

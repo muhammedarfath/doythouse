@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Items from "./Items";
 import Header from "./Header";
 import { Outlet, useNavigate } from "react-router-dom";
-import logo from "../../assets/logo.jpg";
+import logo from "../../assets/Big_phone_with_cart.jpg";
 import { RiAppsLine, RiSettingsLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import LoadingWrapper from "../Loading/LoadingWrapper";
@@ -13,13 +13,13 @@ function Sidebar() {
   const [open, setOpen] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false); 
 
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  // const { isLoggedIn } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-  }, [isLoggedIn, navigate]);
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     navigate("/");
+  //   }
+  // }, [isLoggedIn, navigate]);
 
   const toggleModal = () => {
     setModalOpen(!isModalOpen);
@@ -58,7 +58,7 @@ function Sidebar() {
                     !open && "scale-0"
                   }`}
                 >
-                  DOYT HOUSE
+                  Shop Name
                 </h1>
               </div>
 
